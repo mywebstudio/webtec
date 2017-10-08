@@ -1,0 +1,93 @@
+<template name="manageUsers">
+    {{> title title='Пользователи' item1name='Пользователи'}}
+
+    <div class="uk-margin-small uk-padding-small" >
+
+
+        <div class="uk-width-1-1  uk-card uk-card-body uk-card-default uk-margin-auto">
+            <div class="uk-grid" uk-grid>
+                <div class="uk-width-1-1">
+
+                    <div class="uk-margin">
+                        <div class="md-card-content">
+                            <div class="uk-grid" uk-grid>
+                                <div class="uk-width-1-1">
+                                    <div class="uk-input-wrapper"><label for="users-filter">Поиск</label>
+                                        <input type="text" class="uk-input"  id="users-filter" > <span class="uk-input-bar "></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results uk-margin">
+                        Отображено результатов: {{{ Meteor.users.length}}}
+                    </div>
+
+                    <div class="uk-overflow-container">
+                        <table class="uk-table uk-table-align-vertical">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="uk-table-shrink">Фото</th>
+                                <th>Логин</th>
+                                <th>email</th>
+                                <th>Баланс</th>
+                                <th>Роль</th>
+                                <th>Менеджер</th>
+                                <th>Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {{#each users}}
+                            <tr>
+                                <td><input type="checkbox" class="active uk-checkbox" id="{{_id}}" checked="{{active}}"></td>
+                                <td class="user_list_avatar">
+                                    {{> avatar img=avatar}}
+                                </td>
+                                <td><a href="{{pathFor "manageusersedit" id=_id}}">{{name}} ({{username}})</a></td>
+                                <td>{{#if $eq currentUser.roles 'admin'}}{{email _id}}{{/if}}</td>
+                                <td>{{balance}} &#8381;</td>
+                                <td>{{roles}}</td>
+                                <td>{{> managername id=manager}}</td>
+
+                                <td class="uk-text-nowrap">
+
+                                    <a href="/direct/{{_id}}"  uk-icon="icon: mail" class="uk-icon-button"></a>
+
+                                    <a href="{{pathFor 'manageusersedit' id=_id}}"  uk-icon="icon: pencil" class="uk-icon-button"></a>
+
+                                    <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash" ></span>
+                                </td>
+                            </tr>
+                            {{else}}
+                            <h1>Люди не найдены</h1>
+                            {{/each}}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="uk-position-fixed uk-position-bottom-right uk-position-medium uk-animation-slide-top">
+        <a class="md-fab md-fab-primary top" >
+            <span uk-icon="icon:  arrow-up; ratio: 3" ></span>
+        </a>
+    </div>
+
+    <div class="uk-position-fixed uk-position-right uk-top-100 uk-position-medium uk-animation-slide-right">
+        <a href="#adduser1" uk-toggle >
+            <span uk-icon="icon: plus; ratio: 2" ></span>
+        </a>
+    </div>
+
+
+</template>

@@ -1,0 +1,175 @@
+<template name="dashboard">
+    {{> title title='Кабинет' subtitle=name item1name='Кабинет'}}
+
+
+
+    <div class="uk-margin-small uk-padding-small" >
+        <div class="uk-width-1-1  uk-card uk-card-body uk-card-default  uk-margin-auto">
+            <div class="uk-width-1-1">
+                <div id="gantt_chart"></div>
+                {{#unless isReady}}
+                {{> loading}}
+                {{/unless}}
+            </div>
+        </div>
+    </div>
+
+    <div class="uk-margin-small uk-padding-small">
+
+        <div class="uk-card uk-card-default">
+            <h4 class="uk-card-header uk-text-center">Детали проектов</h4>
+
+
+            <table class="uk-card-body uk-table uk-table-align-vertical uk-form">
+            <thead>
+            <tr>
+                <th class="uk-table-shrink"></th>
+                <th class="uk-table-shrink">Проект</th>
+                <th class="uk-table-shrink">Прогресс</th>
+                <th class="uk-table-shrink">Текущая задача</th>
+                <th class="uk-table-shrink">Счёт</th>
+                <th  class="uk-table-shrink">Менеджер</th>
+                <th  class="uk-table-shrink"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="top-of-page"></tr>
+            {{#each applications}}
+            <tr id="{{_id}}">
+                <td>{{> created date=_createdAt}}</td>
+                <td><a href="{{pathFor 'manageProject' id=_id}}">{{name}}</a></td>
+                <td><progress id="progressbar" class="uk-progress" value="{{progres _id}}" max="100"></progress></td>
+
+                <td>{{currentTask _id}}</td>
+                <td ><a href="{{pathFor 'manageorders' id=bill}}">{{bill}}</a></td>
+                <td><a href="" >{{> managername id=manager}}</a></td>
+                <td class="uk-text-nowrap">
+                    <a href="{{pathFor 'manageProject' id=_id}}" uk-icon="icon: pencil" class="uk-icon-button"></a>
+
+                    <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash"></span>
+                </td>
+            </tr>
+            {{/each}}
+
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+
+    <div class="uk-margin-small uk-padding-small" >
+        <div class="uk-width-1-1">
+
+            <div class="uk-grid-small" uk-grid>
+
+                <div class="uk-width-1-4">
+
+                    <div class="uk-card uk-card-primary ">
+                        <div class="uk-grid-small uk-card-body" uk-grid>
+                            <div class=" fileinput fileinput-new uk-width-1-3" >
+                                <span class="user_heading_avatar uk-align-left">
+                                    {{> avatar img=currentUser.avatar}}
+                                </span>
+                            </div>
+                            <div class="user_heading_content uk-width-2-3">
+                                <h3 class="heading_b">
+                                    <span class="uk-text-truncate" id="user_edit_uname">{{currentUser.name}}</span>
+                                </h3>
+
+                            </div>
+                            <div class="action">
+                                <div class="button primary">Выберите фото
+                                    <input id="fileInput" name="photoUpload" accept="image/*" type="file" />
+                                </div>
+                                {{#with upload}}
+                                <button type="button" class="button primary select-service">Загрузить аватар</button>
+                                {{/with}}
+                            </div>
+                        </div>
+
+                        <div class="uk-card-footer">
+                            <h4>Баланс {{#if currentUser.balance}}<span class="uk-float-right">{{currentUser.balance}} &#8381;</span>{{/if}}</h4>
+                            {{#if currentUser.discont}}<h4 class="uk-margin-top">Скидка <span class="uk-float-right">{{currentUser.discont}}%</span></h4>{{/if}}
+                            <h4 class="uk-margin-top">Менеджер {{#if currentUser.manager}}<span class="uk-float-right">{{> managername id=currentUser.manager}}</span>{{/if}}</h4>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="uk-width-3-4">
+                    <div class="uk-card  uk-card-default">
+                        <h4 class="uk-card-header uk-text-center">
+                            Общая информация
+                        </h4>
+                        <div class="uk-card-body">
+
+
+                            <div class="uk-grid" uk-grid>
+                                <div class="uk-width-1-2 ">
+                                    <label class="uk-form-label" for="name">Имя</label>
+                                    <div class="uk-form-controls">
+                                        <input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="name"
+                                               value="{{currentUser.name}}">
+                                    </div>
+                                </div>
+
+
+                                <div class=" uk-width-1-2 ">
+                                    <label class="uk-form-label" for="mail">Email</label>
+                                    <div class="uk-form-controls">
+                                        <input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="mail"
+                                               value="{{mail}}">
+                                    </div>
+                                </div>
+
+                                <div class=" uk-width-1-2 ">
+                                    <label class="uk-form-label" for="tel">Телефон</label>
+                                    <div class="uk-form-controls">
+                                        <input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="tel"
+                                               value="{{currentUser.tel}}">
+                                    </div>
+                                </div>
+
+                                <div class="uk-width-1-2 ">
+                                    <label class="uk-form-label" for="adress">Почтовый адрес</label>
+                                    <div class="uk-form-controls">
+                                        <input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="adress"
+                                               value="{{currentUser.adress}}">
+                                    </div>
+                                </div>
+
+                                <div class="uk-width-1-1">
+                                    <div class="uk-input-wrapper uk-input-filled"><label
+                                            for="description">Описание</label>
+                                                                    <textarea
+                                                                            class="uk-input selecize_init"
+                                                                            id="description" cols="30" rows="5">{{currentUser.description}}</textarea><span
+                                                class="uk-input-bar "></span></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!-- jquery ui -->
+    <script src="/js/jquery-ui.min.js"></script>
+    <!-- gantt_chart -->
+    <script src="/js/moment-duration-format.js"></script>
+    <script src="/js/gantt_chart.js"></script>
+    <!--  gantt chart functions -->
+    <!--<script src="/js/plugins_gantt_chart.min.js"></script>-->
+
+</template>

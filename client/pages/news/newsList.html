@@ -1,0 +1,117 @@
+<template name="newsList">
+    <div id="page_content_inner ">
+        <div class="uk-width-3-4 uk-margin-auto reset-print cat_main catalog">
+            <h2 class="ti"><span>Новости</span></h2>
+            {{#if isReady}}
+
+            <ul class="search_list">
+                {{#each news}}
+                <li>
+                    {{#if img}}
+                    <div class="uk-width-small uk-height-small uk-inline uk-float-left uk-margin-right">
+                    <img src="{{img}}?store=thumbs" alt="" class="search_list_thumb">
+                        </div>
+                    {{else}}
+                    <div class="uk-width-small uk-height-small uk-inline uk-float-left uk-margin-right">
+                        <span uk-icon="icon: image; ratio: 3" class="uk-position-center"></span>
+                    </div>
+                    {{/if}}
+
+                    <div class="search_list_content">
+                        <h3 class="search_list_heading"><a href="{{pathFor 'news-item' alias=alias}}">{{name}}</a></h3>
+                        <span class="search_list_link">{{> usernameFromId user=author}}  {{category}}<span class="md-color-grey-500 uk-text-small uk-margin-small-left">{{time _createdAt}}</span></span>
+                        {{{text}}}
+                    </div>
+                    {{#if isAdmin}}
+                    <div class="uk-float-right">
+                        <button class="md-fab-primary">
+                          <span id="{{_id}}" class="delete" uk-icon="icon: trash"></span>
+                        </button>
+                    </div>
+                    {{/if}}
+                </li>
+                {{/each}}
+
+            </ul>
+
+            {{else}}
+            {{> loading}}
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if isAdmin}}
+    <div class="md-fab-wrapper uk-animation-slide-right">
+        <a href="#addnews1" uk-toggle class="md-fab md-fab-primary">
+            <i uk-icon="icon: plus; ratio: 2" class="uk-icon uk-position-cover uk-flex uk-flex-middle uk-flex-center"></i>
+        </a>
+    </div>
+    {{/if}}
+
+
+</template>
+
+<template name="newsList1">
+    <div id="page_content_inner ">
+        <div class="uk-width-3-4 uk-margin-auto reset-print cat_main catalog">
+            <h2 class="ti"><span>Новая страница</span></h2>
+            {{#if isReady}}
+
+            <ul class="search_list">
+                {{#each news}}
+                <li>
+                    {{#if img}}
+                    <div class="uk-width-small uk-height-small uk-inline uk-float-left uk-margin-right">
+                    <img src="{{img}}?store=thumbs" alt="" class="search_list_thumb">
+                        </div>
+                    {{else}}
+                    <div class="uk-width-small uk-height-small uk-inline uk-float-left uk-margin-right">
+                        <span uk-icon="icon: image; ratio: 3" class="uk-position-center"></span>
+                    </div>
+                    {{/if}}
+
+                    <div class="search_list_content">
+                        <h3 class="search_list_heading"><a href="{{pathFor 'news-item' alias=alias}}">{{name}}</a></h3>
+                        <span class="search_list_link">{{> usernameFromId user=author}}  {{category}}<span class="md-color-grey-500 uk-text-small uk-margin-small-left">{{time _createdAt}}</span></span>
+                        {{{text}}}
+                    </div>
+                    {{#if isAdmin}}
+                    <div class="uk-float-right">
+                        <button class="md-fab-primary">
+                          <span id="{{_id}}" class="delete" uk-icon="icon: trash"></span>
+                        </button>
+                    </div>
+                    {{/if}}
+                </li>
+                {{/each}}
+
+            </ul>
+
+            {{else}}
+            {{> loading}}
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if isAdmin}}
+    <div class="md-fab-wrapper uk-animation-slide-right">
+        <a href="#addnews1" uk-toggle class="md-fab md-fab-primary">
+            <i uk-icon="icon: plus; ratio: 2" class="uk-icon uk-position-cover uk-flex uk-flex-middle uk-flex-center"></i>
+        </a>
+    </div>
+    {{/if}}
+
+
+</template>
+
+<template name="shortText">
+    {{text}}
+</template>
+
+<template name="usernameFromId">
+    {{text}}
+</template>
+
+<template name="timeLL">
+    {{text}}
+</template>

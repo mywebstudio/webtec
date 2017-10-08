@@ -1,0 +1,7 @@
+<template name="avatar">
+    <div class="avatart_thumb uk-border-circle uk-background-norepeat uk-background-center-center uk-background-cover" style="background-color:#ddd; background-image: url({{img}})">
+        {{#unless img}}
+            <span uk-icon="icon: user; ratio: 2" class="uk-flex uk-flex-center uk-light "></span>
+        {{/unless}}
+    </div>
+</template>

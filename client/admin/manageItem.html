@@ -1,0 +1,227 @@
+<head>
+	<script src="https://cdn.ckeditor.com/4.7.0/standard/ckeditor.js"></script>
+</head>
+<template name="manageItem">
+
+	{{#if isReady}}
+
+	{{#with data}}
+
+
+	{{> title title='Цены' item1='/manage/items' item1name='Цены' item2name=name  subtitle=name }}
+
+	<div class="uk-margin-small uk-padding-small" >
+
+
+		<div class="uk-width-1-1">
+			<div class="uk-grid-medium" uk-grid>
+				<div class="uk-width-1-4 ">
+					<div class="uk-card  uk-margin uk-card-body uk-card-primary">
+						<div class=" uk-margin">
+							<div class="uk-form-row">
+								<div class="uk-float-right">
+									<input type="checkbox" {{isChecked active true}} class="uk-checkbox" name="product_edit_active_control" id="active">
+								</div>
+								<label class="uk-display-block " for="active">В каталоге</label>
+							</div>
+
+							<div class="uk-form-row">
+								<div class="uk-float-right">
+									<input type="checkbox" {{isChecked featured true}} class="uk-checkbox" id="featured">
+								</div>
+								<label class="uk-display-block " for="featured">Избранный</label>
+							</div>
+						</div>
+
+
+						<div class="uk-margin">
+							<div class="uk-form-controls">
+								<label><input class="uk-checkbox uk-checkbox1 uk-margin-right" type="checkbox" {{isChecked data.type 'single'}} id="single"  >  Единичная независимая услуга</label><br>
+								<label><input class="uk-checkbox uk-checkbox1 uk-margin-right" type="checkbox" {{isChecked data.type 'quant'}} id="quant">  Количественный тип услуги</label><br>
+								<label><input class="uk-checkbox uk-checkbox1 uk-margin-right" type="checkbox" {{isChecked data.type 'radio'}} id="radio">  Опция внутри раздела</label><br>
+								<label><input class="uk-checkbox uk-checkbox1 uk-margin-right" type="checkbox" {{isChecked data.type 'regular'}} id="regular">  Регулярно повторяющаяся</label>
+							</div>
+						</div>
+
+						{{#if user}}
+						{{#unless moder}}
+						<span>Услуга ожидает утверждения по цене и тез заданию</span>
+						<button class="uk-button uk-button-small uk-button-secondary moder" id="{{_id}}">Утвердить</button>
+						{{else}}
+						<button class="uk-button uk-button-small uk-button-secondary" disabled >Утверждён</button>
+						{{/unless}}
+						{{/if}}
+					</div>
+
+					<div class="uk-card  uk-margin uk-card-default">
+							<h3 class="uk-card-header">
+								Витрина
+								<span class="btn-file uk-float-right">
+                                            <span uk-icon="icon: plus-circle" class="uk-icon-button"></span>
+                                            <input type="file" name="user_edit_avatar_control"
+												   id="mainImg">
+                                        </span>
+							</h3>
+
+						<div class="uk-card-body">
+							<div class="uk-margin-bottom uk-text-center uk-position-relative">
+
+								<img src="{{img}}?store=thumbs" alt="" id="mainim" class="">
+							</div>
+						</div>
+					</div>
+
+
+					<div class="uk-card uk-margin uk-card-default">
+							<h3 class="uk-card-header">
+								Фотогалерея
+								<span class="btn-file uk-float-right">
+                                            <span uk-icon="icon: plus-circle" class="uk-icon-button"></span>
+                                            <input type="file" name="user_edit_avatar_control"
+												   id="galleryImg">
+                                        </span>
+							</h3>
+
+						<div class="md-card-body">
+							<ul class="uk-list">
+								{{#each gallery}}
+								{{#if .}}
+									<li class="uk-position-relative uk-row-first">
+										<span id="{{@index}}" class="gal-delete uk-position-top-right uk-icon-button" uk-icon="icon: trash"></span>
+										<img src="{{.}}?store=galleryThumbs" alt="" class="">
+									</li>
+								{{/if}}
+								{{/each}}
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="uk-width-3-4">
+					<div class="uk-card uk-card-default">
+
+							<h3 class=" uk-card-header">
+								Детали
+							</h3>
+
+						<div class="uk-card-body uk-form-stacked">
+							<div class="uk-grid uk-grid-divider uk-grid-medium" uk-grid>
+								<div class="uk-width-1-2">
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="name">Название товара</label>
+										<div class="uk-form-controls">
+											<input type="text" class="uk-input uk-form-blank uk-form-width-1-1 uk-form" id="name"  value="{{name}}">
+										</div>
+									</div>
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="price">Цена</label>
+										<div class="uk-form-controls">
+											<input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="price"  value="{{price}}">
+										</div>
+									</div>
+
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="category">Единицы</label>
+										<div class="uk-form-controls">
+											<select id="meter" class="uk-select">
+
+												<option value="час" {{isSelected meter 'час'}} >час</option>
+												<option value="%" {{isSelected meter '%'}} >%</option>
+												<option value="единица" {{isSelected meter 'единица'}} >единица</option>
+												<option value="раздел" {{isSelected meter 'раздел'}} >раздел</option>
+												<option value="месяц" {{isSelected meter 'месяц'}} >месяц</option>
+
+											</select>
+										</div>
+									</div>
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="time">Срок (дней)</label>
+										<div class="uk-form-controls">
+											<input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="time"  value="{{time}}">
+										</div>
+									</div>
+
+
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="category">Категория</label>
+										<div class="uk-form-controls">
+											<select id="category" class="uk-select">
+												{{#each categorys}}
+												<option value="{{redirectUri}}" {{isSelected redirectUri data.category}} >{{name}}</option>
+												{{/each}}
+											</select>
+										</div>
+									</div>
+
+								</div>
+								<div class="uk-width-1-2">
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="short">Краткое описание</label>
+										<div class="uk-form-controls">
+											<textarea id="short" class="uk-input uk-form-blank uk-form-width-1-1" rows="3">{{short}}</textarea>
+										</div>
+									</div>
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="sort">Порядок сортировки</label>
+										<div class="uk-form-controls">
+											<input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="sort"  value="{{sort}}">
+										</div>
+									</div>
+
+									<div class="uk-margin">
+										<label class="uk-form-label" for="sort">Связанные услуги</label>
+										<select multiple class="uk-select" id="related" size="10">
+											{{#each items}}
+											<option value="{{_id}}" selected="{{lectors1 _id}}">{{name}}</option>
+											{{/each}}
+
+										</select>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="uk-card uk-margin uk-card-default">
+							<h3 class=" uk-card-header">
+								Информация
+							</h3>
+
+						<div class="uk-card-body uk-form-stacked">
+
+							<div class="uk-margin">
+								<label class="uk-form-label" for="short">На витрину</label>
+								<div class="uk-form-controls">
+									<textarea id="description" cols="30">{{{description}}}</textarea>
+								</div>
+								<button class="uk-button uk-button-small uk-button-primary" id="descriptionsave">Cохранить</button>
+							</div>
+
+							<div class="uk-margin">
+								<label class="uk-form-label" for="teh">Техническое задание</label>
+								<div class="uk-form-controls">
+									<textarea id="teh" rows="7" class="uk-input uk-width-1-1">{{teh}}</textarea>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{/with}}
+	{{else}}
+	{{> loading}}
+	{{/if}}
+
+</template>

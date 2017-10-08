@@ -1,0 +1,94 @@
+<template name="searchlist">
+    {{#if isReady}}
+    <div class="wmain">
+    <div >
+        <div class="cm_left uk-hidden" id="sticky" >
+
+        </div>
+
+
+        <div class="cm_right">
+            <a class="cm_back cm_back_mobile" href="/catalog">
+                <i class="md-icon material-icons icon-right"></i>
+                Назад к группам товаров
+            </a>
+            <a class="cm_podbor_mobile" href="#">Подбор по параметрам</a>
+
+            <h2 class="ti"><span>Поиск - {{title}}</span></h2>
+
+
+
+
+                    <ul class="cat_main_list">
+                    {{#each items}}
+                        <li>
+                            <div class="cml_head">
+                                <div class="cmlh_inf_wrap">
+                                    {{> vnal quant1=quant1}}
+                                    {{#if hit}}
+                                        <div class="cmlh_inf cmlh_inf_hit">
+                                            Хит продаж
+                                        </div>
+                                    {{/if}}
+                                </div>
+
+                                <a href="{{pathFor 'catalog-item' category=category item=redirectUri}}"
+                                   class="cml_name">
+                                    {{name}}
+                                </a>
+                            </div>
+                            <div class="cml_content">
+                                <div class="cmlc_img">
+                                    <a href="{{pathFor 'catalog-item' category=category item=redirectUri}}">
+                                        <img src="{{img}}?store=thumbs">
+                                    </a>
+                                </div>
+                                <div class="cmlc_info">
+                                    <ul class="cmlc_char">
+                                        {{#if isAdmin}}
+                                        <li>
+                                            Цена: <span class="cmlc_price">{{> priceOpt price=price2 val=val}} руб.</span>
+                                            {{#if isAdmin}}<br>Розничная цена: {{> priceRoz price=price val=val}} руб.{{/if}}
+                                        </li>
+                                        {{else}}
+                                        <li>
+                                            Цена: <span class="cmlc_price">{{> priceRoz price=price val=val}} руб.</span>
+                                        </li>
+                                        {{/if}}
+
+                                        {{> filter item = .}}
+
+                                    </ul>
+
+                                    <ul class="uk-grid uk-margin-top">
+                                        <li>
+                                            <a class="uk-button uk-button-small " href="{{pathFor 'catalog-item' category=category item=redirectUri}}">Подробнее</a>
+                                        </li>
+                                        {{#if isAdmin}}
+                                        <li>
+                                            <a href="{{pathFor 'manageitemsedit' id=_id}}" class="uk-button uk-button-small uk-button-danger" id="edit">Редактировать </a>
+                                        </li>
+                                        {{else}}
+                                        <li>
+                                            <a  id="{{_id}}" class="uk-button uk-button-small uk-button-danger cart">Заказать</a>
+                                        </li>
+                                        {{/if}}
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </li>
+                    {{/each}}
+                    </ul>
+
+
+
+
+        </div>
+    </div>
+    </div>
+    {{else}}
+    {{> loading}}
+    {{/if}}
+</template>
+

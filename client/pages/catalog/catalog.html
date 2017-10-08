@@ -1,0 +1,56 @@
+<template name="catalog">
+
+    <div class="cat_main catalog">
+        <h2 class="ti"><span>Каталог товаров</span></h2>
+
+
+        {{#if isReady}}
+
+        <ul class="catalog_list">
+
+            {{#each category}}
+                <li >
+                    <div class="uk-position-relative">
+                    {{#if isAdmin}}
+                        <button type="button" class="uk-position-top-left" style="z-index: 2">
+                                            <span class="btn-file uk-text-primary">
+                                                <span class="uk-icon-button uk-position-top" uk-icon="icon: camera"></span>
+                                                <input type="file" class="mainImg" id="{{_id}}">
+                                            </span>
+                        </button>
+                            <a class=" uk-position-top-right" style="z-index: 3" href="{{pathFor 'managecatalog' id=_id}}"><span  uk-icon="icon: pencil" class="uk-icon-button "></span></a>
+
+                    {{/if}}
+                    <a href="{{pathFor 'catalog-list' category=redirectUri}}">
+                        <div class="cat_img">
+                            <img src="{{img}}?store=thumbs">
+                        </div>
+                        <div class="cat_name">
+                            {{name}}
+                        </div>
+                    </a>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+
+        <!--Кнопка добавления раздела-->
+        {{#if isAdmin}}
+
+        <div class="md-fab-wrapper uk-animation-slide-right">
+            <a href="#addcat" uk-toggle class="md-fab md-fab-primary">
+                <i uk-icon="icon: plus; ratio: 2" class="uk-icon uk-position-cover uk-flex uk-flex-middle uk-flex-center"></i>
+            </a>
+        </div>
+        {{/if}}
+
+
+        <!--Кнопка добавления раздела-->
+
+        {{else}}
+        {{> loading}}
+        {{/if}}
+
+    </div>
+
+</template>

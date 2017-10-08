@@ -1,0 +1,95 @@
+<template name="vnal">
+    {{#if vnal}}<div class="cmlh_inf">В наличии</div>{{else}}<div class="cmlh_inf cmlh_inf_no">Под заказ</div>{{/if}}
+</template>
+
+
+<template name="item">
+    <div class="cat_main tovar_inner" id="1">
+
+        <div class="wmain">
+
+            {{#if isReady}}
+
+            <div class="cm_right">
+                <h2 class="ti"><span>{{data.name}}</span></h2>
+                <div class="cml_content">
+                    <div class="cmlc_img" uk-lightbox >
+                        <a href="{{data.img}}?store=images" class="fancybox" data-type="image">
+                            <img src="{{data.img}}?store=thumbs"  alt="">
+                        </a>
+                        {{#each data.gallery}}
+                            <a href="{{.}}?store=galleryImages" class="fancybox" data-type="image">
+                                <img src="{{.}}?store=galleryThumbs" alt="">
+                            </a>
+                        {{/each}}
+                    </div>
+                    <div class="cmlc_info">
+                        <div class="cml_head">
+                            {{> vnal quant1=data.quant1}}
+                            <div class="cmlh_inf cmlh_inf_hit">Хит продаж</div>
+                        </div>
+                        <ul class="cmlc_char">
+
+                            {{> filter item = data}}
+
+                            {{#if $.Session.equals 'isAdmin' true}}
+                                <li>
+                                    Оптовая цена: <span class="cmlc_price">{{> priceOpt price=data.price2 val=data.val}} руб.</span>
+                                    <br>Розничная цена: <span class="cmlc_price2">{{> priceRoz price=data.price val=data.val}} руб.</span>
+                                    <br>Наценка: <span class="cmlc_price2">{{data.nacenka}} %</span>
+                                </li>
+                            {{else}}
+                                <li>
+                                    Цена: <span class="cmlc_price">{{> priceRoz price=data.price val=data.val}} руб.</span>
+
+                                </li>
+                            {{/if}}
+
+                        </ul>
+                        <ul class="uk-margin-top" uk-grid>
+                            <li>
+                                <a href="{{pathFor 'catalog-list' category=data.category}}" class="uk-button uk-button-small uk-button-default back">Назад к списку
+                                </a>
+                            </li>
+
+                            {{#if isAdmin}}
+                            <li>
+                                <a href="{{pathFor 'manageitemsedit' id=data._id}}" class="uk-button uk-button-small uk-button-danger" id="edit">Редактировать </a>
+                            </li>
+                            {{else}}
+                            <li>
+                                <a class="cart uk-button uk-button-small uk-button-danger" id="{{data._id}}">Заказать</a>
+                            </li>
+                            {{/if}}
+                        </ul>
+                        <h3 class="tovar_info_title">
+                            Описание:
+                        </h3>
+
+                        {{{data.description}}}
+
+                        <!--div class="cmlc_dop_img cmlc_dop_img_mobile">
+                            <img src="img/tovat_inner_img2.jpg">
+                        </div-->
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="md-fab-wrapper uk-animation-slide-right">
+                <a class="md-fab md-fab-primary back"  href="{{pathFor 'catalog-list' category=data.category}}"  id="product_edit_submit">
+                    <i uk-icon="icon: arrow-left; ratio: 3" class="uk-icon uk-position-cover uk-flex uk-flex-middle uk-flex-center"></i>
+                </a>
+            </div>
+
+
+            {{else}}
+            {{> loading}}
+            {{/if}}
+
+        </div>
+    </div>
+</template>

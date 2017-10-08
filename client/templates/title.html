@@ -1,0 +1,19 @@
+<template name="title">
+    <div class="uk-card-header uk-card-default uk-card">
+        <h1 class="uk-margin uk-text-large uk-card-title">{{title}} </h1>
+        {{#if subtitle}}<h2 class="uk-margin-top">{{subtitle}}</h2>{{/if}}
+
+        <div class="uk-position-left uk-animation-slide-right">
+            <a class="md-fab md-fab-primary back" onclick="window.history.back(); return false;" id="product_edit_submit">
+                <span uk-icon="icon: arrow-left; ratio: 2" class="uk-icon"></span>
+            </a>
+        </div>
+
+        <ul class="uk-breadcrumb">
+            <li><a href="/">Главная</a></li>
+            {{#if item1name}}<li>{{#if item1}}<a href="{{item1}}">{{item1name}}</a>{{else}}<span>{{item1name}}</span>{{/if}}</li>{{/if}}
+            {{#if item2name}}<li>{{#if item2}}<a href="{{item2}}">{{item1name}}</a>{{else}}<span>{{item2name}}</span>{{/if}}</li>{{/if}}
+
+        </ul>
+    </div>
+</template>

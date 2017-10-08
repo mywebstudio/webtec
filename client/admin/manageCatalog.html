@@ -1,0 +1,114 @@
+<head>
+    <script src="https://cdn.ckeditor.com/4.7.0/standard/ckeditor.js"></script>
+</head>
+
+<template name="managecatalog">
+
+    {{#with catalog}}
+
+    {{> title title='Категории' subtitle=name item1='/manage/catalog' item1name='Категории' item2name=name}}
+
+    <div class="uk-margin-small uk-padding-small" >
+
+
+        <div class="uk-width-1-1">
+            <div class="uk-grid-medium" uk-grid>
+                <div class="uk-width-1-4 ">
+                    <div class="uk-card  uk-margin uk-card-body uk-card-primary">
+                        <div class=" uk-margin">
+                                <div class="uk-float-right">
+                                    <input type="checkbox" checked="{{$eq active true}}"
+                                           name="product_edit_active_control" id="active">
+                                </div>
+                                <label class="uk-display-block uk-margin-small-top" for="active">активен</label>
+                        </div>
+
+                    </div>
+
+                    <div class="uk-card  uk-margin uk-card-default">
+                        <h3 class="uk-card-header">
+                            Витрина
+								<span class="btn-file uk-float-right">
+                                            <span uk-icon="icon: plus-circle" class="uk-icon-button"></span>
+                                            <input type="file" name="user_edit_avatar_control"
+                                                   id="mainImg">
+                                        </span>
+                        </h3>
+
+                        <div class="uk-card-body">
+                            <div class="uk-margin-bottom uk-text-center uk-position-relative">
+
+                                <img src="{{img}}?store=thumbs" alt="" id="mainim" class="">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="uk-width-3-4">
+                    <div class="uk-card uk-card-default">
+
+                        <h3 class=" uk-card-header">
+                            Детали
+                        </h3>
+
+                        <div class="uk-card-body uk-form-stacked">
+                            <div class="uk-grid uk-grid-divider uk-grid-medium" uk-grid>
+                                <div class="uk-width-1-2">
+
+                                    <div class="uk-margin">
+                                        <label class="uk-form-label" for="name">Название</label>
+                                        <div class="uk-form-controls">
+                                            <input type="text" class="uk-input uk-form-blank uk-form-width-1-1 uk-form" id="name"  value="{{name}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="uk-margin">
+                                        <label class="uk-form-label" for="sort">Порядок сортировки</label>
+                                        <div class="uk-form-controls">
+                                            <input type="text" class="uk-input uk-form-blank uk-form-width-1-1" id="sort"  value="{{sort}}">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="uk-width-1-2">
+
+                                    <div class="uk-margin">
+                                        <label class="uk-form-label" for="short">Краткое описание</label>
+                                        <div class="uk-form-controls">
+                                            <textarea id="short" class="uk-input uk-form-blank uk-form-width-1-1" rows="3">{{short}}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="uk-card uk-margin uk-card-default">
+                        <h3 class=" uk-card-header">
+                            Информация
+                        </h3>
+
+                        <div class="uk-card-body uk-form-stacked">
+
+                            <div class="uk-margin">
+                                <label class="uk-form-label" for="short">Тех задание</label>
+                                <div class="uk-form-controls">
+                                    <textarea id="description" cols="30">{{{description}}}</textarea>
+                                </div>
+                                <button class="uk-button uk-button-small uk-button-primary" id="descriptionsave">Cохранить</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{/with}}
+
+</template>

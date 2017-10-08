@@ -1,0 +1,215 @@
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="expires" content="-1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="fragment" content="!" />
+	<meta name="distribution" content="global" />
+	<meta name="rating" content="general" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+
+	<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/nocfbnnmjnndkbipkabodnheejiegccf" />
+	<link rel="mask-icon" href="assets/safari_pinned.svg" color="#04436a">
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/touchicon_180.png" />
+	<link rel="apple-touch-icon-precomposed" href="assets/touchicon_180_pre.png">
+	<!-- jQuery is required -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+	<link rel="stylesheet" href="/css/base.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="/css/crumble.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/grumble.min.css"/>
+
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+	<script type="text/javascript" src="/js/jquery.crumble.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.grumble.min.js"></script>
+
+
+	<!-- UIkit CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/css/uikit.min.css" />
+
+
+	<!-- UIkit JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/js/uikit.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/js/uikit-icons.min.js"></script>
+
+</head>
+
+<body class="">
+
+
+
+{{> addfilter}}
+{{> additem1}}
+{{> adduser1}}
+{{> addnews1}}
+{{> addcat}}
+
+
+<!-- Yandex.Metrika counter --> <script type="text/javascript" > (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter41814509 = new Ya.Metrika({ id:41814509, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/41814509" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+</body>
+
+<template name="main">
+		<div class="min-height-100 uk-width-1-1 uk-offcanvas-content">
+
+			<div class="uk-width-1-1 uk-grid-collapse" uk-grid>
+				<div class="uk-width-smll" style="width: 50px">
+					<div class="contentLeft" style="width: 50px">
+						<ul class="leftNavigation">
+							<li class="leftmenusmall" style="background-color: #9b59b6;">
+								<a href="" uk-toggle="target: #my-off" ><span class="" uk-icon="icon: menu; ratio: 1" ></span></a>
+							</li>
+
+							{{#if isUser}}
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'dash'}}current{{/if}} currentselector" id="dash">
+									<a href="{{pathFor 'dashboard'}}"><span class="" uk-icon="icon: home; ratio: 1" ></span></a>
+								</li>
+							{{/if}}
+
+
+
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'catalog'}}current{{/if}} currentselector" id="catalog">
+									<a href="/catalog"><span class="" uk-icon="icon: thumbnails; ratio: 1" ></span></a>
+								</li>
+
+								{{#if orders}}
+									<li class="leftmenusmall {{#if $.Session.equals 'current' 'order'}}current{{/if}} currentselector" id="order">
+										<a href="{{pathFor 'manageorders' id=orderId}}"><span class="" uk-icon="icon: cart; ratio: 1" ></span><span class="uk-badge uk-float-right abs-badge">{{getLength orders}}</span></a>
+									</li>
+								{{/if}}
+
+								{{#if projectcounter}}
+									<li class="leftmenusmall {{#if $.Session.equals 'current' 'project'}}current{{/if}} currentselector" id="project">
+										<a href="{{pathFor 'manageProjects'}}"><span class="" uk-icon="icon: git-branch; ratio: 1" ></span>{{#if projectcounter}}<span class="uk-badge uk-float-right abs-badge">{{projectcounter}}</span>{{/if}}</a>
+									</li>
+								{{/if}}
+
+							{{#if isManager}}
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'task'}}current{{/if}} currentselector" id="task">
+									<a href="{{pathFor 'task-list'}}"><span class="" uk-icon="icon: clock; ratio: 1" ></span>{{#if taskscounter}}<span class="uk-badge uk-float-right abs-badge">{{taskscounter}}</span>{{/if}}</a>
+								</li>
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'users'}}current{{/if}} currentselector" id="users">
+									<a href="{{pathFor 'manageusres'}}"><span class="" uk-icon="icon: users; ratio: 1" ></span>{{#if usercounter}}<span class="uk-badge uk-float-right abs-badge">{{usercounter}}</span>{{/if}}</a>
+								</li>
+							{{/if}}
+
+							{{#if isAdmin}}
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'filter'}}current{{/if}} currentselector" id="filter">
+									<a href="{{pathFor 'managefilters'}}"><span class="" uk-icon="icon: settings; ratio: 1" ></span></a>
+								</li>
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'item'}}current{{/if}} currentselector" id="item">
+									<a href="{{pathFor 'manageitems'}}"><span class="" uk-icon="icon: tag; ratio: 1" ></span> {{#if itemscounter}}<span class="uk-badge uk-float-right abs-badge">{{itemscounter}}</span>{{/if}}</a>
+								</li>
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'category'}}current{{/if}} currentselector" id="category">
+									<a href="{{pathFor 'manageCatalogList'}}"><span class="" uk-icon="icon: list; ratio: 1" ></span></a>
+								</li>
+
+							{{/if}}
+
+
+								<li class="leftmenusmall {{#if $.Session.equals 'current' 'info'}}current{{/if}} currentselector" id="info">
+									<a href="/info"><span class="" uk-icon="icon: info; ratio: 1" ></span></a>
+								</li>
+
+
+
+							{{#if currentUser}}
+							<li class="leftmenusmall">
+								<a href="#" id="logout"><span class="" uk-icon="icon: sign-in; ratio: 1" ></span></a>
+							</li>
+							{{else}}
+							<li class="leftmenusmall">
+								<a href="{{pathFor 'login'}}"><span class="" uk-icon="icon: sign-out; ratio: 1" ></span></a>
+							</li>
+							{{/if}}
+						</ul>
+					</div>
+				</div>
+
+				<div class="uk-width-expand">
+					{{> Template.dynamic template=center}}
+
+					{{> Template.dynamic template=footer}}
+				</div>
+			</div>
+
+			<div id="my-off" uk-offcanvas="mode: push">
+				<div class="uk-offcanvas-bar">
+					<div class="contentLeft">
+						<ul class="leftNavigation">
+							<li class="" style="background-color: #9b59b6;">
+								<a href="" uk-toggle="target: #my-off" ><span class="" uk-icon="icon: arrow-left; ratio: 1" ></span> Меню</a>
+							</li>
+
+							{{#if isUser}}
+							<li class="{{#if $.Session.equals 'current' 'dash'}}current{{/if}} currentselector" id="dash">
+								<a href="{{pathFor 'dashboard'}}"><span class="" uk-icon="icon: home; ratio: 1" ></span> Кабинет</a>
+							</li>
+							{{/if}}
+
+
+							<li class=" {{#if $.Session.equals 'current' 'catalog'}}current{{/if}} currentselector" id="catalog">
+								<a href="/catalog"><span class="" uk-icon="icon: thumbnails; ratio: 1" ></span> Каталог</a>
+							</li>
+
+							{{#if orders}}
+							<li class=" {{#if $.Session.equals 'current' 'order'}}current{{/if}} currentselector" id="order">
+								<a href="{{pathFor 'manageorders' id=orderId}}"><span class="" uk-icon="icon: cart; ratio: 1" ></span> Заказы <span class="uk-badge uk-float-right abs-badge">{{getLength orders}}</span></a>
+							</li>
+							{{/if}}
+
+							{{#if projectcounter}}
+							<li class=" {{#if $.Session.equals 'current' 'project'}}current{{/if}} currentselector" id="project">
+								<a href="{{pathFor 'manageProjects'}}"><span class="" uk-icon="icon: git-branch; ratio: 1" ></span> Проекты {{#if projectcounter}}<span class="uk-badge uk-float-right abs-badge">{{projectcounter}}</span>{{/if}}</a>
+							</li>
+							{{/if}}
+
+							{{#if isManager}}
+							<li class=" {{#if $.Session.equals 'current' 'task'}}current{{/if}} currentselector" id="task">
+								<a href="{{pathFor 'task-list'}}"><span class="" uk-icon="icon: clock; ratio: 1" ></span> Задания {{#if taskscounter}}<span class="uk-badge uk-float-right abs-badge">{{taskscounter}}</span>{{/if}}</a>
+							</li>
+							<li class=" {{#if $.Session.equals 'current' 'users'}}current{{/if}} currentselector" id="users">
+								<a href="{{pathFor 'manageusres'}}"><span class="" uk-icon="icon: users; ratio: 1" ></span> Пользователи  {{#if usercounter}}<span class="uk-badge uk-float-right abs-badge">{{usercounter}}</span>{{/if}}</a>
+							</li>
+							{{/if}}
+
+							{{#if isAdmin}}
+							<li class=" {{#if $.Session.equals 'current' 'filter'}}current{{/if}} currentselector" id="filer">
+								<a href="{{pathFor 'managefilters'}}"><span class="" uk-icon="icon: settings; ratio: 1" ></span> Конфигурации</a>
+							</li>
+							<li class=" {{#if $.Session.equals 'current' 'item'}}current{{/if}} currentselector" id="item">
+								<a href="{{pathFor 'manageitems'}}"><span class="" uk-icon="icon: tag; ratio: 1" ></span> Цены {{#if itemscounter}}<span class="uk-badge uk-float-right abs-badge">{{itemscounter}}</span>{{/if}}</a>
+							</li>
+							<li class=" {{#if $.Session.equals 'current' 'category'}}current{{/if}} currentselector" id="category">
+								<a href="{{pathFor 'manageCatalogList'}}"><span class="" uk-icon="icon: list; ratio: 1" ></span> Рубрики</a>
+							</li>
+
+
+
+
+							<li class=" {{#if $.Session.equals 'current' 'info'}}current{{/if}} currentselector" id="info">
+								<a href="/info"><span class="" uk-icon="icon: info; ratio: 1" ></span> О компании</a>
+							</li>
+							{{/if}}
+
+
+
+							{{#if currentUser}}
+							<li class="">
+								<a href="#" id="logout"><span class="" uk-icon="icon: sign-in; ratio: 1" ></span> Вход</a>
+							</li>
+							{{else}}
+							<li class="">
+								<a href="{{pathFor 'login'}}"><span class="" uk-icon="icon: sign-out; ratio: 1" ></span> Выход</a>
+							</li>
+							{{/if}}
+						</ul>					</div>
+
+				</div>
+			</div>
+
+		</div>
+</template>

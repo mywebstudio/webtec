@@ -1,0 +1,33 @@
+<template name="header">
+    <header id="header_main uk-width-1-1" >
+        <nav class="uk-navbar-container uk-height-50" uk-navbar>
+
+            {{#if currentUser}}
+
+            <div class="uk-navbar-left uk-margin-left">
+                <h4 class="uk-margin-remove">Баланс: {{currentUser.balance}} &#8381;</h4>
+            </div>
+
+            <div class="uk-navbar-center">
+                <h4 class="uk-margin-remove">{{currentUser.username}}</h4>
+            </div>
+
+            <div class="uk-navbar-right uk-margin-right">
+                <a class="login-name2" id="logout" ><span uk-icon="icon: sign-out"></span> Выход</a>
+            </div>
+
+            {{else}}
+                <div class="uk-navbar-right uk-margin-right">
+                    <a class="login-name2" id="logout" ><span uk-icon="icon: sign-in"></span> Вход</a>
+                </div>
+            {{/if}}
+
+            <!--Правая крайняя часть верхнего меню-->
+        </nav>    <!-- The whole page content goes here -->
+
+
+    </header>
+
+
+
+</template>

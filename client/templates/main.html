@@ -1,0 +1,43 @@
+<template name="first">
+    <div class="uk-cover-container uk-animation-fade"  uk-height-viewport style="background-size: cover; background-position: 50% 50%;" >
+
+        <video uk-cover autoplay loop muted>
+            <source src="/{{video}}" type="video/mp4">
+        </video>
+
+        <div class="uk-text-center uk-position-center uk-animation-fade uk-width-3-4@m uk-width-1-1 uk-margin-auto uk-light">
+            <h4>TEC WEB</h4>
+            <h1 class=" uk-heading-primary uk-text-uppercase">промышленное производство сайтов</h1>
+            <h3 class="">Прозрачное ценообразование, стандартизация задач, оптовые цены, модульное формирование заказов, управление проектами, пожизненная гарантия, партнерские программы - в одном сервисе</h3>
+
+            <div class="uk-grid-collapse uk-text-center uk-margin-large-top" uk-grid>
+                <div class="uk-width-1-5@m uk-visible@m"></div>
+                <div class="uk-width-1-5@m uk-width-1-3">
+                   <a href="/login" class="uk-link-reset uk-panel uk-text-center">
+                       <span uk-icon="icon: sign-in; ratio: 3"></span>
+                       <h2>Кабинет</h2>
+                   </a>
+                </div>
+                <div class="uk-width-1-5@m uk-width-1-3">
+                   <a href="/catalog" class="uk-link-reset uk-panel uk-text-center">
+                       <img src="/calculator.svg" uk-svg>
+                       <h2>Каталог</h2>
+                   </a>
+                </div>
+                <div class="uk-width-1-5@m uk-width-1-3">
+                   <a href="/home" class="uk-link-reset uk-panel uk-text-center">
+                       <span uk-icon="icon: users; ratio: 3"></span>
+                       <h2>Работа</h2>
+                   </a>
+                </div>
+                <div class="uk-width-1-5@m uk-visible@m"></div>
+            </div>
+        </div>
+
+        <div class="uk-text-center uk-position-bottom-center uk-animation-fade uk-width-3-4 uk-margin-auto uk-light">
+            <p>info@tecweb.ru <br> +7 (978) 074-74-03</p>
+        </div>
+
+
+    </div>
+</template>

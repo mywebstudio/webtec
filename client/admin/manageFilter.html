@@ -1,0 +1,90 @@
+<template name="manageFilter">
+    {{#with filter}}
+    {{> title title='Конфигурации' subtitle=name item1='/manage/filters' item2name=name item1name='Конфигурации'}}
+
+    <div class="uk-margin-small uk-padding-small">
+
+
+        <div class="uk-width-1-1  uk-card uk-card-body uk-card-default  uk-margin-auto">
+
+            <div class="uk-margin-top">
+                <div class="uk-grid" uk-grid>
+                    <div class="uk-width-1-2">
+
+                        <div class=" uk-margin">
+                            <input type="checkbox" checked="{{active}}" id="active" class="uk-checkbox">
+                            <label for="active" class="inline-label">Активен</label>
+                        </div>
+
+                        <div class="uk-margin ">
+                            <label class="uk-form-label" for="name">Название</label>
+                            <div class="uk-form-controls">
+                                <input type="text" class="uk-input uk-form-blank uk-width-1-1" id="name"
+                                       value="{{name}}">
+                            </div>
+                        </div>
+
+                        <div class="uk-margin ">
+                            <label class="uk-form-label" for="name">Сумма</label>
+                            <div class="uk-form-controls">
+                                {{price}} руб.
+                            </div>
+                        </div>
+
+                        <div class="uk-margin ">
+                            <label class="uk-card-header">
+                                Витрина
+								<span class="btn-file uk-float-right">
+                                            <span uk-icon="icon: plus-circle" class="uk-icon-button"></span>
+                                            <input type="file" name="user_edit_avatar_control"
+                                                   id="mainImg">
+                                        </span>
+                            </label>
+
+                            <div class="uk-form-controls">
+                                <div class="uk-margin-bottom uk-text-center uk-position-relative">
+
+                                    <img src="{{img}}?store=thumbs" alt="" id="mainim" class="">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="short">Описание</label>
+                            <div class="uk-form-controls">
+                                <input type="text" class="uk-input uk-form-blank uk-width-1-1" id="short"
+                                       value="{{short}}">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="short">Длинное описание</label>
+                            <div class="uk-form-controls">
+                                <textarea id="description" cols="30">{{{description}}}</textarea>
+                            </div>
+                            <button class="uk-button uk-button-small uk-button-primary" id="descriptionsave">Cохранить</button>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-2">
+
+                        <label class="uk-form-label" for="fitems">Компоненты</label>
+                        <select multiple class="uk-select" id="fitems" size="20">
+                            {{#each itemslist}}
+                            <option value="{{_id}}" selected="{{lectors1 _id}}">{{name}}</option>
+                            {{/each}}
+
+                        </select>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    {{/with}}
+
+
+</template>

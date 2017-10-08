@@ -1,0 +1,204 @@
+<template name="manageOrders">
+
+    {{> title title='Счет' item1name='Счёт'}}
+
+    <div class="uk-margin-small">
+
+        <div class="uk-width-1-1 uk-padding-small">
+
+            {{#if isReady}}
+
+                    {{#with order}}
+                        <div class="main-print test">
+
+                            <div class="uk-card uk-card-default uk-card-small  invoice_preview-{{orderId}}">
+                                <div class="uk-card-header uk-width-1-1 uk-inline">
+                                    <h3 class="md-card-toolbar-heading-text large" id="invoice_name">
+                                        Заказ №000{{number}} от {{date _createdAt}}
+                                    </h3>
+
+                                    <div class="uk-position-center-right uk-position-small">
+                                        <a id="dogovor" class='offer uk-button uk-button-default uk-button-small'>Договор</a>
+                                        <a  id="teze" class='teh uk-button uk-button-default uk-button-small'>Техзадание </a>
+
+
+                                        {{#unless payed}}
+                                            {{#if confirm}}
+                                            <a class='del uk-button uk-button-danger uk-button-small' >Удалить</a>
+                                            <button class='order uk-button uk-button-primary uk-button-small'>Оформить</button>
+                                            {{else}}
+                                            <a class='del uk-button uk-button-danger uk-button-small' >Удалить</a>
+                                            <button class='uk-button uk-button-primary uk-button-small' disabled>Оформить</button>
+                                            {{/if}}
+
+                                        {{/unless}}
+                                    </div>
+                                </div>
+
+                                <div class="uk-card-body">
+
+                                    <div class="uk-grid uk-margin">
+                                        <div class="uk-width-1-1">
+                                            <table class="uk-table">
+                                                <thead>
+                                                <tr class="uk-text-upper">
+                                                    <th>Наименование товара</th>
+                                                    <th>Цена</th>
+                                                    <th>Количество</th>
+                                                    <th>Стоимость</th>
+                                                    <th class="uk-text-center" ></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {{#each itemsList}}
+                                                {{#let kol = this.kol}}
+
+                                                        {{#with item this.id}}
+
+                                                                        <tr class="uk-table-middle">
+                                                                            <td>
+                                                                                <a href="#" uk-toggle="target: #m-{{_id}}"><span class="">{{name}}</span></a>
+
+                                                                                <div id="m-{{_id}}" uk-modal>
+                                                                                    <div class="uk-modal-dialog">
+
+                                                                                        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                                                                                        <div class="uk-modal-header">
+                                                                                            <h2 class="uk-modal-title">{{name}}</h2>
+                                                                                        </div>
+
+                                                                                        <div class="uk-modal-body" uk-overflow-auto>
+
+                                                                                            <textarea class="uk-width-1-1 techred" id="text-{{_id}}" rows="25">{{teh}}</textarea>
+                                                                                        </div>
+
+                                                                                        <div class="uk-modal-footer uk-text-right">
+                                                                                            <p>
+                                                                                                При сохранении
+                                                                                                изменений, ваши требования отправятся на модерацию. Посте того как мы проведем оценку работу, вы сможете
+                                                                                                продолжить оформление заказа.
+                                                                                            </p>
+                                                                                            <button class="uk-button uk-button-default uk-modal-close" type="button">Оставить без изменений</button>
+                                                                                            <button class="uk-button uk-button-primary " id="{{_id}}" name="{{orderId}}"
+                                                                                                    onclick=" var id = $(this).attr('id');
+                                                                                                             Meteor.call('replaceOrderItem', $(this).attr('name'), id, $('#text-'+id).val());
+                                                                                                             UIkit.modal($('#m-'+id)).hide();
+                                                                                                             Session.set('ordered-'+id, false);
+                                                                                                             UIkit.notification({
+                                                                                                                message: 'Заказ отправлен на модерацию',
+                                                                                                                status: 'success',
+                                                                                                                pos: 'top-right',
+                                                                                                                timeout: 5000})"
+                                                                                                     type="button">Сохранить изменения</button>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </td>
+                                                                            <td>
+                                                                                {{smartprice price}} {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}
+
+                                                                                {{#if currentUser.discont}}
+                                                                                    <del class="uk-text-small uk-text-muted">{{price}} {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}</del>
+                                                                                {{/if}}
+
+                                                                            </td>
+
+                                                                            <td>
+                                                                                {{#if $eq type 'quant'}}
+
+                                                                                <a  href="" id="{{_id}}" class="minus" ><span uk-icon="icon: minus-circle"></span></a>
+
+                                                                                <span class="uk-badge" style="width:20%">{{kol}}</span>
+
+                                                                                <a  href="" id="{{_id}}" class="plus" ><span uk-icon="icon: plus-circle"></span></a>
+
+                                                                                {{/if}}
+
+
+                                                                            </td>
+
+                                                                            <td>
+
+                                                                                {{stoimost price percent kol}} {{#if percent}}%{{else}}руб.{{/if}}
+
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <a href="#" uk-toggle="target: #m-{{_id}}" class="ediexe uk-icon-button" uk-icon="icon: pencil"></a>
+                                                                                <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash"></span>
+                                                                            </td>
+                                                                        </tr>
+
+                                                        {{/with}}
+                                                {{/let}}
+                                                {{/each}}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="uk-card-footer" >
+                                    <div class="uk-width-1-1">
+                                        <div class="uk-width-2-5">
+                                            <span class="uk-text-muted uk-text-small uk-text-italic">Общая сумма заказа {{#if currentUser.discont}}с учётом вашей скидки {{currentUser.discont}}%{{/if}}: </span>
+                                            {{#if payed}}
+                                            <spsn class="heading_b uk-text-success uk-text-large">{{payed}}</spsn>
+                                            {{else}}
+                                            <span class="heading_b uk-text-success uk-text-large" id="sum">{{count}} руб</span>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    {{/with}}
+
+
+            {{else}}
+            {{> loading}}
+            {{/if}}
+        </div>
+    </div>
+
+    <ol id="tour3" style="display: none;">
+        <li data-target="#dogovor" data-angle="250" data-options="distance:10">
+            Пожалуйста, внимательно прочтите договор!
+        </li>
+        <li data-target="#teze"  data-angle="350"  data-options="distance:10">
+            ..И особенно техническое задание
+        </li>
+        <li data-target=".ediexe" data-angle="175" data-options="distance:1">
+            Техническое задание можно править по каждому модулю
+        </li>
+    </ol>
+
+    <script type="text/javascript" src="/js/jquery.crumble.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.grumble.min.js"></script>
+    <script>jQuery.browser = {};
+    (function () {
+        jQuery.browser.msie = false;
+        jQuery.browser.version = 0;
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+            jQuery.browser.msie = true;
+            jQuery.browser.version = RegExp.$1;
+        }
+    })();
+    </script>
+
+</template>
+
+<template name="buyername">
+    <strong>{{data.name}}</strong>
+</template>
+
+<template name="buyeradress">
+        {{data.adress}}
+</template>

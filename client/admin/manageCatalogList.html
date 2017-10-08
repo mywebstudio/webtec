@@ -1,0 +1,69 @@
+<template name="manageCatalogList">
+
+    {{> title title='Категории' item1name='Категории'}}
+
+    <div class="uk-margin-small uk-padding-small" >
+
+        <div class="uk-width-1-1 uk-card uk-card-body uk-card-default uk-margin-auto" id="top">
+
+            {{#if isReady}}
+
+                    <div class="uk-div uk-margin ">
+                        Отображено результатов: {{{ sections.length}}}
+                    </div>
+
+                    <div class="">
+                        <table class="uk-table uk-table-align-vertical uk-form">
+                            <thead>
+                            <tr>
+                                <th class="uk-table-shrink"></th>
+                                <th class="uk-table-shrink">Название</th>
+                                <th  class="uk-table-expand">Текст</th>
+                                <th  class="uk-table-shrink">Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="top-of-page"></tr>
+                            {{#each sections}}
+                            <tr id="{{_id}}">
+                                <td><input type="checkbox" id="{{_id}}" class="active uk-checkbox" checked="{{active}}"></td>
+                                <td><a href="{{pathFor 'managecatalog' id=_id}}">{{name}}</a></td>
+
+                                <td>{{short}}</td>
+
+                                <td class="uk-text-nowrap">
+                                        <a href="{{pathFor 'managecatalog' id=_id}}" uk-icon="icon: pencil" class="uk-icon-button"></a>
+
+                                        <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash"></span>
+                                </td>
+                            </tr>
+                            {{else}}
+                            <h2>Загрузка</h2>
+                            {{/each}}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+            {{else}}
+            {{> loading}}
+            {{/if}}
+
+        </div>
+    </div>
+
+
+    <div class="uk-position-fixed uk-position-bottom-right uk-position-medium uk-animation-slide-top">
+        <a class="md-fab md-fab-primary top" >
+            <span uk-icon="icon:  arrow-up; ratio: 3" ></span>
+        </a>
+    </div>
+
+    <div class="uk-position-fixed uk-position-top-right uk-top-100 uk-position-medium uk-animation-slide-right">
+        <a href="#addcat" uk-toggle >
+            <span uk-icon="icon: plus; ratio: 2" ></span>
+        </a>
+    </div>
+
+</template>

@@ -1,0 +1,15 @@
+<template name="readMore">
+    {{#if description}}
+        <a class="" href="#{{id}}" uk-toggle>Подробнее</a>
+
+        <div id="{{id}}" class="uk-flex-top uk-modal-container" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                {{{description}}}
+
+            </div>
+        </div>
+    {{/if}}
+</template>
