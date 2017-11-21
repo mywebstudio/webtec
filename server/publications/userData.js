@@ -10,13 +10,11 @@ Meteor.publish('userData', function() {
 	if(Meteor.user().roles == 'manager') {
 		return Meteor.users.find({manager: this.userId});
 	}
+	
 	if(Meteor.user().roles == 'developer') {
 		return Meteor.users.find(Meteor.user().manager);
 	}
 
-	if(Meteor.user().roles == 'desinger') {
-		return Meteor.users.find(Meteor.user().manager);
-	}
 
 	if(Meteor.user().roles == 'user') {
 

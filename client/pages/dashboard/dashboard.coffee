@@ -13,7 +13,7 @@ Template.dashboard.onRendered ->
         projects = Projects.find().fetch()
         for project in projects
             series = []
-            tasks = Tasks.find({project: project._id},{sort: {color: 1}}).fetch()
+            tasks = Tasks.find({project: project._id},{sort: {color: 1, time: 1}}).fetch()
             for task in tasks
                 series.push
                     id: task.order
@@ -23,15 +23,14 @@ Template.dashboard.onRendered ->
                     end: task.end
                     color: task.color
                     title: task.title
-                    link: '/tasks/' + task._id
+                    link: 'https://tecweb.ru/tasks/' + task._id
                     user_name: task.manager
-                    user_avatar: "/avarats/"+task.name
+                    user_avatar: task.img
 
             ganttData.push
                 name: project.name
                 series: series
 
-        console.log ganttData
         n = $('#gantt_chart')
 
         n.length and n.ganttView(
@@ -68,6 +67,7 @@ Template.dashboard.onRendered ->
 
 Template.dashboard.onCreated ->
 
+    this.subscribe 'ItemsCatalog'
     this.subscribe 'Sections'
     this.subscribe 'TasksSmart'
     this.subscribe 'ProjectsSmart'
@@ -79,6 +79,28 @@ Template.dashboard.onCreated ->
         Projects.find().fetch()
 
 Template.dashboard.helpers
+    quntamaunt: (id) ->
+        if Session.get('ordered-'+ id)
+            order = OrdersList.findOne({active: true})
+            count = 0;
+            for item in order.items
+                if item == id
+                    count++
+            return count
+        else return 1
+
+
+    state: (id) ->
+        if Session.get('ordered-'+ id)
+            return 'uk-card-primary'
+
+    smartprice: (price) ->
+        if Meteor.user() and Meteor.user().discont
+            x = price - price * Meteor.user().discont * 0.01
+            return x.toFixed()
+        else return price
+
+        
     isAdmin: ->
         if  Meteor.user() and Meteor.user().roles == 'admin'
             return true;
@@ -103,10 +125,17 @@ Template.dashboard.helpers
         tasksFinished = Tasks.find({project: project._id, status: 1}).fetch()
         return Number(tasksFinished.length) * 100 / Number(tasks.length)
 
-    currentTask: (id) ->
+    progresreg: (id) ->
         project = Projects.findOne(id)
-        tasks = Tasks.find({project: project._id, status: {$exists: false}}, {sort: {order: 1}}).fetch()
-        return tasks[0].name
+        date = new Date(project._createdAt)
+        date2 = new Date()
+        timeDiff = Math.abs(date2.getTime() - date1.getTime())
+        diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
+        return diffDays
+
+    payprogres: (id) ->
+        project = Projects.findOne(id)
+        return Number(project.payed) / Number(project.sum)
 
     task: (id) ->
         project = Projects.findOne(id)
@@ -122,6 +151,18 @@ Template.dashboard.helpers
         
     upload: ->
         return Template.instance().upload.get();
+
+    billnumber: (id) ->
+        String(id)
+        order = OrdersList.findOne(String(id))
+        return order.number
+
+    billdate: (id) ->
+        order = OrdersList.findOne(String(id))
+        return moment(order._createdAt).format('LL')
+
+    items: () ->
+        return Items.find({category: {$in: ['ne-dlya-kataloga','administrirovanie', 'komplnenty']}}).fetch()
 
 
 
@@ -150,7 +191,34 @@ Template.dashboard.events
                             type: 'success',
                             timer: 1000,
                             showConfirmButton: false
+                            
+    'click .pay': (e, tm) ->
+        html = '<label>Введите желаемую сумму платежа</label><br><input type="number" min="0" id="paysum" class="uk-input" placeholder="Cумма платежа">'
+        swal
+            title: 'Оплата по проекту',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Оплатить',
+            cancelButtonText: 'Отмена',
+            closeOnConfirm: true,
+            html: html
+        , (isConfirm) ->
+            if(isConfirm)
+                Meteor.call 'setProjectPay', e.currentTarget.id, Number($('#paysum').val()),  (error, res) ->
+                    if res
+                        UIkit.notification
+                            message: 'Оплачено'
+                            status: 'primary'
+                            pos: 'top-right'
+                            timeout: 5000
+                    if error
+                        UIkit.notification
+                            message: error
+                            status: 'error'
+                            pos: 'top-right'
+                            timeout: 5000
 
+                            
     'change #fileInput': (event, instance) ->
         photoUpload = new FS.File(document.getElementById('fileInput').files[0])
         if (photoUpload)
@@ -188,6 +256,7 @@ Template.dashboard.events
                     status: 'error'
                     pos: 'top-right'
                     timeout: 5000
+                    
     'change #adress': (e, t) ->
         e.stopPropagation()
         e.preventDefault()
@@ -204,6 +273,7 @@ Template.dashboard.events
                     status: 'error'
                     pos: 'top-right'
                     timeout: 5000
+                    
     'change #tel': (e, t) ->
         e.stopPropagation()
         e.preventDefault()

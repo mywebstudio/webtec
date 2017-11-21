@@ -171,11 +171,11 @@ Meteor.methods({
 		Email.send({
 			to: 'stuurgurs@ya.ru',
 			from: 'tecweb@yandex.ru',
-			subject: 'Проект удалён ['+ project._id +']',
+			subject: 'Проект удалён ['+ projectId +']',
 			html: html
 		});
 
-		var email =Meteor.users.findOne(project.user);
+		var email = Meteor.users.findOne(project.user);
 		var useremail = email.emails[0].address;
 		var manager = Meteor.users.findOne(project.manager);
 		var manageremail = manager.emails[0].address;
@@ -188,7 +188,7 @@ Meteor.methods({
 		Email.send({
 			to: useremail,
 			from: 'tecweb@yandex.ru',
-			subject: 'Ваш проект удалён ['+ project._id +']',
+			subject: 'Ваш проект удалён ['+ projectId +']',
 			html: html2
 		});
 
@@ -197,7 +197,7 @@ Meteor.methods({
 		Email.send({
 			to: manageremail,
 			from: 'tecweb@yandex.ru',
-			subject: 'Проект закрыт ['+ project._id +']',
+			subject: 'Проект закрыт ['+ projectId +']',
 			html: html
 		});
 
@@ -206,7 +206,7 @@ Meteor.methods({
 		Email.send({
 			to: developeremail,
 			from: 'tecweb@yandex.ru',
-			subject: 'Проект закрыт ['+ project._id +']',
+			subject: 'Проект закрыт ['+ projectId +']',
 			html: html
 		});
 
@@ -215,7 +215,7 @@ Meteor.methods({
 		Email.send({
 			to: desingeremail,
 			from: 'tecweb@yandex.ru',
-			subject: 'Проект закрыт ['+ project._id +']',
+			subject: 'Проект закрыт ['+ projectId +']',
 			html: html
 		});
 		

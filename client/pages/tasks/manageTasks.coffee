@@ -43,10 +43,6 @@ Template.manageTasks.helpers
     project = Projects.findOne(projectId)
     return project.name
 
-  desinger: ->
-    if Meteor.user().roles == 'desinger'
-      return true
-
   developer: ->
     if Meteor.user().roles == 'developer'
       return true
@@ -98,23 +94,6 @@ Template.manageTasks.events
     e.stopPropagation()
     e.preventDefault()
     Meteor.call 'setTaskDevSatus', e.currentTarget.id, (err, res) ->
-      if res
-        UIkit.notification
-          message: 'Изменения сохранены!'
-          status: 'primary'
-          pos: 'top-right'
-          timeout: 5000
-      if err
-        UIkit.notification
-          message: err
-          status: 'error'
-          pos: 'top-right'
-          timeout: 5000
-
-  'click .readyDesTask': (e, t) ->
-    e.stopPropagation()
-    e.preventDefault()
-    Meteor.call 'setTaskDesSatus', e.currentTarget.id, (err, res) ->
       if res
         UIkit.notification
           message: 'Изменения сохранены!'

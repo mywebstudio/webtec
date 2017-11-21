@@ -1,4 +1,4 @@
-import ckeditor from 'ckeditor'
+# import ckeditor from 'ckeditor'
 
 Template.manageFilter.onCreated ->
   this.subscribe 'Filters'
@@ -26,7 +26,7 @@ Template.manageFilter.helpers
   isAdmin: ->
     if Meteor.user().roles == 'admin'
       return true
-
+ 
 Template.manageFilter.events
 
   'change #name': (e, t) ->

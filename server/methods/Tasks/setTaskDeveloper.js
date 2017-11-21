@@ -15,7 +15,7 @@ Meteor.methods({
 
 			Tasks.update(id, {
 				$set: {
-					developer: value,
+					developer: value
 				}
 			});
 			

@@ -1,6 +1,9 @@
 <template name="loginForm">
 
 	<div class="uk-position-center uk-text-center">
+		{{#unless loggingIn }}
+		<a href="/" class="uk-link-reset"><h3>TEC WEB</h3></a>
+
 
 				{{#if showFormLogin}}
 					<div class="fields">
@@ -12,7 +15,7 @@
 
 							<div class="uk-inline ">
 								<span class="uk-form-icon" uk-icon="icon: lock"></span>
-								<input type="email" class="uk-input uk-form-width-medium" placeholder="Пароль"  name='pass' id="pass" >
+								<input type="password" class="uk-input uk-form-width-medium" placeholder="Пароль"  name='pass' id="pass" >
 							</div><br>
 
 						{{/if}}
@@ -29,7 +32,7 @@
 
 							<div class="uk-inline ">
 								<span class="uk-form-icon" uk-icon="icon: lock"></span>
-								<input type="email" class="uk-input uk-form-width-medium" placeholder="Пароль"  name='pass' id="pass" >
+								<input type="password" class="uk-input uk-form-width-medium" placeholder="Пароль"  name='pass' id="pass" >
 							</div><br>
 
 						{{/if}}
@@ -47,6 +50,12 @@
 					</div>
 
 					<div class="uk-margin-top">
+
+						<button class='uk-button uk-button-secondary uk-button-small vk'>Вход через vk</button>
+						<button class='uk-button uk-button-secondary uk-button-small fb'>Вход через fb</button>
+
+					</div>
+					<div class="uk-margin-top">
 						{{#if state 'login'}}
 									<a  class="forgot-password">Забыли пароль?</a>
 									<a  class="regist">Регистрация</a>
@@ -56,5 +65,12 @@
 						{{/if}}
 					</div>
 				{{/if}}
+		{{else}}
+			{{> loading}}
+		{{/unless}}
+	</div>
+
+	<div class="uk-text-center uk-position-bottom-center uk-animation-fade uk-width-3-4 uk-margin-auto">
+		<p>info@tecweb.ru <br> +7 (978) 074-74-03</p>
 	</div>
 </template>

@@ -1,0 +1,7 @@
+<template name="projectProgress">
+    {{#with data}}
+    <progress id="progressbar" class="uk-progress uk-margin-remove" value="{{tasktimeend _id}}" max="{{tasktimeall _id}}"></progress>
+    <h6 class="uk-text-center uk-text-muted uk-margin-remove"> {{endtasks _id}} из {{alltasks _id}} задач</h6>
+    {{/with}}
+
+</template>

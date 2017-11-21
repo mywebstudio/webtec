@@ -1,6 +1,7 @@
 <template name="manageOrders">
 
-    {{> title title='Счет' item1name='Счёт'}}
+
+    {{> title title='Заказы' item1='/orders' item2name=order.number item1name='Заказы'}}
 
     <div class="uk-margin-small">
 
@@ -9,6 +10,7 @@
             {{#if isReady}}
 
                     {{#with order}}
+                        {{#unless free}}
                         <div class="main-print test">
 
                             <div class="uk-card uk-card-default uk-card-small  invoice_preview-{{orderId}}">
@@ -18,16 +20,19 @@
                                     </h3>
 
                                     <div class="uk-position-center-right uk-position-small">
-                                        <a id="dogovor" class='offer uk-button uk-button-default uk-button-small'>Договор</a>
+                                        <a  id="bill" class='uk-button uk-button-default uk-button-small'>Счёт </a>
                                         <a  id="teze" class='teh uk-button uk-button-default uk-button-small'>Техзадание </a>
 
 
                                         {{#unless payed}}
                                             {{#if confirm}}
                                             <a class='del uk-button uk-button-danger uk-button-small' >Удалить</a>
+
+                                            {{#if active}}<button class='later uk-button uk-button-primary uk-button-small'>Отложить</button>{{/if}}
                                             <button class='order uk-button uk-button-primary uk-button-small'>Оформить</button>
                                             {{else}}
                                             <a class='del uk-button uk-button-danger uk-button-small' >Удалить</a>
+
                                             <button class='uk-button uk-button-primary uk-button-small' disabled>Оформить</button>
                                             {{/if}}
 
@@ -39,10 +44,110 @@
 
                                     <div class="uk-grid uk-margin">
                                         <div class="uk-width-1-1">
+
                                             <table class="uk-table">
                                                 <thead>
                                                 <tr class="uk-text-upper">
-                                                    <th>Наименование товара</th>
+                                                    <th>Информация о Заказчике</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr class="uk-table-middle">
+                                                    <td>
+                                                        <label class="uk-form-label" for="name">Заказчик</label>
+                                                        <div class="uk-form-controls">
+                                                            <input type="text" class="uk-input uk-form-width-1-1" id="name"
+                                                                   value="{{currentUser.name}}" placeholder="ФИО или название организации">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <label class="uk-form-label" for="name">Реквизиты и контакты Заказчика</label>
+                                                        <div class="uk-form-controls">
+                                                            <textarea class="uk-textarea uk-form-width-1-1" id="adress" rows="3"
+                                                                   placeholder="Банковские реквизиты и контакты">{{currentUser.adress}}</textarea>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="uk-table-middle">
+                                                    <td>
+                                                        <label class="uk-form-label" for="pname">Название проекта</label>
+                                                        <div class="uk-form-controls">
+                                                            <input type="text" class="uk-input uk-form-width-1-1" id="pname"
+                                                                   placeholder="Рабочее название для обозначения проекта" value="{{name}}">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                            <table class="uk-table">
+                                                <thead>
+                                                <tr class="uk-text-upper">
+                                                    <th>Проект солашения между сторонами</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr class="uk-table-middle">
+                                                    <td>
+                                                        <a href="#" uk-toggle="target: #spec"><span
+                                                              id="specdng"  class="">Спецификация проекта</span></a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="#" uk-toggle="target: #spec"
+                                                           class="ediexe uk-icon-button" uk-icon="icon: pencil"></a>
+                                                    </td>
+                                                </tr>
+
+                                                {{#if itemsList}}
+
+                                                <tr class="uk-table-middle">
+                                                    <td>
+                                                        <a href="#" id="offer" class="offer"><span >Договор на разработку сайта</span></a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a  id="offer" class="offer uk-icon-button" uk-icon="icon: cloud-download"></a>
+                                                    </td>
+                                                </tr>
+
+
+                                                <tr class="uk-table-middle">
+                                                    <td>
+                                                        <a href="#" uk-toggle="target: #tehzadanie"><span class="">Приложение 1: Техническое задание (требования Заказчика)</span></a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="#" uk-toggle="target: #tehzadanie"
+                                                           class="ediexe uk-icon-button" uk-icon="icon: pencil"></a>
+                                                    </td>
+                                                </tr>
+                                                {{/if}}
+
+                                                {{#if itemsList2}}
+                                                <tr class="uk-table-middle">
+                                                    <td>
+                                                        <a href="#" class="regoffer"><span >Договор на услуги по обслуживанию сайта</span></a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a class="regoffer uk-icon-button" uk-icon="icon: cloud-download"></a>
+                                                    </td>
+                                                </tr>
+                                                {{/if}}
+                                                </tbody>
+                                            </table>
+
+                                            {{#if itemsList}}
+                                            <table class="uk-table">
+                                                <thead>
+                                                <tr class="uk-text-upper">
+                                                    <th>Техническое задание</th>
                                                     <th>Цена</th>
                                                     <th>Количество</th>
                                                     <th>Стоимость</th>
@@ -56,9 +161,9 @@
 
                                                         {{#with item this.id}}
 
-                                                                        <tr class="uk-table-middle">
+                                                                        <tr class="uk-table-middle findthis">
                                                                             <td>
-                                                                                <a href="#" uk-toggle="target: #m-{{_id}}"><span class="">{{name}}</span></a>
+                                                                                <a href="#" uk-toggle="target: #m-{{_id}}"><span class="findname">{{name}}</span></a>
 
                                                                                 <div id="m-{{_id}}" uk-modal>
                                                                                     <div class="uk-modal-dialog">
@@ -99,7 +204,7 @@
 
                                                                             </td>
                                                                             <td>
-                                                                                {{smartprice price}} {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}
+                                                                                <span class="findprice1">{{smartprice price}}</span> {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}
 
                                                                                 {{#if currentUser.discont}}
                                                                                     <del class="uk-text-small uk-text-muted">{{price}} {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}</del>
@@ -112,18 +217,19 @@
 
                                                                                 <a  href="" id="{{_id}}" class="minus" ><span uk-icon="icon: minus-circle"></span></a>
 
-                                                                                <span class="uk-badge" style="width:20%">{{kol}}</span>
+                                                                                <span class="uk-badge findkol" style="width:20%">{{kol}}</span>
 
                                                                                 <a  href="" id="{{_id}}" class="plus" ><span uk-icon="icon: plus-circle"></span></a>
 
+                                                                                {{else}}
+                                                                                    <span class="findkol" style="width:20%">1</span>
                                                                                 {{/if}}
-
 
                                                                             </td>
 
                                                                             <td>
 
-                                                                                {{stoimost price percent kol}} {{#if percent}}%{{else}}руб.{{/if}}
+                                                                                <span class="findprice2">{{stoimost price percent kol}}</span> {{#if percent}}%{{else}}руб.{{/if}}
 
                                                                             </td>
 
@@ -139,6 +245,111 @@
 
                                                 </tbody>
                                             </table>
+                                            {{/if}}
+
+                                            {{#if itemsList2}}
+                                            <table class="uk-table">
+                                                <thead>
+                                                <tr class="uk-text-upper">
+                                                    <th>Маркетинг</th>
+                                                    <th>Цена</th>
+                                                    <th>Количество</th>
+                                                    <th>Стоимость</th>
+                                                    <th class="uk-text-center" ></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {{#each itemsList2}}
+                                                {{#let kol = this.kol}}
+
+                                                        {{#with item this.id}}
+
+                                                                        <tr class="uk-table-middle findthis">
+                                                                            <td>
+                                                                                <a href="#" uk-toggle="target: #m-{{_id}}"><span class="findname">{{name}}</span></a>
+
+                                                                                <div id="m-{{_id}}" uk-modal>
+                                                                                    <div class="uk-modal-dialog">
+
+                                                                                        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                                                                                        <div class="uk-modal-header">
+                                                                                            <h2 class="uk-modal-title">{{name}}</h2>
+                                                                                        </div>
+
+                                                                                        <div class="uk-modal-body" uk-overflow-auto>
+
+                                                                                            <textarea class="uk-width-1-1 techred" id="text-{{_id}}" rows="25">{{teh}}</textarea>
+                                                                                        </div>
+
+                                                                                        <div class="uk-modal-footer uk-text-right">
+                                                                                            <p>
+                                                                                                При сохранении
+                                                                                                изменений, ваши требования отправятся на модерацию. Посте того как мы проведем оценку работу, вы сможете
+                                                                                                продолжить оформление заказа.
+                                                                                            </p>
+                                                                                            <button class="uk-button uk-button-default uk-modal-close" type="button">Оставить без изменений</button>
+                                                                                            <button class="uk-button uk-button-primary " id="{{_id}}" name="{{orderId}}"
+                                                                                                    onclick=" var id = $(this).attr('id');
+                                                                                                             Meteor.call('replaceOrderItem', $(this).attr('name'), id, $('#text-'+id).val());
+                                                                                                             UIkit.modal($('#m-'+id)).hide();
+                                                                                                             Session.set('ordered-'+id, false);
+                                                                                                             UIkit.notification({
+                                                                                                                message: 'Заказ отправлен на модерацию',
+                                                                                                                status: 'success',
+                                                                                                                pos: 'top-right',
+                                                                                                                timeout: 5000})"
+                                                                                                     type="button">Сохранить изменения</button>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </td>
+                                                                            <td>
+                                                                                <span class="findprice1">{{smartprice price}}</span>  {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}
+
+                                                                                {{#if currentUser.discont}}
+                                                                                    <del class="uk-text-small uk-text-muted">{{price}} {{#if percent}}%{{else}} {{#unless $eq meter '%'}}&#8381; {{meter}}{{else}}%{{/unless}} {{/if}}</del>
+                                                                                {{/if}}
+
+                                                                            </td>
+
+                                                                            <td>
+                                                                                {{#if $eq type 'quant'}}
+
+                                                                                <a  href="" id="{{_id}}" class="minus" ><span uk-icon="icon: minus-circle"></span></a>
+
+                                                                                <span class="findkol" style="width:20%">{{kol}}</span>
+
+                                                                                <a  href="" id="{{_id}}" class="plus" ><span uk-icon="icon: plus-circle"></span></a>
+                                                                                {{else}}
+                                                                                    <span class="uk-badge findkol" style="width:20%">1</span>
+                                                                                {{/if}}
+
+
+                                                                            </td>
+
+                                                                            <td>
+
+                                                                                <span class="findprice2">{{stoimost price percent kol}}</span>  {{#if percent}}%{{else}}руб.{{/if}}
+
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <a href="#" uk-toggle="target: #m-{{_id}}" class="ediexe uk-icon-button" uk-icon="icon: pencil"></a>
+                                                                                <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash"></span>
+                                                                            </td>
+                                                                        </tr>
+
+                                                        {{/with}}
+                                                {{/let}}
+                                                {{/each}}
+
+                                                </tbody>
+                                            </table>
+                                            {{/if}}
                                         </div>
                                     </div>
 
@@ -148,17 +359,439 @@
                                     <div class="uk-width-1-1">
                                         <div class="uk-width-2-5">
                                             <span class="uk-text-muted uk-text-small uk-text-italic">Общая сумма заказа {{#if currentUser.discont}}с учётом вашей скидки {{currentUser.discont}}%{{/if}}: </span>
-                                            {{#if payed}}
-                                            <spsn class="heading_b uk-text-success uk-text-large">{{payed}}</spsn>
-                                            {{else}}
+
                                             <span class="heading_b uk-text-success uk-text-large" id="sum">{{count}} руб</span>
-                                            {{/if}}
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
+
+            {{else}}
+            <div class="main-print test">
+
+                <div class="uk-card uk-card-default uk-card-small  invoice_preview-{{orderId}}">
+                    <div class="uk-card-header uk-width-1-1 uk-inline">
+                        <h3 class="md-card-toolbar-heading-text large" id="invoice_name">
+                            Заказ №000{{number}} от {{date _createdAt}}
+                        </h3>
+
+                        <div class="uk-position-center-right uk-position-small">
+                            {{#unless payed}}
+                            {{#if confirm}}
+                            <a class='del uk-button uk-button-danger uk-button-small' >Удалить</a>
+
+                            {{#if active}}<button class='later uk-button uk-button-primary uk-button-small'>Отложить</button>{{/if}}
+                            <button class='order uk-button uk-button-primary uk-button-small'>Оформить</button>
+                            {{else}}
+                            <a class='del uk-button uk-button-danger uk-button-small' >Удалить</a>
+
+                            <button class='uk-button uk-button-primary uk-button-small' disabled>Оформить</button>
+                            {{/if}}
+
+                            {{/unless}}
+                        </div>
+                    </div>
+
+                    <div class="uk-card-body">
+
+                        <div class="uk-grid uk-margin">
+                            <div class="uk-width-1-1">
+
+                                <table class="uk-table">
+                                    <thead>
+                                    <tr class="uk-text-upper">
+                                        <th>Информация о Заказчике</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="uk-table-middle">
+                                        <td>
+                                            <label class="uk-form-label" for="name">Заказчик</label>
+                                            <div class="uk-form-controls">
+                                                <input type="text" class="uk-input uk-form-width-1-1" id="name"
+                                                       value="{{currentUser.name}}" placeholder="ФИО или название организации">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <label class="uk-form-label" for="name">Реквизиты и контакты Заказчика</label>
+                                            <div class="uk-form-controls">
+                                                            <textarea class="uk-textarea uk-form-width-1-1" id="adress" rows="3"
+                                                                      placeholder="Банковские реквизиты и контакты">{{currentUser.adress}}</textarea>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="uk-table-middle">
+                                        <td>
+                                            <label class="uk-form-label" for="pname">Название проекта</label>
+                                            <div class="uk-form-controls">
+                                                <input type="text" class="uk-input uk-form-width-1-1" id="pname"
+                                                       placeholder="Рабочее название для обозначения проекта" value="{{name}}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="uk-table">
+                                    <tbody>
+                                        <tr class="uk-table-middle">
+                                            <td>
+                                                <a href="#" uk-toggle="target: #spec2"><span id="specdng"  class="">Описание задания (детали, доступы и прочее)</span></a>
+                                            </td>
+                                            <td>
+                                                <a href="#" uk-toggle="target: #spec2" class="ediexe uk-icon-button" uk-icon="icon: pencil"></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                {{#if itemsList}}
+                                <table class="uk-table">
+                                    <thead>
+                                    <tr class="uk-text-upper">
+                                        <th>Задание</th>
+                                        <th>Цена</th>
+                                        <th>Количество</th>
+                                        <th>Стоимость</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each itemsList}}
+                                            {{#with item this.id}}
+                                                <tr class="uk-table-middle findthis">
+                                                    <td>
+                                                        <span class="findname">{{name}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="findprice1">бесплатно</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="findkol" style="width:20%">1</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="findprice2">бесплатно</span>
+                                                    </td>
+                                                </tr>
+                                            {{/with}}
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="uk-card-footer" >
+                        <div class="uk-width-1-1">
+                            <div class="uk-width-2-5">
+                                <span class="uk-text-muted uk-text-small uk-text-italic">Общая сумма заказа: </span>
+
+                                <span class="heading_b uk-text-success uk-text-large" id="sum">Бесплатно</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {{/unless}}
+
+
+            <div id="spec" uk-modal>
+                <div class="uk-modal-dialog">
+
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Спецификация</h2>
+                    </div>
+
+                    <div class="uk-modal-body" uk-overflow-auto>
+
+                        {{#unless spec}}
+                        <textarea class="uk-width-1-1" id="text-spec" rows="25">
+                            Корпоративная информация:
+- Полное название компании:
+
+
+
+- Сокращенное название
+
+
+
+- Год создания компании
+
+
+
+- Руководитель компании, имеющий право подписи (ФИО, должность, контакты)
+
+
+
+- Руководящий состав (имена / контакты)
+
+Директор(а)
+Руководители отделов
+
+
+- Контактные лица (имена / контакты)
+
+Ответственный за сайт
+Кто заполняет данный бриф
+
+
+
+
+- Награды, достижения компании, дипломы о выставках и т.п.
+
+
+
+- Телефон(ы)
+
+
+
+- Адрес(а)
+
+
+
+- E-mail, веб-сайт, домен
+
+
+
+- Как к вам проехать
+
+
+
+Информация о брэнде
+- Наличие зарегистрированного товарного знака (название, год регистрации, наличие логотипа в векторном формате)
+
+
+
+- Наличие корпоративных стандартов оформления рекламно-информационной продукции (товарный знак, фирменные цвета, шрифт, модульная сетка, и т.п.) BrandBook или StyleGuide
+
+
+
+- Слоган компании
+
+
+
+- Миссия
+
+
+
+- Цели и задачи
+
+
+
+Расширенная информация о компании и услугах
+- Виды деятельности (список в порядке важности)
+
+
+
+- Основной вид деятельности
+
+
+
+- Опишите бизнес-модель компании
+
+
+
+- Опишите структуру компании
+
+
+
+- География ваших услуг (как часто, и в каких городах вы оказываете свои услуги)
+
+
+
+- Что представляет собой рекламируемый товар/услуга?
+
+
+
+- Как используется товар/услуга?
+
+
+
+- Какие потребности удовлетворяет товар/услуга?
+
+
+
+- Какие есть особенности в рекламируемых товарах/услугах?
+
+
+
+- Как организована дистрибуция товара/услуги?
+
+
+
+- Опишите целевую аудиторию потребителей товара/услуги
+
+
+
+- Опишите ключевые стимулы для приобретения продукции для целевой аудитории:
+Более низкая цена
+Гибкое ценообразование
+Рекламные акции
+Престиж бренда
+Более высокое качество услуг
+Более высокое качество сервиса
+Иное (опишите)
+
+
+- Формы оплаты
+Наличный расчет
+Безналичный расчет
+Кредитная карта
+
+
+- Основные партнеры
+
+
+
+- Основные конкуренты и иностранные компании.
+Их сильные и слабые стороны.
+
+
+- Основные черты, отличающие компанию от конкурентов (гордость компании)
+
+
+
+- Сильные и слабые стороны компании
+
+
+
+- Какие текущие маркетинговые программы в Интернете проводят конкуренты? Успешны ли они и почему?
+
+
+
+Информация по сайту
+- Предполагаемое название сайта (краткое название, предполагаемое или существующее имя домена):
+
+
+
+- Какова маркетинговая интерактивная стратегия сайта:
+
+
+
+- Задачи сайта:
+
+
+
+- Целевая аудитория сайта:
+
+
+
+- Имидж сайта. Опишите основную идею, которую должен передавать ваш сайт, ожидаемые впечатления и реакцию посетителей в результате его посещения:
+
+
+
+- Предполагаемая структура сайта:
+
+
+
+- Пожелания относительно визуального оформления сайта, укажите сайты на которые, по вашему мнению, разработчику нужно обратить внимание
+
+
+                        </textarea>
+                        {{else}}
+                        <textarea class="uk-width-1-1" id="text-spec" rows="25">{{spec}}</textarea>
+                        {{/unless}}
+                    </div>
+
+                    <div class="uk-modal-footer uk-text-right">
+
+                        <button class="uk-button uk-button-primary " id="{{orderId}}" name="{{orderId}}"
+                                onclick=" var id = $(this).attr('id');
+                                                                                                             Meteor.call('setOrderSpec', id, $('#text-spec').val());
+                                                                                                             UIkit.modal($('#spec')).hide();
+                                                                                                             UIkit.notification({
+                                                                                                                message: 'Спецификация проекта сохранена',
+                                                                                                                status: 'success',
+                                                                                                                pos: 'top-right',
+                                                                                                                timeout: 5000})"
+                                type="button">Сохранить</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="spec2" uk-modal>
+                <div class="uk-modal-dialog">
+
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Спецификация</h2>
+                    </div>
+
+                    <div class="uk-modal-body" uk-overflow-auto>
+
+                        {{#unless spec}}
+                        <textarea class="uk-width-1-1" id="text-spec2" rows="25">
+                            Опишите коротко суть задачи
+
+                        </textarea>
+                        {{else}}
+                        <textarea class="uk-width-1-1" id="text-spec" rows="25">{{spec}}</textarea>
+                        {{/unless}}
+                    </div>
+
+                    <div class="uk-modal-footer uk-text-right">
+
+                        <button class="uk-button uk-button-primary " id="{{orderId}}" name="{{orderId}}"
+                                onclick=" var id = $(this).attr('id');
+                                                                                                             Meteor.call('setOrderSpec', id, $('#text-spec2').val());
+                                                                                                             UIkit.modal($('#spec2')).hide();
+                                                                                                             UIkit.notification({
+                                                                                                                message: 'Спецификация проекта сохранена',
+                                                                                                                status: 'success',
+                                                                                                                pos: 'top-right',
+                                                                                                                timeout: 5000})"
+                                type="button">Сохранить</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="tehzadanie" uk-modal>
+                <div class="uk-modal-dialog">
+
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Техническое задание общее</h2>
+                    </div>
+
+                    <div class="uk-modal-body" uk-overflow-auto>
+
+                        {{#if tehzadanie}}
+                        <textarea class="uk-width-1-1" id="text-tehzadanie" rows="25">{{tehzadanie}}</textarea>
+                        {{else}}
+                        <textarea class="uk-width-1-1" id="text-tehzadanie" rows="25"></textarea>
+                        {{/if}}
+                    </div>
+
+                    <div class="uk-modal-footer uk-text-right">
+
+                        <button class="uk-button uk-button-primary " id="{{orderId}}" name="{{orderId}}"
+                                onclick=" var id = $(this).attr('id');
+                                                                                                             Meteor.call('setOrderTehzadanie', id, $('#text-tehzadanie').val());
+                                                                                                             UIkit.modal($('#tehzadanie')).hide();
+                                                                                                             UIkit.notification({
+                                                                                                                message: 'Общее задание по проекту сохранено',
+                                                                                                                status: 'success',
+                                                                                                                pos: 'top-right',
+                                                                                                                timeout: 5000})"
+                                type="button">Сохранить</button>
+                    </div>
+
+                </div>
+            </div>
                     {{/with}}
 
 
@@ -168,30 +801,30 @@
         </div>
     </div>
 
-    <ol id="tour3" style="display: none;">
-        <li data-target="#dogovor" data-angle="250" data-options="distance:10">
-            Пожалуйста, внимательно прочтите договор!
-        </li>
-        <li data-target="#teze"  data-angle="350"  data-options="distance:10">
-            ..И особенно техническое задание
-        </li>
-        <li data-target=".ediexe" data-angle="175" data-options="distance:1">
-            Техническое задание можно править по каждому модулю
-        </li>
-    </ol>
+    <!--<ol id="tour3" style="display: none;">-->
+        <!--<li data-target="#dogovor" data-angle="250" data-options="distance:10">-->
+            <!--Пожалуйста, внимательно прочтите договор!-->
+        <!--</li>-->
+        <!--<li data-target="#teze"  data-angle="350"  data-options="distance:10">-->
+            <!--..И особенно техническое задание-->
+        <!--</li>-->
+        <!--<li data-target=".ediexe" data-angle="175" data-options="distance:1">-->
+            <!--Техническое задание можно править по каждому модулю-->
+        <!--</li>-->
+    <!--</ol>-->
 
-    <script type="text/javascript" src="/js/jquery.crumble.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.grumble.min.js"></script>
-    <script>jQuery.browser = {};
-    (function () {
-        jQuery.browser.msie = false;
-        jQuery.browser.version = 0;
-        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
-            jQuery.browser.msie = true;
-            jQuery.browser.version = RegExp.$1;
-        }
-    })();
-    </script>
+    <!--<script type="text/javascript" src="/js/jquery.crumble.min.js"></script>-->
+    <!--<script type="text/javascript" src="/js/jquery.grumble.min.js"></script>-->
+    <!--<script>jQuery.browser = {};-->
+    <!--(function () {-->
+        <!--jQuery.browser.msie = false;-->
+        <!--jQuery.browser.version = 0;-->
+        <!--if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {-->
+            <!--jQuery.browser.msie = true;-->
+            <!--jQuery.browser.version = RegExp.$1;-->
+        <!--}-->
+    <!--})();-->
+    <!--</script>-->
 
 </template>
 

@@ -1,4 +1,4 @@
-import ckeditor from 'ckeditor'
+# import ckeditor from 'ckeditor'
 
 require('pdfmake/build/pdfmake.js')
 require('pdfmake/build/vfs_fonts.js')
@@ -37,11 +37,6 @@ Template.manageProject.helpers
 		if  task.desstatus and task.devstatus and task.status == 1
 			return 100
 
-	desinger: ->
-		task = Projects.findOne(FlowRouter.getParam('id'))
-		if task.desinger == Meteor.userId()
-			return true
-
 	developer: ->
 		task = Projects.findOne(FlowRouter.getParam('id'))
 		if task.developer == Meteor.userId()
@@ -68,21 +63,6 @@ Template.manageProject.events
 			status: 'primary'
 			pos: 'top-right'
 			timeout: 5000
-
-	'change #chdeadline': (e, t) ->
-		Meteor.call 'setProjectDeadline', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
-		if res
-			UIkit.notification
-				message: 'Изменения сохранены!'
-				status: 'primary'
-				pos: 'top-right'
-				timeout: 5000
-		if err
-			UIkit.notification
-				message: err
-				status: 'error'
-				pos: 'top-right'
-				timeout: 5000
 		
 	'change #manager': (e, t) ->
 		e.stopPropagation()
@@ -106,24 +86,6 @@ Template.manageProject.events
 		e.stopPropagation()
 		e.preventDefault()
 		Meteor.call 'setProjectDeveloper', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
-			if res
-				UIkit.notification
-					message: 'Изменения сохранены!'
-					status: 'primary'
-					pos: 'top-right'
-					timeout: 5000
-			if err
-				UIkit.notification
-					message: err
-					status: 'error'
-					pos: 'top-right'
-					timeout: 5000
-
-
-	'change #desinger': (e, t) ->
-		e.stopPropagation()
-		e.preventDefault()
-		Meteor.call 'setProjectDesinger', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
 			if res
 				UIkit.notification
 					message: 'Изменения сохранены!'

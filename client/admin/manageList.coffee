@@ -129,6 +129,20 @@ Template.manageList.events
           pos: 'top-right'
 
 
+  'change .time': (e, tm) ->
+    Meteor.call 'setItemTime', e.currentTarget.id, Number(e.currentTarget.value), (err, res) ->
+      if res
+        UIkit.notification
+          message: 'Изменения сохранены!'
+          status: 'primary'
+          pos: 'top-right'
+      if err
+        UIkit.notification
+          message: err
+          status: 'error'
+          pos: 'top-right'
+
+
 
   'click .delete': (e, tm) ->
     swal
@@ -144,8 +158,7 @@ Template.manageList.events
     , (isConfirm) ->
       if(isConfirm)
         Meteor.call 'deleteCatalogItem', e.currentTarget.id, (error, res) ->
-          if (error)
-            handleError(error)
+          if (error)            
             swal.close()
           else
             swal

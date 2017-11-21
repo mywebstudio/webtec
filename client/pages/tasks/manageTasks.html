@@ -30,8 +30,7 @@
                                 <th  class="uk-table-shrink">Менеджер</th>
                                 {{#if useradminmanager}}
                                     <th class="uk-table-shrink">Проект</th>
-                                    <th  class="uk-table-shrink">Программист</th>
-                                    <th  class="uk-table-shrink">Дизайнер</th>
+                                    <th  class="uk-table-shrink">Исполнитель</th>
                                     <th  class="uk-table-shrink"></th>
                                 {{/if}}
                                 {{#if developer}}
@@ -47,14 +46,13 @@
                             <tr id="top-of-page"></tr>
                                 {{#each tasks}}
                                     <tr id="{{_id}}">
-                                        <td><a href="{{pathFor 'task-item' id=_id}}">{{name}}</a></td>
-                                        <td><progress id="progressbar" class="uk-progress" value="{{progr _id}}" max="100"></progress></td>
+                                        <td><a href="{{pathFor 'task-item' id=_id}}">{{title}}</a></td>
+                                        <td>{{> taskProgress arr=sub}}</td>
 
                                         <td><a href="" >{{> managername id=manager}}</a></td>
                                         {{#if useradminmanager}}
                                             <td><a href="{{pathFor 'manageProject' id=_id}}">{{projectname project}}</a></td>
                                             <td><a href="" >{{> managername id=developer}}</a></td>
-                                            <td><a href="" >{{> managername id=deginger}}</a></td>
                                             <td class="uk-text-nowrap">
                                                     <a href="{{pathFor 'task-item' id=_id}}" uk-icon="icon: pencil" class="uk-icon-button"></a>
 

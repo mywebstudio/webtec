@@ -8,10 +8,10 @@ Meteor.methods({
 		if (currentApplication == null) {
 			throw new Meteor.Error('error-application-not-found', 'Application not found', {method: 'setTaskDevSatus'});
 		}
-		if (!currentApplication.desinger || !currentApplication.developer ) {
-			throw new Meteor.Error('error-application-not-found', 'Не назанчены исполнители задания', {method: 'setTaskDesSatus'});
+		if (!currentApplication.developer ) {
+			throw new Meteor.Error('error-application-not-found', 'Не назанчены исполнители задания', {method: 'setTaskDevSatus'});
 		}
-		if (currentApplication.manager != this.userId && currentApplication.developer != this.userId && currentApplication.desinger != this.userId && Meteor.user().roles != 'admin') {
+		if (currentApplication.manager != this.userId && currentApplication.developer != this.userId  && Meteor.user().roles != 'admin') {
 			throw new Meteor.Error('error-application-not-found', 'Нет доступа', {method: 'setTaskDevSatus'});
 		}
 

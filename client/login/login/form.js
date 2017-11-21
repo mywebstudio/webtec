@@ -78,7 +78,11 @@ Template.loginForm.events({
 				const _id = Accounts.createUser(createUser);
 				if(_id) {
 
-					 Meteor.loginWithPassword(formData.username, formData.password)
+					 Meteor.loginWithPassword(formData.username, formData.password);
+					if (Session.get('partner')) {
+						Meteor.call('sendNewPartner', Session.get('partner'));
+					}
+					FlowRouter.go('home');
 				}
 
 			}
@@ -107,7 +111,12 @@ Template.loginForm.events({
 					// FlowRouter.go('home');
 					Meteor[loginMethod](formData.emailOrUsername, formData.pass, function (error, result) {
 
-						if(Meteor.userId()) FlowRouter.go('home');
+						if(Meteor.userId()) {
+							if (Session.get('partner')) {
+								Meteor.call('sendNewPartner', Session.get('partner'));
+							}
+							FlowRouter.go('home');
+						}
 
 
 
@@ -127,6 +136,58 @@ Template.loginForm.events({
 				}
 			}
 		}
+	},
+	'click .vk'() {
+		Meteor.loginWithVk({}, function(err, res){
+			if(Meteor.userId())  {
+				if (Session.get('partner')) {
+					Meteor.call('sendNewPartner', Session.get('partner'));
+				}
+				FlowRouter.go('home');
+			}
+
+			if (err) {
+				console.log(err);
+				UIkit.notification({
+					message: err,
+					status: 'error',
+					pos: 'top-right',
+					timeout: 5000
+				});
+			}
+		});
+	},
+	'click .fb'() {
+		Meteor.loginWithFacebook({}, function(err, res){
+			if(Meteor.userId()) {
+				if (Session.get('partner')) {
+					Meteor.call('sendNewPartner', Session.get('partner'));
+				}
+				FlowRouter.go('home');
+			}
+
+			if (err) {
+				console.log(err);
+				UIkit.notification({
+					message: err,
+					status: 'error',
+					pos: 'top-right',
+					timeout: 5000
+				});
+			}
+		});
+	},
+	'click .tw'() {
+		Meteor.loginWithTwitter({force_login: true}, function(err, res){
+			if (err) {
+				console.log(err)
+			}
+			if (res) {
+				console.log(res)
+			}
+		});
+		FlowRouter.go('home')
+
 	},
 	'click .back-to-login'() {
 		Template.instance().state.set('login');

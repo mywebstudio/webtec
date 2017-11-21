@@ -71,7 +71,7 @@ Meteor.methods({
 			'				</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">'+
 			'					<table width="100%" cellpadding="0" cellspacing="0" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">' +
 			'					<tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">'+
-			'					Ваш аккаунт зарегистрирован. Ваш логин:'+
+			'					Ваш аккаунт зарегистрирован. Дарим вам 300 рублей за успешную регистрацию. Оформите свой первый заказ и получите ещё 300 рублей на свой баланс. Ваш логин:'+
 			login +
 			'					</td>'+
 			'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">'+

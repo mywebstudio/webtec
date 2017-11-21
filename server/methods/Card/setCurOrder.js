@@ -10,6 +10,9 @@ Meteor.methods({
 		const currentApplication = OrdersList.findOne({user: this.userId, active: true});
 		const user = Meteor.users.findOne(this.userId);
 
+		var fitem = Items.findOne(items[0]);
+		
+
 		// Если у пользователя нет открытых заказов то создаём новый оставляем открытым
 		
 		if (currentApplication == null) {
@@ -28,6 +31,8 @@ Meteor.methods({
 			application.active = true;
 			application.items = items;
 			application.confirm = true;
+			
+			if(fitem.category == 'besplatno') application.free = true;
 
 			application._id = OrdersList.insert(application);
 

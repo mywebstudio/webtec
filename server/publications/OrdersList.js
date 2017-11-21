@@ -52,8 +52,7 @@ Meteor.publish('Orders', function(type) {
 	if (!this.userId) {
 		return this.ready();
 	}
-
-
+	
 	if(Meteor.user().roles == 'admin')
 		return OrdersList.find();
 	if(Meteor.user().roles == 'user')

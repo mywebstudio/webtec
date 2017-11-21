@@ -19,7 +19,7 @@ Meteor.methods({
 				if(curIm) Avatars.remove(curIm.slice(19));
 
 				Meteor.users.update(id, {
-					$set: {avatar: '/cfs/files/avatars/' + photoUpload}
+					$set: {avatar: 'https://tecweb.ru/cfs/files/avatars/' + photoUpload}
 				});
 			} 
 		}

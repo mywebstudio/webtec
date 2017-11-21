@@ -9,6 +9,11 @@ Template.catalog.onCreated ->
         subscription = this.subscribe 'Sections'
         this.ready.set subscription.ready()
 
+Template.catalog.onRendered ->
+    Meteor.setTimeout =>
+        console.log('+')
+#        UIkit.modal($('#popupmodal'),{}).show();
+    , 5000
     
 Template.catalog.helpers 
     category: ->
@@ -25,7 +30,6 @@ Template.catalog.helpers
 
 Template.catalog.events
     'click .edit': (ev, te) ->
-        console.log "гажал"
         e.preventDefault()
         e.stopPropagation()
         userData = {}

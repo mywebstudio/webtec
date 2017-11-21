@@ -6,8 +6,7 @@ Meteor.methods({
 			throw new Meteor.Error('error-application-not-found', 'Заказ не найден', { method: 'deleteProject' });
 		}
 		if (application.user == this.userId || Meteor.user().roles == 'admin') {
-
-			var x = Meteor.call('sendRemoveProject', applicationId);
+			
 
 			var y = Meteor.call('deleteProjectChat', application.room);
 
@@ -17,7 +16,11 @@ Meteor.methods({
 				Tasks.remove(tasks[i]._id);
 			}
 
-			return Projects.remove(applicationId);
+			Projects.remove(applicationId);
+
+			Meteor.call('sendRemoveProject', applicationId);
+
+			return true
 
 		}
 		else throw new Meteor.Error('error-application-not-allowed', 'Нет доступа', { method: 'deleteProject' });

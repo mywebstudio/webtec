@@ -19,7 +19,7 @@ Meteor.methods({
 			var user = Meteor.users.findOne(currentApplication.user);
 
 			//Расчёты при наличии скидки у клиента
-			if(user.discont) {
+			if(user && user.discont) {
 
 				for (var item in currentApplication.items) {
 					if (currentApplication.items[i] && currentApplication.items[i] != null)

@@ -114,6 +114,7 @@ Template.main.events({
         Session.set('current', false);
 
         return Meteor.logout(function() {
+            FlowRouter.go('/');
             var order = OrdersList.findOne(FlowRouter.getParam('id'));
             if(order && order.items.length){
                 for (var i =0; i < order.items.length; i++) {
@@ -126,7 +127,6 @@ Template.main.events({
                     else
                         Session.set('ordered-' + item, false);
                 }}
-            return FlowRouter.go('/');
         });
     },
     'change #search'(event) {

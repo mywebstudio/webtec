@@ -22,16 +22,15 @@ Template.manageProjects.onRendered ->
           start: task.start
           end: task.end
           color: task.color
-          title: task.name
-          link: '/tasks/' + task._id
+          title: task.title
+          link: 'https://tecweb.ru/tasks/' + task._id
           user_name: task.manager
-          user_avatar: "/avarats/"+task.name
+          user_avatar: task.img
 
       ganttData.push
         name: project.name
         series: series
 
-    console.log ganttData
     n = $('#gantt_chart')
 
     n.length and n.ganttView(
@@ -88,6 +87,7 @@ Template.manageProjects.onCreated ->
 
   this.subscribe 'Sections'
   this.subscribe 'FiltersList'
+  this.subscribe 'TasksSmart'
   this.ready = new ReactiveVar false
   this.filter = new ReactiveVar('')
   instance = this
@@ -144,16 +144,30 @@ Template.manageProjects.helpers
     tasksFinished = Tasks.find({project: project._id, status: 1}).fetch()
     return Number(tasksFinished.length) * 100 / Number(tasks.length)
 
-  currentTask: (id) ->
-    project = Projects.findOne(id)
-    tasks = Tasks.find({project: project._id, status: {$exists: false}}, {sort: {order: 1}}).fetch()
-    return tasks[0].name
-
   task: (id) ->
     project = Projects.findOne(id)
     tasks = Tasks.find({project: project._id}, {sort: {order: 1}}).fetch()
     return tasks
 
+  billnumber: (id) ->
+    String(id)
+    order = OrdersList.findOne(String(id))
+    return order.number
+
+  billdate: (id) ->
+    return moment(id).format('LL')
+
+  progresreg: (id) ->
+    project = Projects.findOne(id)
+    date = new Date(project._createdAt)
+    date2 = new Date()
+    timeDiff = Math.abs(date2.getTime() - date1.getTime())
+    diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
+    return diffDays
+
+  payprogres: (id) ->
+    project = Projects.findOne(id)
+    return Number(project.payed) / Number(project.sum)
 
 Template.manageProjects.events
   'click .top': (e, t) ->

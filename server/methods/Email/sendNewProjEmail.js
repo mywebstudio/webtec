@@ -155,7 +155,7 @@ Meteor.methods({
 	'			<div class="content" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">'+
 	'				<table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #FF9F00; margin: 0; padding: 20px;" align="center" bgcolor="#FF9F00" valign="top">'+
 	'				Ваш проект поступил в разработку ['+
-	project._id +
+	project.name +
 		']'+
 	'				</td>'+
 	'				</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">'+
@@ -181,7 +181,7 @@ Meteor.methods({
 		Email.send({
 			to: 'stuurgurs@ya.ru',
 			from: 'tecweb@yandex.ru',
-			subject: 'Создан новый проект ['+ project._id +']',
+			subject: 'Создан новый проект ['+ project.name +']',
 			html: html
 		});
 
@@ -193,7 +193,7 @@ Meteor.methods({
 		Email.send({
 			to: email,
 			from: 'tecweb@yandex.ru',
-			subject: 'Ваш проект поступил в разработку ['+ project._id +']',
+			subject: 'Ваш проект поступил в разработку ['+ project.name +']',
 			html: html2
 		});
 
@@ -201,7 +201,7 @@ Meteor.methods({
 		Email.send({
 			to: manageremail,
 			from: 'tecweb@yandex.ru',
-			subject: 'Создан новый проект ['+ project._id +']',
+			subject: 'Создан новый проект ['+ project.name +']',
 			html: html
 		});
 	}

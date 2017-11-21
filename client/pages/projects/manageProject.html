@@ -1,11 +1,11 @@
 <head>
-	<script src="https://cdn.ckeditor.com/4.7.0/standard/ckeditor.js"></script>
+	<script src="/js/ckeditor/ckeditor.js"></script>
 </head>
 <template name="manageProject">
 
 	{{#with data}}
 
-	{{> title title='Проекты'  item1='/projects' item1name='Проекты' item2name=name  item1name='Проекты'}}
+	{{> title title='Проекты'  item1='/projects' item1name='Проекты' item2name=name }}
 
 	<div class="uk-margin-small uk-padding-small" >
 
@@ -16,31 +16,7 @@
 				<div class="uk-width-1-4 ">
 					<div class="uk-card  uk-margin uk-card-body uk-card-primary">
 						<h4>{{name}}</h4>
-						<h5 class="uk-margin-small">Время до окончания проекта:</h5>
-						<div class="uk-grid-small uk-child-width-auto" uk-grid uk-countdown="date: {{deadline._d}}">
-							<div>
-								<div class="uk-countdown-number uk-countdown-days"></div>
-								<div class="uk-countdown-label uk-margin-small uk-text-center uk-visible@s">Дней</div>
-							</div>
-							<div class="uk-countdown-separator">:</div>
-							<div>
-								<div class="uk-countdown-number uk-countdown-hours"></div>
-								<div class="uk-countdown-label uk-margin-small uk-text-center uk-visible@s">Часов</div>
-							</div>
-							<div class="uk-countdown-separator">:</div>
-							<div>
-								<div class="uk-countdown-number uk-countdown-minutes"></div>
-								<div class="uk-countdown-label uk-margin-small uk-text-center uk-visible@s">Минут</div>
-							</div>
-							<div class="uk-countdown-separator">:</div>
-							<div>
-								<div class="uk-countdown-number uk-countdown-seconds"></div>
-								<div class="uk-countdown-label uk-margin-small uk-text-center uk-visible@s">Секунд</div>
-							</div>
-						</div>
-						{{#if isAdmin}}
-							<h5>Изменить дедлайн <input type="date" id="chdeadline" class="uk-float-right"></h5>
-						{{/if}}
+						<h5>{{short}}</h5>
 
 					</div>
 
@@ -62,18 +38,7 @@
 							{{/if}}
 
 							<div class="uk-margin">
-								<label class="uk-form-label" for="desinger">Ведущий дизайнер</label>
-								<select  class="uk-select" id="desinger">
-									<option value="" ></option>
-									{{#each managers}}
-									<option value="{{_id}}" selected="{{$eq _id data.desinger}}">{{name}}</option>
-									{{/each}}
-								</select>
-								<div class="selectize_fix"></div>
-							</div>
-
-							<div class="uk-margin">
-								<label class="uk-form-label" for="developer">Ведущий программист</label>
+								<label class="uk-form-label" for="developer">Исполнитель</label>
 								<select  class="uk-select" id="developer">
 									<option value="" ></option>
 									{{#each managers}}
@@ -101,8 +66,8 @@
 										</div>
 
 										<div class="uk-width-4-5">
-											<a class="" href="{{pathFor 'task-item' id=_id}}">{{name}}</a>
-											<progress id="progressbar" class="uk-progress uk-float-right" value="{{progr _id}}" max="100"></progress>
+											<a class="" href="{{pathFor 'task-item' id=_id}}">{{title}}</a>
+											{{> projectProgress task=.}}
 										</div>
 									</li>
 
@@ -158,29 +123,14 @@
 								</div>
 
 								<div class="uk-margin uk-width-1-1">
-									<label class="uk-form-label" for="short">Анкета проекта</label>
-									<div class="uk-form-controls">
-										<textarea id="description" cols="30" rows="40">{{{brif}}}</textarea>
-									</div>
-									<button class="uk-button uk-button-small uk-button-primary" id="descriptionsave">Cохранить</button>
+									<label class="uk-form-label" for="short">Спецификация проекта</label>
+									<pre class="uk-form-controls">
+										{{{brif}}}
+									</pre>
 								</div>
 							</div>
 						</div>
 					</div>
-
-
-					<div class="uk-card uk-card-default uk-margin">
-
-							<div class="uk-card-header uk-inline uk-width-1-1">
-								<h4 class=" ">
-									Обсуждение
-								</h4>
-							</div>
-
-							<div class="uk-form-stacked">
-								{{>SimpleChatWindow roomId=data.room username=currentUser.username name=currentUser.name allow=true beep=true button='Написать' placeholder='Сообщение' avatar=currentUser.avatar }}
-							</div>
-						</div>
 
 				</div>
 

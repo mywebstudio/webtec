@@ -28,9 +28,11 @@
                                 <th class="uk-table-shrink">Избранный</th>
                                 <th class="uk-table-shrink">Карт</th>
                                 <th class="uk-table-expand">Название</th>
+                                <th  class="uk-table-shrink">Дни</th>
                                 <th  class="uk-table-shrink">Порядок</th>
                                 <th  class="uk-table-shrink">Цена</th>
                                 <th  class="uk-table-shrink">Единицы</th>
+                                <th  class="uk-table-shrink">ТЗ</th>
                                 <th  class="uk-table-shrink">Категория</th>
                                 <th  class="uk-table-shrink">Действия</th>
                             </tr>
@@ -45,9 +47,11 @@
                                 <td><a href="{{pathFor 'manageitemsedit' id=_id}}"><img class="img_thumb" src="{{img}}?store=thumbs" alt=""></a></td>
                                 <td id="{{_id}}" class="drug">{{name}}</td>
 
+                                <td><input type="number" class="time uk-input uk-form-width-small" id="{{_id}}"  value="{{time}}"></td>
                                 <td><input type="number" class="sort uk-input uk-form-width-small" id="{{_id}}"  value="{{sort}}"></td>
                                 <td><input type="number" class="price uk-input uk-form-width-small" id="{{_id}}"  value="{{price}}"></td>
                                 <td >{{meter}}</td>
+                                <td >{{#if teh}}<span uk-icon="icon: check"></span>{{else}}<span uk-icon="icon: minus"></span>{{/if}}</td>
                                 <td>{{category}}</td>
                                 <td class="uk-text-nowrap">
                                         <a href="{{pathFor 'manageitemsedit' id=_id}}" uk-icon="icon: pencil" class="uk-icon-button"></a>

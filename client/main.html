@@ -1,4 +1,7 @@
 <head>
+	<title>Создание и ведение сайтов - Web Tec</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<meta charset="utf-8" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="expires" content="-1" />
@@ -6,42 +9,38 @@
 	<meta name="fragment" content="!" />
 	<meta name="distribution" content="global" />
 	<meta name="rating" content="general" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
 
-	<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/nocfbnnmjnndkbipkabodnheejiegccf" />
+
 	<link rel="mask-icon" href="assets/safari_pinned.svg" color="#04436a">
 	<link rel="apple-touch-icon" sizes="180x180" href="assets/touchicon_180.png" />
 	<link rel="apple-touch-icon-precomposed" href="assets/touchicon_180_pre.png">
+
 	<!-- jQuery is required -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
 	<link rel="stylesheet" href="/css/base.css" type="text/css">
-	<link rel="stylesheet" type="text/css" href="/css/crumble.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/grumble.min.css"/>
 
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
-	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
 
-	<script type="text/javascript" src="/js/jquery.crumble.min.js"></script>
-	<script type="text/javascript" src="/js/jquery.grumble.min.js"></script>
 
 
 	<!-- UIkit CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/css/uikit.min.css" />
 
 
+
 	<!-- UIkit JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/js/uikit.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/js/uikit-icons.min.js"></script>
 
+
+
 </head>
 
 <body class="">
-
-
-
+{{> question}}
 {{> addfilter}}
 {{> additem1}}
 {{> adduser1}}
@@ -75,9 +74,9 @@
 									<a href="/catalog"><span class="" uk-icon="icon: thumbnails; ratio: 1" ></span></a>
 								</li>
 
-								{{#if orders}}
+								{{#if currentUser}}
 									<li class="leftmenusmall {{#if $.Session.equals 'current' 'order'}}current{{/if}} currentselector" id="order">
-										<a href="{{pathFor 'manageorders' id=orderId}}"><span class="" uk-icon="icon: cart; ratio: 1" ></span><span class="uk-badge uk-float-right abs-badge">{{getLength orders}}</span></a>
+										<a href="{{pathFor 'manageorders' id=orderId}}"><span class="" uk-icon="icon: cart; ratio: 1" ></span>{{#if orders}}<span class="uk-badge uk-float-right abs-badge">{{getLength orders}}</span>{{/if}}</a>
 									</li>
 								{{/if}}
 
@@ -114,6 +113,10 @@
 									<a href="/info"><span class="" uk-icon="icon: info; ratio: 1" ></span></a>
 								</li>
 
+								<li class="leftmenusmall currentselector" >
+									<a href="#popupmodal" uk-toggle><span class="" uk-icon="icon: question; ratio: 1" ></span></a>
+								</li>
+
 
 
 							{{#if currentUser}}
@@ -125,6 +128,12 @@
 								<a href="{{pathFor 'login'}}"><span class="" uk-icon="icon: sign-out; ratio: 1" ></span></a>
 							</li>
 							{{/if}}
+						</ul>
+
+						<ul class="leftNavigation leftNavigationBottom">
+							<li class="leftmenusmall" >
+								<img src="{{currentUser.avatar}}">
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -155,9 +164,9 @@
 								<a href="/catalog"><span class="" uk-icon="icon: thumbnails; ratio: 1" ></span> Каталог</a>
 							</li>
 
-							{{#if orders}}
+							{{#if currentUser}}
 							<li class=" {{#if $.Session.equals 'current' 'order'}}current{{/if}} currentselector" id="order">
-								<a href="{{pathFor 'manageorders' id=orderId}}"><span class="" uk-icon="icon: cart; ratio: 1" ></span> Заказы <span class="uk-badge uk-float-right abs-badge">{{getLength orders}}</span></a>
+								<a href="{{pathFor 'manageorders' id=orderId}}"><span class="" uk-icon="icon: cart; ratio: 1" ></span> Заказы {{#if orders}}<span class="uk-badge uk-float-right abs-badge">{{getLength orders}}</span>{{/if}}</a>
 							</li>
 							{{/if}}
 
@@ -186,14 +195,16 @@
 							<li class=" {{#if $.Session.equals 'current' 'category'}}current{{/if}} currentselector" id="category">
 								<a href="{{pathFor 'manageCatalogList'}}"><span class="" uk-icon="icon: list; ratio: 1" ></span> Рубрики</a>
 							</li>
-
-
+							{{/if}}
 
 
 							<li class=" {{#if $.Session.equals 'current' 'info'}}current{{/if}} currentselector" id="info">
 								<a href="/info"><span class="" uk-icon="icon: info; ratio: 1" ></span> О компании</a>
 							</li>
-							{{/if}}
+							<li class="currentselector">
+								<a href="#popupmodal" uk-toggle><span class="" uk-icon="icon: question; ratio: 1" ></span> Помощь</a>
+							</li>
+
 
 
 

@@ -2,6 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" autoUpload="On explicit save action" promptOnRemoteOverwrite="CHECK_TIMESTAMP" serverName="69.191" notifyRemoteChanges="true">
     <serverData>
+      <paths name="0306">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="69.148">
         <serverdata>
           <mappings>
@@ -51,6 +58,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="atlaslux">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="ayfaar.ru">
         <serverdata>
           <mappings>
@@ -86,7 +100,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="korvet">
+      <paths name="korvetmain">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

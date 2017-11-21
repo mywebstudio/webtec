@@ -1,19 +1,31 @@
 <template name="title">
-    <div class="uk-card-header uk-card-default uk-card">
-        <h1 class="uk-margin uk-text-large uk-card-title">{{title}} </h1>
-        {{#if subtitle}}<h2 class="uk-margin-top">{{subtitle}}</h2>{{/if}}
+    <div class="uk-card-header uk-card-default uk-card uk-padding-small">
+        <div class="uk-margin-large-left">
+            <h1 class="uk-margin uk-text-large uk-card-title">{{title}} </h1>
+            {{#if subtitle}}<h2 class="uk-margin-top">{{subtitle}}</h2>{{/if}}
 
-        <div class="uk-position-left uk-animation-slide-right">
-            <a class="md-fab md-fab-primary back" onclick="window.history.back(); return false;" id="product_edit_submit">
-                <span uk-icon="icon: arrow-left; ratio: 2" class="uk-icon"></span>
-            </a>
+            <div class="uk-position-left uk-animation-slide-right">
+
+            </div>
+
+            <ul class="uk-breadcrumb  uk-margin-remove">
+                <li><a href="/">Главная</a></li>
+                {{#if item1name}}<li>{{#if item1}}<a href="{{item1}}">{{item1name}}</a>{{else}}<span>{{item1name}}</span>{{/if}}</li>{{/if}}
+                {{#if item2name}}<li>{{#if item2}}<a href="{{item2}}">{{item1name}}</a>{{else}}<span>{{item2name}}</span>{{/if}}</li>{{/if}}
+
+            </ul>
         </div>
 
-        <ul class="uk-breadcrumb">
-            <li><a href="/">Главная</a></li>
-            {{#if item1name}}<li>{{#if item1}}<a href="{{item1}}">{{item1name}}</a>{{else}}<span>{{item1name}}</span>{{/if}}</li>{{/if}}
-            {{#if item2name}}<li>{{#if item2}}<a href="{{item2}}">{{item1name}}</a>{{else}}<span>{{item2name}}</span>{{/if}}</li>{{/if}}
+        <div class="uk-position-top-right uk-position-medium"><h3 class="uk-inline uk-margin-remove"> +7 978 074 74 03</h3><br>
+        <span>Ваш баланс: <a href="/balance" title="Пополнить баланс">{{currentUser.balance}} руб.</a> </span>
+        </div>
 
-        </ul>
+        <div class="uk-position-left">
+
+                <a class="uk-back uk-height-1-1" onclick="window.history.back(); return false;">
+                    <span uk-icon="icon: arrow-left; ratio: 2" class="uk-icon uk-position-center-left uk-light"></span>
+                </a>
+
+        </div>
     </div>
 </template>

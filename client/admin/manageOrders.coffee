@@ -35,6 +35,8 @@ Template.manageOrders.onCreated ->
 
   this.ready = new ReactiveVar true
   this.list = new ReactiveVar []
+  this.list2 = new ReactiveVar []
+
 
   @autorun =>
     subscription = this.subscribe 'OrdersUserList', FlowRouter.getParam('id')
@@ -47,15 +49,34 @@ Template.manageOrders.onCreated ->
       i = 0
       y = 0
       for item in order.items
-        if newList[item]
-          newList[item]++
-        else
-          newList[item] = 1
+        it = Items.findOne(item)
+        if it.type != 'regular'
+          if newList[item]
+            newList[item]++
+          else
+            newList[item] = 1
       keys = Object.keys(newList)
       for i in keys
         list[y] = {id: i, kol: newList[i] }
         y++
       this.list.set list
+
+      newList = []
+      list = []
+      i = 0
+      y = 0
+      for item in order.items
+        it = Items.findOne(item)
+        if it.type == 'regular'
+          if newList[item]
+            newList[item]++
+          else
+            newList[item] = 1
+      keys = Object.keys(newList)
+      for i in keys
+        list[y] = {id: i, kol: newList[i] }
+        y++
+      this.list2.set list
 
   @orders = ->
     return OrdersList.find({},{sort: {active: -1, _createdAt: -1}})
@@ -86,12 +107,21 @@ Template.manageOrders.helpers
     return Number(num) + 1
 
   stoimost: (price, percent, kol) ->
-    if percent
-      return price
-    if !kol and !percent
-      return price
-    if kol and !percent
-      return price * kol
+    if Meteor.user() and Meteor.user().discont
+      x = price - price * Meteor.user().discont * 0.01
+      if percent
+        return x
+      if !kol and !percent
+        return x
+      if kol and !percent
+        return x * kol
+    else  
+      if percent
+        return price
+      if !kol and !percent
+        return price
+      if kol and !percent
+        return price * kol
  
   smartprice: (price) ->
     if Meteor.user() and Meteor.user().discont
@@ -114,6 +144,9 @@ Template.manageOrders.helpers
   itemsList: ->
     return Template.instance().list.get()
 
+  itemsList2: ->
+    return Template.instance().list2.get()
+
   dateshort: (dat) ->
     return moment(dat).format('DD / MMM')
 
@@ -125,6 +158,13 @@ Template.manageOrders.helpers
 
 
 Template.manageOrders.events
+  'click .later': (e, t) ->
+    e.preventDefault()
+    e.stopPropagation()
+    Meteor.call 'setOrderActive', FlowRouter.getParam('id'), (err, res) ->
+
+
+          
   'click .plus': (e, t) ->
     e.preventDefault()
     e.stopPropagation()
@@ -177,8 +217,38 @@ Template.manageOrders.events
           pos: 'top-right'
           timeout: 5000
 
+  'click #bill': (e, t) ->
+    send = []
+    items = $('.findthis')
+    i = 0
+    send.push( [ { text: '№', alignment: 'center', bold: true },{ text: 'Наименование товара', alignment: 'center', bold: true },{ text: 'Цена', alignment: 'center', bold: true },{ text: 'Кол-во', alignment: 'center', bold: true },{ text: 'Стоимость', alignment: 'center', bold: true } ]   )
+    while i < items.length
+      row = []
+      row.push(i + 1)
+      row.push( $($('.findname')[i]).html().toString() )
+      row.push( $($('.findprice1')[i]).html().trim() )
+      row.push( $($('.findkol')[i]).html().toString() )
+      row.push( $($('.findprice2')[i]).html().trim() )
+      send.push( row )
+      i++
+    sum = $('#sum').html()
+    if(!sum)
+      sum = $('.heading_b').html() + 'руб.'
+    if(!sum)
+      sum = ' '
+    send.push( [  '', { text: 'Итого:', alignment: 'left', bold: true },'','', { text: sum, alignment: 'left', bold: true }] )
+
+    Meteor.call 'createOrderBill', FlowRouter.getParam('id'), send, (err, res) ->
+      if res
+        pdfMake.createPdf(res).open()
+      if err
+        UIkit.notification
+          message: err,
+          status: 'error',
+          pos: 'top-right'
+          
   'click .teh': (e, t) ->
-    Meteor.call 'createOrderPdf', FlowRouter.getParam('id'), (err, res) ->
+    Meteor.call 'createOrderPdf', FlowRouter.getParam('id'), $('#text-tehzadanie').val(), (err, res) ->
       if res
         pdfMake.createPdf(res).open()
       if err
@@ -188,7 +258,40 @@ Template.manageOrders.events
           pos: 'top-right'
           
   'click .offer': (e, t) ->
-    Meteor.call 'createOrderDoc', FlowRouter.getParam('id'), (err, res) ->
+    if $('#name').val() and $('#adress').val()
+      Meteor.call 'createOrderDoc', FlowRouter.getParam('id'), (err, res) ->
+        if res
+          pdfMake.createPdf(res).open()
+        if err
+          UIkit.notification
+            message: err,
+            status: 'error',
+            pos: 'top-right'
+    else
+      $('#name').addClass('uk-form-danger')
+      $('#adress').addClass('uk-form-danger')
+      UIkit.notification
+        message: 'Пожалуйста, заполните своё ФИО и реквизиты',
+        status: 'error',
+        pos: 'top-right'
+
+  'change #pname': (e, t) ->    
+    Meteor.call 'setOrderName', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
+      if res
+        UIkit.notification
+          message: 'Название проекта сохранено',
+          status: 'primary',
+          pos: 'top-right'
+      if err
+        UIkit.notification
+          message: err,
+          status: 'error',
+          pos: 'top-right'
+
+
+          
+  'click .regoffer': (e, t) ->
+    Meteor.call 'createOrderRegDoc', FlowRouter.getParam('id'), (err, res) ->
       if res
         pdfMake.createPdf(res).open()
       if err
@@ -199,46 +302,82 @@ Template.manageOrders.events
 
 
   'click .order': (e, t) ->
-    html = "<p>Нажимая оформить, вы подтверждате, что ознакомились с <a onclick='"+
-      '$("#dogovor").click();'+
-      "'>договором</a> и <a onclick='"+
-      '$("#teze").click();'+
-      "'>техническим заданием</a> и принимаете их условия.</p> "
-    swal
-      title: 'Внимание',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#DD6B55',
-      confirmButtonText: 'Оформить',
-      cancelButtonText: 'Отмена',
-      closeOnConfirm: true,
-      html: html
-    , (isConfirm) ->
-        if isConfirm
-          Meteor.call 'addProject', FlowRouter.getParam('id'), (err, res) ->
-            if res
-              OrdersList.update FlowRouter.getParam('id'),
-                $set:
-                  _payedAt: new Date
-                  payed: true
-                  active: false
-              Meteor.call('sendNewProj', res);
-              FlowRouter.go 'manageProject', {id: res}
-            if err
-              UIkit.notification
-                message: err
-                status: 'error'
-                pos: 'top-right'
-                timeout: 5000
-    
-  'chage .techred': (e, t) ->
-    e.preventDefault()
+    order = OrdersList.findOne(FlowRouter.getParam('id'))
+    if order.spec and $('#pname').val() and $('#name').val() and $('#adress').val()
+      if order.free
+        t.ready.set false
+        Meteor.call 'addProject', FlowRouter.getParam('id'), (err, res) ->
+          if res
+            OrdersList.update FlowRouter.getParam('id'),
+              $set:
+                _payedAt: new Date
+                payed: true
+                active: false
+  
+            #                Meteor.call('sendNewProj', res);
+            FlowRouter.go 'dashboard'
+          if err
+            t.ready.set true
+            UIkit.notification
+              message: err
+              status: 'error'
+              pos: 'top-right'
+              timeout: 5000
+      else
+        html = "<p>Нажимая оформить, вы подтверждате, что ознакомились с <a onclick='"+
+          '$("#offer").click();'+
+          "'>договором</a> и <a onclick='"+
+          '$("#teze").click();'+
+          "'>техническим заданием</a> и принимаете их условия.</p> "
+        swal
+          title: 'Внимание',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#DD6B55',
+          confirmButtonText: 'Оформить',
+          cancelButtonText: 'Отмена',
+          closeOnConfirm: true,
+          html: html
+        , (isConfirm) ->
+            if isConfirm
+              t.ready.set false
+              Meteor.call 'addProject', FlowRouter.getParam('id'), (err, res) ->
+                if res
+                  OrdersList.update FlowRouter.getParam('id'),
+                    $set:
+                      _payedAt: new Date
+                      payed: true
+                      active: false
+
+  #                Meteor.call('sendNewProj', res);
+                  FlowRouter.go 'dashboard'
+                if err
+                  t.ready.set true
+                  UIkit.notification
+                    message: err
+                    status: 'error'
+                    pos: 'top-right'
+                    timeout: 5000
+
+    else
+      $('#pname').addClass('uk-form-danger')
+      $('#name').addClass('uk-form-danger')
+      $('#adress').addClass('uk-form-danger')
+      $('#specdng').addClass('uk-text-danger')
+
+      UIkit.notification
+        message: 'Для продолжения необходимо указать свои ФИО и реквизиты, заполнить спецификацию и название проекта'
+        status: 'error'
+        pos: 'top-right'
+        timeout: 5000
+
+  'change #name': (e, t) ->
     e.stopPropagation()
-    Meteor.call 'replaceOrderItem', FlowRouter.getParam('id'), e.currentTarget.id, $('#text-'+e.currentTarget.id).val(),  (err, res) ->
-#    Meteor.call 'setOrderConfirmation', FlowRouter.getParam('id'),  (err, res) ->
+    e.preventDefault()
+    Meteor.call 'setName', Meteor.userId(), e.currentTarget.value, (err, res) ->
       if res
         UIkit.notification
-          message: "Пункт отправлен на согласование"
+          message: 'Изменения сохранены!'
           status: 'primary'
           pos: 'top-right'
           timeout: 5000
@@ -248,6 +387,25 @@ Template.manageOrders.events
           status: 'error'
           pos: 'top-right'
           timeout: 5000
+
+
+  'change #adress': (e, t) ->
+    e.stopPropagation()
+    e.preventDefault()
+    Meteor.call 'setAdress', Meteor.userId(), e.currentTarget.value, (err, res) ->
+      if res
+        UIkit.notification
+          message: 'Изменения сохранены!'
+          status: 'primary'
+          pos: 'top-right'
+          timeout: 5000
+      if err
+        UIkit.notification
+          message: err
+          status: 'error'
+          pos: 'top-right'
+          timeout: 5000
+    
     
   'click .payed': (e, t) ->
     e.preventDefault()

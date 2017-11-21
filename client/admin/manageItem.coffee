@@ -1,4 +1,4 @@
-import ckeditor from 'ckeditor'
+
 
 Template.manageItem.onCreated ->
 	this.subscribe 'Sections'
@@ -11,11 +11,11 @@ Template.manageItem.onCreated ->
 		subscription = this.subscribe 'ItemsAll'
 		this.ready.set subscription.ready()
 
-
-Template.manageItem.onRendered ->
-	Meteor.setTimeout  =>
-		CKEDITOR.replace 'description'
-	, 3000
+#
+#Template.manageItem.onRendered ->
+#	Meteor.setTimeout  =>
+#		CKEDITOR.replace 'description'
+#	, 3000
 
 Template.manageItem.helpers
 	filter: ->

@@ -50,6 +50,7 @@ FlowRouter.route('/', {
 	name: 'first',
 	action(params, queryParams) {
 		Session.set('current', false);
+		Session.set('partner', queryParams.p);
 			BlazeLayout.render('first');
 	}
 }); 

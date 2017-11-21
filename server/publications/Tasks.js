@@ -18,8 +18,8 @@ Meteor.publish('TasksSmart', function() {
 		if (Meteor.user().roles == 'developer')
 			return Tasks.find({developer: this.userId});
 
-		if (Meteor.user().roles == 'designer')
-			return Tasks.find({desinger: this.userId});
+		if (Meteor.user().roles == 'manager')
+			return Tasks.find({manager: this.userId});
 	}
 });
 

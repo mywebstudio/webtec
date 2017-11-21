@@ -11,6 +11,13 @@ Template.home.onCreated ->
         if subscription.ready() and subscription2.ready()
             this.ready.set true
 
+
+    @autorun =>
+        subscription = this.subscribe 'ItemsCatalog'
+        subscription2 = this.subscribe 'Sections'
+        if subscription.ready() and subscription2.ready()
+            this.ready.set true
+
             
     this.items = ->
         filter = undefined
@@ -28,39 +35,49 @@ Template.home.onCreated ->
 
 Template.home.onRendered ->
     Meteor.setTimeout =>
-        if !Meteor.user() || !Meteor.user().tour1
-            UIkit.scroll($("#my-id"))
-            $('#tour').crumble()
-            Meteor.call('turnUserTour1')
-    ,2500
+        $('#slider1').slick({
+            arrows: false,
+            dots: false,
+            autoplay: true,
+            slidesToShow: 1,
+            slidesToScroll: 1
+        });
+    , 300
 
     @autorun =>
-        if Session.get 'tour2'
-            o = OrdersList.findOne({active: true})
-            if !o.length
-                if !Meteor.user().tour2
-                    $('#tour2').crumble()
-                    Meteor.call('turnUserTour2')
-
+        if !Meteor.user().free
+            freeitems = Items.find({category: "besplatno"}).fetch()
+            for free in freeitems
+                if Session.get('ordered-'+free._id, true)
+                    order = []
+                    order.push(free._id)
+                    
+                    Meteor.call 'setCurOrder', order, (err, res) ->
+                        if res
+                            Meteor.call 'setUserFree', (err, res) ->
+                    
+            
     @autorun =>
         if Meteor.user()
             subs= this.subscribe 'Orders'
             if subs.ready()
+                
+                Meteor.setTimeout =>
+                    order = OrdersList.findOne({active: true, user: Meteor.userId()})
+                    for item in order.items
+                        itemObj = Items.findOne(item)
+                        section = Sections.findOne({redirectUri: itemObj.category})
 
-                order = OrdersList.findOne({active: true, user: Meteor.userId()})
-                for item in order.items
-                    itemObj = Items.findOne(item)
-                    section = Sections.findOne({redirectUri: itemObj.category})
-
-                    if itemObj.type == 'radio'
-                        Session.set 'ordered-'+item, true
-                        Session.set 'section-ordered-'+section._id, true
-                    else if itemObj.type == 'quant'
-                        Session.set 'ordered-'+item, true
-                        inc = $('input#'+item).val()
-                        $('input#'+item).val(inc +1)
-                    else
-                        Session.set 'ordered-'+item, true
+                        if itemObj.type == 'radio'
+                            Session.set 'ordered-'+item, true
+                            Session.set 'section-ordered-'+section._id, true
+                        else if itemObj.type == 'quant'
+                            Session.set 'ordered-'+item, true
+                            inc = $('input#'+item).val()
+                            $('input#'+item).val(inc +1)
+                        else
+                            Session.set 'ordered-'+item, true
+                , 1500
 
 
 Template.home.helpers
@@ -74,10 +91,13 @@ Template.home.helpers
         return Template.instance().items()
 
     category: ->
-        Sections.find({active: true}, {sort: {sort: -1}})
+        Sections.find({active: true, redirectUri: {$ne: 'besplatno'}}, {sort: {sort: -1}})
 
     othercategory: ->
         Items.find({category: "prochee", type: {$ne: 'radio'}}, {sort: {sort: 1}})
+
+    freecategory: ->
+        Items.find({category: "besplatno"}, {sort: {sort: -1}})
 
     filters: ->
         FiltersList.find({}, {sort: {price: 1}})
@@ -131,11 +151,36 @@ Template.home.helpers
 
 
 Template.home.events
+    'click .loginlink': (ev, te) ->
+        ev.preventDefault()
+        ev.stopPropagation()
+        FlowRouter.go('login')
+
+    'click .orderfree': (ev, te) ->
+        ev.preventDefault()
+        ev.stopPropagation()
+
+        swal
+            title: 'Подтверждение',
+            text: 'Для продолжения необходимо зарегистрироваться',
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Зарегистрироваться',
+            cancelButtonText: 'Отмена',
+            closeOnConfirm: true,
+            html: false
+        , (isConfirm) ->
+            if(isConfirm)
+                Session.set 'ordered-'+ev.currentTarget.id, true
+                FlowRouter.go('login')
+                
+
     'click .order': (ev, te) ->
         ev.preventDefault()
         ev.stopPropagation()
         Session.set 'ordered-'+ev.currentTarget.id, !Session.get('ordered-'+ev.currentTarget.id)
-        Session.set 'tour2', true
+
 
     'click .rorder': (ev, te) ->
         ev.preventDefault()
@@ -206,74 +251,24 @@ Template.home.events
         Session.set 'filter-ordered-'+ev.currentTarget.id, !Session.get('filter-ordered-'+ev.currentTarget.id)
 
         items = Items.find().fetch()
-        if !Meteor.user()
-            html = '<p>Для полноценного использовани сервиса, пожалуйста заполните свои данные</p>
-                <div class="uk-inline uk-margin-small">
-                    <span class="uk-form-icon" uk-icon="icon: user"></span>
-                    <input type="email" class="uk-input uk-form-width-medium" placeholder="Логин" id="loginreg">
-                </div><br>
-                <div class="uk-inline ">
-                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                    <input type="email" class="uk-input uk-form-width-medium" placeholder="Пароль"  id="pasreg">
-                </div><br>
-                <div class="uk-inline uk-margin-small">
-                    <span class="uk-form-icon" uk-icon="icon: mail"></span>
-                    <input type="email" class="uk-input uk-form-width-medium" placeholder="Email"  id="emailreg">
-                </div>'
-            swal
-                title: 'Зарегистрируйтесь',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#DD6B55',
-                confirmButtonText: 'Зарегистрироваться',
-                cancelButtonText: 'Отмена',
-                closeOnConfirm: true,
-                html: html
-            , (isConfirm) ->
-                if isConfirm
-                    if $("#emailreg").val() and $("#loginreg").val() and $("#pasreg").val()
-                        userdata = {}
-                        userdata.email = $("#emailreg").val()
-                        userdata.username = $("#loginreg").val()
-                        userdata.password = $("#pasreg").val()
-                        Meteor.call 'insertOrUpdateUser', userdata, (err, res) ->
-                            if res
 
-                                Meteor.loginWithPassword userdata.username, userdata.password, (error, result) ->
-                                    if(result)
-                                        order = []
-                                        for item in items
-                                            if (Session.get('ordered-'+item._id))
-                                                if(item.type == 'quant')
-                                                    i = 0
-                                                    col = $('input#'+item._id).val()
-                                                    while i < col
-                                                        order.push(item._id)
-                                                        i++
-                                                else
-                                                    order.push(item._id)
-
-                                        Meteor.call 'setCurOrder', order, (err, res) ->
-        else
-            order = []
-            for item in items
-
-                if (Session.get('ordered-'+item._id))
-                    if(item.type == 'quant')
-                        i = 0
-                        col = $('input#'+item._id).val()
-                        while i < col
-                            order.push(item._id)
-                            i++
-                    else
+        order = []
+        for item in items
+            if (Session.get('ordered-'+item._id))
+                if(item.type == 'quant')
+                    i = 0
+                    col = $('input#'+item._id).val()
+                    while i < col
                         order.push(item._id)
-
-            Meteor.call 'setCurOrder', order, (err, res) ->
-                if res
-                    UIkit.notification
-                        message: 'Изменения сохранены!',
-                        status: 'primary',
-                        pos: 'top-right'
+                        i++
+                else
+                    order.push(item._id)
+        Meteor.call 'setCurOrder', order, (err, res) ->
+            if res
+                UIkit.notification
+                    message: 'Изменения сохранены!',
+                    status: 'primary',
+                    pos: 'top-right'
 
 
     'change .col': (ev, te) ->

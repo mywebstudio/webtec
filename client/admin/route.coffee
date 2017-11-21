@@ -63,8 +63,18 @@ FlowRouter.route '/manage/catalog/:id?',
         pageTemplate: 'managecatalog'
         params: params
 
+FlowRouter.route '/orders',
+  name: 'orders'
+  action: () ->
+    Session.set 'current', 'order'
+    BlazeLayout.render 'main',
+      center: 'orders'
+      header: 'header'
+      footer: 'footer'
+      login: 'loginForm'
+      pageTemplate: 'orders'
       
-FlowRouter.route '/manage/orders/:id?',
+FlowRouter.route '/orders/:id?',
   name: 'manageorders'
   action: (params) ->
     Session.set 'current', 'order'
@@ -75,6 +85,7 @@ FlowRouter.route '/manage/orders/:id?',
       login: 'loginForm'
       pageTemplate: 'manageOrders'
       params: params
+
 
 
 FlowRouter.route '/manage/:id?',
