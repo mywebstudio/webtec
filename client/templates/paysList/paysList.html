@@ -1,0 +1,53 @@
+<template name="paysList">
+
+                <div class="uk-width-1-1">
+                    <div class="">
+                        <table class="uk-table uk-table-align-vertical">
+                            <thead>
+                            <tr>
+
+                                <th class="uk-table-auto">Дата</th>
+                                <th class="uk-table-auto"></th>
+                                <th class="uk-table-auto">Сумма</th>
+                                <th class="uk-table-auto">Назначение</th>
+                                <th class="uk-table-auto"></th>
+
+                                <th>Действия</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {{#each pays}}
+                            <tr>
+
+                                <td>{{date _createdAt}}</td>
+
+                                <td>
+                                    {{#if $eq currentUser.roles 'admin'}}<a href="{{pathFor 'manageusersedit' id=user}}">{{> managername id=user}}</a>{{else}}
+                                    {{#if user}}<a href="/dashboard">{{> managername id=user}}</a>{{/if}}{{/if}}
+                                </td>
+
+                                <td>
+                                    {{#if project}}<span class="uk-text-danger">- {{count}} руб.</span>{{/if}}
+                                    {{#unless project}}<span class="uk-text-success">+ {{count}} руб.</span>{{/unless}}
+                                </td>
+                                <td>
+                                    {{#if project}}<a href="{{pathFor 'manageProject' id=project}}">{{proj project}}</a>{{/if}}
+                                    {{#unless project}}<a href="/balance">Пополнение баланса</a>{{/unless}}
+                                </td>
+                                <td>
+                                    {{#if method}}<i class="uk-text-muted uk-text-break">{{method}}</i>{{/if}}
+                                </td>
+
+                                <td class="uk-text-nowrap">
+                                    <a href=""  uk-icon="icon: pencil" class="uk-icon-button"></a>
+
+                                </td>
+                            </tr>
+                            {{/each}}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+</template>

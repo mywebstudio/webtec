@@ -32,7 +32,7 @@ Meteor.methods({
 				}
 			});
 
-			return Meteor.call('sendTaskStatus', id );
+			return true;
 
 		}
 	}

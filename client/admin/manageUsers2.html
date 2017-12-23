@@ -47,8 +47,8 @@
                                     {{> avatar img=avatar}}
                                 </td>
                                 <td><a href="{{pathFor "manageusersedit" id=_id}}">{{name}} ({{username}})</a></td>
-                                <td>{{#if $eq currentUser.roles 'admin'}}{{email _id}}{{/if}}</td>
-                                <td>{{balance}} &#8381;</td>
+                                <td>{{#if $eq currentUser.roles 'admin'}}<a href="mailto:{{email _id}}" target="_blank">{{email _id}}</a> {{/if}}</td>
+                                <td><a class="pay" id="{{_id}}" >{{balance}} &#8381;</a></td>
                                 <td>{{roles}}</td>
                                 <td>{{> managername id=manager}}</td>
 
@@ -56,9 +56,11 @@
 
                                     <a href="/direct/{{_id}}"  uk-icon="icon: mail" class="uk-icon-button"></a>
 
+                                    <span id="{{_id}}" class="pay uk-icon-button" uk-icon="icon: credit-card"></span>
+
                                     <a href="{{pathFor 'manageusersedit' id=_id}}"  uk-icon="icon: pencil" class="uk-icon-button"></a>
 
-                                    <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash" ></span>
+                                    <span id="{{_id}}" class="del uk-icon-button" uk-icon="icon: trash" ></span>
                                 </td>
                             </tr>
                             {{else}}

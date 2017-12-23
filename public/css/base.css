@@ -603,3 +603,25 @@ div.ganttview .ui-resizable-w {
 		border-bottom: none
 	}
 }
+
+.color-1{
+	background-color: rgba(244, 67, 54, 0.31)!important;
+}
+.color-2{
+	background-color: rgba(233, 30, 99, 0.31)!important;
+}
+.color-3{
+	background-color: rgba(156, 39, 176, 0.3)!important;
+}
+.color-4{
+	background-color: rgba(63, 81, 181, 0.31)!important;
+}
+.color-5{
+	background-color: rgba(33, 150, 243, 0.3)!important;
+}
+.color-6{
+	background-color: rgba(76, 175, 80, 0.31)!important;
+}
+.color-7{
+	background-color: rgba(255, 235, 59, 0.3)!important;
+}

@@ -87,9 +87,6 @@
 								{{/if}}
 
 							{{#if isManager}}
-								<li class="leftmenusmall {{#if $.Session.equals 'current' 'task'}}current{{/if}} currentselector" id="task">
-									<a href="{{pathFor 'task-list'}}"><span class="" uk-icon="icon: clock; ratio: 1" ></span>{{#if taskscounter}}<span class="uk-badge uk-float-right abs-badge">{{taskscounter}}</span>{{/if}}</a>
-								</li>
 								<li class="leftmenusmall {{#if $.Session.equals 'current' 'users'}}current{{/if}} currentselector" id="users">
 									<a href="{{pathFor 'manageusres'}}"><span class="" uk-icon="icon: users; ratio: 1" ></span>{{#if usercounter}}<span class="uk-badge uk-float-right abs-badge">{{usercounter}}</span>{{/if}}</a>
 								</li>
@@ -177,9 +174,6 @@
 							{{/if}}
 
 							{{#if isManager}}
-							<li class=" {{#if $.Session.equals 'current' 'task'}}current{{/if}} currentselector" id="task">
-								<a href="{{pathFor 'task-list'}}"><span class="" uk-icon="icon: clock; ratio: 1" ></span> Задания {{#if taskscounter}}<span class="uk-badge uk-float-right abs-badge">{{taskscounter}}</span>{{/if}}</a>
-							</li>
 							<li class=" {{#if $.Session.equals 'current' 'users'}}current{{/if}} currentselector" id="users">
 								<a href="{{pathFor 'manageusres'}}"><span class="" uk-icon="icon: users; ratio: 1" ></span> Пользователи  {{#if usercounter}}<span class="uk-badge uk-float-right abs-badge">{{usercounter}}</span>{{/if}}</a>
 							</li>

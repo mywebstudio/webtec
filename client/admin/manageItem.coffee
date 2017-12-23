@@ -171,6 +171,16 @@ Template.manageItem.events
           status: 'primary',
           pos: 'top-right'
 					
+	'change #compred': (e, t) ->
+		e.stopPropagation()
+		e.preventDefault()
+		Meteor.call 'setItemCom', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
+			if res
+        UIkit.notification
+          message: 'Изменения сохранены!',
+          status: 'primary',
+          pos: 'top-right'
+					
 	'change #time': (e, t) ->
 		e.stopPropagation()
 		e.preventDefault()
@@ -214,6 +224,7 @@ Template.manageItem.events
           pos: 'top-right',
           timeout: 5000
         })
+
 
 	'change #mainImg': (event, template) ->
 		files = event.target.files

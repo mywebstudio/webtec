@@ -13,7 +13,7 @@ Template.manageProjects.onRendered ->
     projects = Projects.find().fetch()
     for project in projects
       series = []
-      tasks = Tasks.find({project: project._id},{sort: {color: 1}}).fetch()
+      tasks = Tasks.find({project: project._id, level: 'general'},{sort: {color: 1}}).fetch()
       for task in tasks
         series.push
           id: task.order
@@ -238,3 +238,4 @@ Template.manageProjects.events
               type: 'success',
               timer: 1000,
               showConfirmButton: false
+            Meteor.call('sendRemoveProject', res);

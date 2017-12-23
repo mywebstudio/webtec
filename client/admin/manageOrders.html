@@ -20,8 +20,10 @@
                                     </h3>
 
                                     <div class="uk-position-center-right uk-position-small">
+                                        <a  id="offer" class='uk-button uk-button-default uk-button-small'>Договор</a>
                                         <a  id="bill" class='uk-button uk-button-default uk-button-small'>Счёт </a>
                                         <a  id="teze" class='teh uk-button uk-button-default uk-button-small'>Техзадание </a>
+                                        <a  id="compred" class='uk-button uk-button-default uk-button-small'>Коммерческое предложение</a>
 
 
                                         {{#unless payed}}
@@ -58,14 +60,14 @@
                                                         <label class="uk-form-label" for="name">Заказчик</label>
                                                         <div class="uk-form-controls">
                                                             <input type="text" class="uk-input uk-form-width-1-1" id="name"
-                                                                   value="{{currentUser.name}}" placeholder="ФИО или название организации">
+                                                                   value="{{#if order.user}}{{usernamef order.user}}{{else}}{{currentUser.name}}{{/if}}" placeholder="ФИО или название организации">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <label class="uk-form-label" for="name">Реквизиты и контакты Заказчика</label>
                                                         <div class="uk-form-controls">
                                                             <textarea class="uk-textarea uk-form-width-1-1" id="adress" rows="3"
-                                                                   placeholder="Банковские реквизиты и контакты">{{currentUser.adress}}</textarea>
+                                                                   placeholder="Банковские реквизиты и контакты">{{#if order.user}}{{useradressf order.user}}{{else}}{{currentUser.adress}}{{/if}}</textarea>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -74,7 +76,7 @@
                                                         <label class="uk-form-label" for="pname">Название проекта</label>
                                                         <div class="uk-form-controls">
                                                             <input type="text" class="uk-input uk-form-width-1-1" id="pname"
-                                                                   placeholder="Рабочее название для обозначения проекта" value="{{name}}">
+                                                                   placeholder="Рабочее название для обозначения проекта" value="{{#if order.name}}{{order.name}}{{else}}{{name}}{{/if}}">
                                                         </div>
                                                     </td>
                                                     <td>
@@ -112,7 +114,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <a  id="offer" class="offer uk-icon-button" uk-icon="icon: cloud-download"></a>
+                                                        <a id="offer" class="offer uk-icon-button" uk-icon="icon: cloud-download"></a>
                                                     </td>
                                                 </tr>
 

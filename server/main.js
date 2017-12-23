@@ -15,7 +15,12 @@ import './publications/userData.js';
 
 
 Meteor.startup(() => {
-    Sortable.collections = ["tasks",'items'];
+    // var pays = Pays.find().fetch();
+    // for (var i = 0; i< pays.length; i++) {
+    //     Pays.remove(pays[i]._id)
+    // }
+
+    Sortable.collections = ["tasks",'items','tickets'];
     
     var admin = Meteor.users.findOne({roles: 'admin'});
     if(!admin) {
@@ -94,6 +99,13 @@ Accounts.onCreateUser((options, user) => {
     user.manager = admin._id;
 
     Meteor.call('sendWelcomeEmail', user);
+
+    var pay = {};
+    pay.count = 300;
+    pay._createdAt = new Date();
+    pay.user = user._id;
+    pay.method = 'Бонус за регистрацию';
+    Pays.insert(pay);
 
     return user;
 });

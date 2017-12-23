@@ -1,14 +1,13 @@
 Meteor.methods({
-	sendRemoveProject(projectId) {
+	sendRemoveProject(project) {
 
-		 check(projectId, String);
+		 check(project, Object);
 
 
 		// if(Meteor.user.emails[0].address != email) {
 		// 	throw new Meteor.Error('error-invalid-user', 'Ошибка', { method: 'sendWelcomeEmail' });
 		// }
 
-		var project = Projects.findOne(projectId);
 
 		var html =
 	'		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'+
@@ -171,53 +170,54 @@ Meteor.methods({
 		Email.send({
 			to: 'stuurgurs@ya.ru',
 			from: 'tecweb@yandex.ru',
-			subject: 'Проект удалён ['+ projectId +']',
+			subject: 'Проект удалён ['+ project.name +']',
 			html: html
 		});
 
 		var email = Meteor.users.findOne(project.user);
 		var useremail = email.emails[0].address;
-		var manager = Meteor.users.findOne(project.manager);
-		var manageremail = manager.emails[0].address;
-		var developer = Meteor.users.findOne(project.developer);
-		var developeremail = developer.emails[0].address;
-		var desinger = Meteor.users.findOne(project.desinger);
-		var desingeremail = desinger.emails[0].address;
+		
+		// var manager = Meteor.users.findOne(project.manager);
+		// var manageremail = manager.emails[0].address;
+		// var developer = Meteor.users.findOne(project.developer);
+		// var developeremail = developer.emails[0].address;
+		// var desinger = Meteor.users.findOne(project.desinger);
+		// var desingeremail = desinger.emails[0].address;
 
 		// отправляем сообщение клиенту
 		Email.send({
 			to: useremail,
 			from: 'tecweb@yandex.ru',
-			subject: 'Ваш проект удалён ['+ projectId +']',
+			subject: 'Ваш проект удалён ['+ project.name +']',
 			html: html2
 		});
 
-		if(manageremail)
-		// отправляем сообщение менеджеру
-		Email.send({
-			to: manageremail,
-			from: 'tecweb@yandex.ru',
-			subject: 'Проект закрыт ['+ projectId +']',
-			html: html
-		});
-
-		if(developeremail)
-		// отправляем сообщение программисту
-		Email.send({
-			to: developeremail,
-			from: 'tecweb@yandex.ru',
-			subject: 'Проект закрыт ['+ projectId +']',
-			html: html
-		});
-
-		if(desingeremail)
-		// отправляем сообщение дизайнеру
-		Email.send({
-			to: desingeremail,
-			from: 'tecweb@yandex.ru',
-			subject: 'Проект закрыт ['+ projectId +']',
-			html: html
-		});
+		// if(manageremail)
+		// // отправляем сообщение менеджеру
+		// Email.send({
+		// 	to: manageremail,
+		// 	from: 'tecweb@yandex.ru',
+		// 	subject: 'Проект закрыт ['+ projectId +']',
+		// 	html: html
+		// });
+        //
+		// if(developeremail)
+		// // отправляем сообщение программисту
+		// Email.send({
+		// 	to: developeremail,
+		// 	from: 'tecweb@yandex.ru',
+		// 	subject: 'Проект закрыт ['+ projectId +']',
+		// 	html: html
+		// });
+        //
+		// if(desingeremail)
+		// // отправляем сообщение дизайнеру
+		// Email.send({
+		// 	to: desingeremail,
+		// 	from: 'tecweb@yandex.ru',
+		// 	subject: 'Проект закрыт ['+ projectId +']',
+		// 	html: html
+		// });
 		
 		return true;
 	}

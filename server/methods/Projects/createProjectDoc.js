@@ -191,5 +191,271 @@ Meteor.methods({
 		};
 
 		return pdf;
+	},
+	createProjectSpec(projectId) {
+		const project = Projects.findOne(projectId);
+		if (!project){
+			throw new Meteor.Error('error-invalid-name', 'Проект не существует', { method: 'createProjectPdf' });
+		}
+
+		if (project.user != this.userId  && Meteor.user().roles != 'admin') {
+			throw new Meteor.Error('error-invalid-name', 'Нет доступа', { method: 'createProjectPdf' });
+		}
+
+		const order = OrdersList.findOne(project.bill[0]);
+
+		var pdf = {
+			info: {
+				title: 'Спецификация на разработку сайта №000'+order.number+' от '+ moment(project._createdAt).format('DD-MM-YYYY'),
+				author: 'Stuurgurs',
+				subject: 'Theme',
+				keywords: 'webtec, tecweb.ru, Спецификация'
+			},
+			pageSize: 'A4',
+			pageOrientation: 'portrait',
+			pageMargins: [30, 60, 25, 60],
+			styles: {
+				header: {
+					fontSize: 14,
+					alignment: 'center',
+					bold: true
+				}
+			},
+			content: [
+				{
+					text: 'Спецификация по проекту '+ project.name +' от '+ moment(project._createdAt).format('DD-MM-YYYY'),
+					fontSize: 16,
+					bold: true,
+					alignment: 'center',
+					margin: [30, 10, 30, 40]
+				},
+				project.brif
+			],
+			fontSize: 8
+		};
+
+		return pdf;
+	},
+	createProjectCompred(projectId) {
+
+		const project = Projects.findOne(projectId);
+		if (!project){
+			throw new Meteor.Error('error-invalid-name', 'Проект не существует', { method: 'createProjectPdf' });
+		}
+
+		if (project.user != this.userId  && Meteor.user().roles != 'admin') {
+			throw new Meteor.Error('error-invalid-name', 'Нет доступа', { method: 'createProjectPdf' });
+		}
+
+		const order = OrdersList.findOne(project.bill[0]);
+		if (!order){
+			throw new Meteor.Error('error-invalid-name', 'Проект не существует', { method: 'createOrderPdf' });
+		}
+
+		if (order.user != this.userId && order.manager != this.userId && Meteor.user().roles != 'admin') {
+			throw new Meteor.Error('error-invalid-name', 'Этот счёт уже оформлен', { method: 'createOrderPdf' });
+		}
+
+		var getBase64Data = function(file, callback) {
+			// callback has the form function (err, res) {}
+			var readStream = file.createReadStream();
+			var buffer = [];
+			readStream.on('data', function(chunk) {
+				buffer.push(chunk);
+			});
+			readStream.on('error', function(err) {
+				callback(err, null);
+			});
+			readStream.on('end', function() {
+				callback(null, buffer.concat()[0].toString('base64'));
+			});
+		};
+
+		var content = [];
+
+		for(var i = 0; i < order.items.length; i++){
+			var item = Items.findOne(order.items[i]);
+			if(item.type != 'regular' && content.indexOf(item.com) == -1) {
+				content.push(item.com);
+
+				if(item.img) {
+					var doc = Images.findOne(item.img.substr(-17));
+					var img = Meteor.wrapAsync(getBase64Data);
+					var header = {};
+					header.image = 'data:image/jpeg;base64,'+img(doc);
+					header.width = 75;
+					header.style = 'header';
+					header.alignment = 'center';
+					content.push(header);
+				}
+			}
+		}
+
+		var pdf = {
+			info: {
+				title: 'Коммерческое предложение по созданию и развитию сайта. ' + project.name,
+				author: 'Stuurgurs',
+				subject: 'Theme',
+				keywords: 'webtec, tecweb.ru, коммерческое предложение'
+			},
+			pageSize: 'A4',
+			pageOrientation: 'portrait',
+			pageMargins: [30, 60, 25, 60],
+			styles: {
+				header: {
+					fontSize: 14,
+					margin: [0, 20, 0, 20]
+				}
+			},
+			content: [
+				{
+					text: project.name,
+					fontSize: 12,
+					bold: true,
+					alignment: 'center',
+					margin: [30, 0, 30, 10]
+				},
+				{
+					text: 'Коммерческое предложение',
+					fontSize: 16,
+					bold: true,
+					alignment: 'center',
+					margin: [30, 30, 30, 30]
+				},
+
+				content.reverse()
+			]
+		};
+
+		return pdf;
+	},
+	createProjectHosting(projectId) {
+		const project = Projects.findOne(projectId);
+		if (!project){
+			throw new Meteor.Error('error-invalid-name', 'Проект не существует', { method: 'createProjectHosting' });
+		}
+
+		if (project.user != this.userId  && Meteor.user().roles != 'admin') {
+			throw new Meteor.Error('error-invalid-name', 'Нет доступа', { method: 'createProjectHosting' });
+		}
+
+
+		var pdf = {
+			info: {
+				title: 'Досупы к хостингу и домену по проекту '+project.name,
+				author: 'Stuurgurs',
+				subject: 'Theme',
+				keywords: 'webtec, tecweb.ru, Доступы'
+			},
+			pageSize: 'A4',
+			pageOrientation: 'portrait',
+			pageMargins: [30, 60, 25, 60],
+			styles: {
+				header: {
+					fontSize: 14,
+					alignment: 'center',
+					bold: true
+				}
+			},
+			content: [
+				{
+					text: 'Досупы к хостингу и домену по проекту '+ project.name,
+					fontSize: 16,
+					bold: true,
+					alignment: 'center',
+					margin: [30, 10, 30, 40]
+				},
+				project.hosting
+			],
+			fontSize: 8
+		};
+
+		return pdf;
+	},
+	createProjectAdministration(projectId) {
+		const project = Projects.findOne(projectId);
+		if (!project){
+			throw new Meteor.Error('error-invalid-name', 'Проект не существует', { method: 'createProjectAdministration' });
+		}
+
+		if (project.user != this.userId  && Meteor.user().roles != 'admin') {
+			throw new Meteor.Error('error-invalid-name', 'Нет доступа', { method: 'createProjectAdministration' });
+		}
+
+
+		var pdf = {
+			info: {
+				title: 'Досупы к сайту по проекту '+project.name,
+				author: 'Stuurgurs',
+				subject: 'Theme',
+				keywords: 'webtec, tecweb.ru, Доступы'
+			},
+			pageSize: 'A4',
+			pageOrientation: 'portrait',
+			pageMargins: [30, 60, 25, 60],
+			styles: {
+				header: {
+					fontSize: 14,
+					alignment: 'center',
+					bold: true
+				}
+			},
+			content: [
+				{
+					text: 'Досупы к сайту по проекту '+ project.name,
+					fontSize: 16,
+					bold: true,
+					alignment: 'center',
+					margin: [30, 10, 30, 40]
+				},
+				project.administration
+			],
+			fontSize: 8
+		};
+
+		return pdf;
+	},
+	createProjectSocial(projectId) {
+		const project = Projects.findOne(projectId);
+		if (!project){
+			throw new Meteor.Error('error-invalid-name', 'Проект не существует', { method: 'createProjectSocial' });
+		}
+
+		if (project.user != this.userId  && Meteor.user().roles != 'admin') {
+			throw new Meteor.Error('error-invalid-name', 'Нет доступа', { method: 'createProjectSocial' });
+		}
+
+
+		var pdf = {
+			info: {
+				title: 'Досупы к сервисам по проекту '+project.name,
+				author: 'Stuurgurs',
+				subject: 'Theme',
+				keywords: 'webtec, tecweb.ru, Доступы'
+			},
+			pageSize: 'A4',
+			pageOrientation: 'portrait',
+			pageMargins: [30, 60, 25, 60],
+			styles: {
+				header: {
+					fontSize: 14,
+					alignment: 'center',
+					bold: true
+				}
+			},
+			content: [
+				{
+					text: 'Досупы к сервисам по проекту '+ project.name,
+					fontSize: 16,
+					bold: true,
+					alignment: 'center',
+					margin: [30, 10, 30, 40]
+				},
+				project.social
+			],
+			fontSize: 8
+		};
+
+		return pdf;
 	}
 });

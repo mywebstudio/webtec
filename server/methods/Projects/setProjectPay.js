@@ -5,7 +5,6 @@ Meteor.methods({
 		check(value, Number);
 
 
-
 			const currentApplication = Projects.findOne(id);
 			if (currentApplication == null) {
 				throw new Meteor.Error('error-application-not-found', 'Application not found', {method: 'setProjectPay'});
@@ -20,14 +19,20 @@ Meteor.methods({
 				throw new Meteor.Error( 'Минимальный платёж 100 руб', {method: 'setProjectPay'});
 			}
 
-			var payed = currentApplication.payed;
+		var pay = {};
+		
+		var payed = currentApplication.payed;
 
-			payed = payed + value;
+		payed = payed + value;
 
 		if (payed > currentApplication.sum) {
 			payed = currentApplication.sum - currentApplication.payed;
 			value = payed;
-
+			pay.count = value;
+			pay._createdAt = new Date();
+			pay.user = this.userId;
+			pay.project = id;
+			Pays.insert(pay);
 
 			Projects.update(id, {
 				$set: {
@@ -35,17 +40,21 @@ Meteor.methods({
 				}
 			});
 		}
-		else
+		else {
+			pay.count = value;
+			pay._createdAt = new Date();
+			pay.user = this.userId;
+			pay.project = id;
+			Pays.insert(pay);
+			
 			Projects.update(id, {
 				$set: {
 					payed: payed
 				}
 			});
+		}
 
-
-			Meteor.call('sendProjectPayed', id, value );
-
-			return Meteor.call('userBalanceMinus', this.userId, value );
+		return Meteor.call('userBalanceMinus', this.userId, value );
 
 	}
 });

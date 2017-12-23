@@ -141,6 +141,14 @@ Template.manageOrders.helpers
   item: (id) ->
     return Items.findOne(id)
 
+  usernamef: (id) ->
+    x = Meteor.users.findOne(id)
+    return x.name
+
+  useradressf: (id) ->
+    x = Meteor.users.findOne(id)
+    return x.adress
+
   itemsList: ->
     return Template.instance().list.get()
 
@@ -162,8 +170,6 @@ Template.manageOrders.events
     e.preventDefault()
     e.stopPropagation()
     Meteor.call 'setOrderActive', FlowRouter.getParam('id'), (err, res) ->
-
-
           
   'click .plus': (e, t) ->
     e.preventDefault()
@@ -249,6 +255,16 @@ Template.manageOrders.events
           
   'click .teh': (e, t) ->
     Meteor.call 'createOrderPdf', FlowRouter.getParam('id'), $('#text-tehzadanie').val(), (err, res) ->
+      if res
+        pdfMake.createPdf(res).open()
+      if err
+        UIkit.notification
+          message: err,
+          status: 'error',
+          pos: 'top-right'
+                    
+  'click #compred': (e, t) ->
+    Meteor.call 'createOrderCompred', FlowRouter.getParam('id'), $('#text-tehzadanie').val(), (err, res) ->
       if res
         pdfMake.createPdf(res).open()
       if err
@@ -348,7 +364,6 @@ Template.manageOrders.events
                       _payedAt: new Date
                       payed: true
                       active: false
-
   #                Meteor.call('sendNewProj', res);
                   FlowRouter.go 'dashboard'
                 if err

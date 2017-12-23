@@ -8,7 +8,7 @@
 	{{#with data}}
 
 
-	{{> title title='Цены' item1='/manage/items' item1name='Цены' item2name=name  subtitle=name }}
+	{{> title title='Цены' item1='/manage/items' item1name='Цены' item2name=name }}
 
 	<div class="uk-margin-small uk-padding-small" >
 
@@ -206,9 +206,16 @@
 							</div>
 
 							<div class="uk-margin">
+								<label class="uk-form-label" for="compred">Коммерческое предложение</label>
+								<div class="uk-form-controls">
+									<textarea id="compred" rows="7" cols="5" class="uk-textarea uk-width-1-1">{{com}}</textarea>
+								</div>
+							</div>
+
+							<div class="uk-margin">
 								<label class="uk-form-label" for="teh">Техническое задание</label>
 								<div class="uk-form-controls">
-									<textarea id="teh" rows="7" class="uk-input uk-width-1-1">{{teh}}</textarea>
+									<textarea id="teh" rows="7" cols="5" class="uk-textarea uk-width-1-1">{{teh}}</textarea>
 								</div>
 							</div>
 

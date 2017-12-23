@@ -17,6 +17,32 @@ Template.manageUsers.helpers
 
 
 Template.manageUsers.events
+  'click .pay': (e, tm) ->
+    html = '<label>Введите сумму платежа</label><br><input type="number" min="0" id="paysum" class="uk-input" placeholder="Cумма платежа"><br><br><label>Способ оплаты:</label><br><input type="text" id="paymeth" class="uk-input" placeholder="Наличные">'
+    swal
+      title: 'Пополнение баланса',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Пополнить',
+      cancelButtonText: 'Отмена',
+      closeOnConfirm: true,
+      html: html
+    , (isConfirm) ->
+      if(isConfirm)
+        Meteor.call 'setPay', e.currentTarget.id, Number($('#paysum').val()), $('#paymeth').val(), (error, res) ->
+          if res
+            UIkit.notification
+              message: 'Пополнено'
+              status: 'primary'
+              pos: 'top-right'
+              timeout: 5000
+            Meteor.call('setPaySend', e.currentTarget.id, Number($('#paysum').val()) );
+          if error
+            UIkit.notification
+              message: error
+              status: 'error'
+              pos: 'top-right'
+              timeout: 5000
 
   'change .active': (e, t) ->
     e.stopPropagation()
@@ -86,7 +112,8 @@ Template.manageUsers.events
       if err
         toastr.error handleError(err)
 
-  'click .delete': (e, instance) ->
+  'click .del': (e, instance) ->
+    console.log '+'
     user = e.currentTarget.id
     if user
       swal

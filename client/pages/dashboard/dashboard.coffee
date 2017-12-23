@@ -13,7 +13,7 @@ Template.dashboard.onRendered ->
         projects = Projects.find().fetch()
         for project in projects
             series = []
-            tasks = Tasks.find({project: project._id},{sort: {color: 1, time: 1}}).fetch()
+            tasks = Tasks.find({project: project._id, level: 'general'},{sort: {color: 1, time: 1}}).fetch()
             for task in tasks
                 series.push
                     id: task.order
@@ -211,6 +211,7 @@ Template.dashboard.events
                             status: 'primary'
                             pos: 'top-right'
                             timeout: 5000
+                        Meteor.call('sendProjectPayed', e.currentTarget.id, Number($('#paysum').val()) );
                     if error
                         UIkit.notification
                             message: error

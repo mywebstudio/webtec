@@ -39,11 +39,11 @@ Meteor.methods({
 		//Создаём чат проекты
 		if(items1.length) {
 			var room = {};
-			var roomId = RoomsList.insert(room);
+			// var roomId = RoomsList.insert(room);
 
 			var project = {};
 			project.name = order.name;
-			project.room = roomId;
+			// project.room = roomId;
 			project.status = 'Ожидаем предоплату'; 
 			project.progress = 1;
 			project.short = 'Дополнительное описание';
@@ -52,7 +52,7 @@ Meteor.methods({
 
 
 			var admin = Meteor.users.findOne({roles: 'admin'});
-			const colors = ['#9b59b6', '#16a085', '#2980b9', '#e67e22', '#2980b9', '#27ae60', '#e67e22', '#e74c3c', '#16a085', '#9b59b6', '#2980b9'];
+			const colors = ['#9b59b6', '#16a085', '#2980b9', '#e67e22', '#fbfff6', '#e6261e', '#e6261e', '#fbfff6', '#e67e22', '#2980b9', '#16a085'];
 			project.bill = [oid];
 			project.items = order.items;
 			project.user = this.userId;
@@ -61,10 +61,9 @@ Meteor.methods({
 			project.deadline = moment().add(30, 'days');
 			project.type = 'general';
 			project.payed = 0;
-
 			var id = Projects.insert(project);
 			var sum = 0;
-			//Создаём задачи
+			//Создаём задачи и тикеты
 			for (i = 0; i < items1.length; i++) {
 					item = items1[i];
 					var cat = Sections.findOne({redirectUri: item.category});
@@ -85,9 +84,24 @@ Meteor.methods({
 					task.teh = item.teh;
 					task.sub = [{date: new Date(), text: item.teh, status: 0, user: this.userId}];
 					task.sum = item.price;
+					task.level = 'general';
 					sum = sum + item.price;
 					task._createdAt = new Date;
+					var thisid = Random.id();
+					task._id = thisid;
+					task.labels = [thisid];
+					task.color2 = colors[cat.sort]+'24';
 					Tasks.insert(task);
+
+					// var ticket = {};
+					// ticket.user = this.userId;
+					// ticket.name = item.name;
+					// ticket.text = item.teh;
+					// ticket._createdAt = new Date;
+					// ticket.order = i;
+					// ticket.project = id;
+					// ticket.labels = [tid];
+					// Tickets.insert(ticket);
 
 			}
 			Projects.update(id, {
@@ -101,11 +115,11 @@ Meteor.methods({
 		// При наличии ежемесечных услуг созздаем ещё один проект
 		if(items2.length) {
 			var room = {};
-			var roomId = RoomsList.insert(room);
+			// var roomId = RoomsList.insert(room);
 
 			var project = {};
 			project.name = 'Регулярный проект';
-			project.room = roomId;
+			// project.room = roomId;
 			project.status = 'Ожидаем предоплату';
 			project.progress = 1;
 			project.short = 'Дополнительное описание';
@@ -143,9 +157,24 @@ Meteor.methods({
 					task.finished = false;
 					task.teh = item.teh;
 					task.sum = item.price;
+					task.level = 'general';
 					sum = sum + item.price;
 					task._createdAt = new Date;
+					var thisid = Random.id();
+					task._id = thisid;
+					task.labels = [thisid];
+					task.color2 = colors[cat.sort]+'24';
 					Tasks.insert(task);
+
+					// var ticket = {};
+					// ticket.user = this.userId;
+					// ticket.name = item.name;
+					// ticket.text = item.teh;
+					// ticket._createdAt = new Date;
+					// ticket.order = i;
+					// ticket.project = id;
+					// ticket.labels = [tid];
+					// Tickets.insert(ticket);
 
 			}
 			Projects.update(id, {

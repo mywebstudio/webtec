@@ -1,9 +1,11 @@
 Meteor.methods({
-	sendTaskStatus(id) {
+	sendTaskStatus(pid, id) {
 
+		check(pid, String);
 		check(id, String);
 
 		const currentApplication = Tasks.findOne(id);
+		const project = Projects.findOne(pid);
         //
 		//
 
@@ -70,7 +72,7 @@ Meteor.methods({
 				'		<td class="container" width="600" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">' +
 				'			<div class="content" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">' +
 				'				<table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #FF9F00; margin: 0; padding: 20px;" align="center" bgcolor="#FF9F00" valign="top">' +
-				'				Задание выполнено (' +
+				'				Задание по проекту '+ project.name +' выполнено (' +
 				currentApplication.title +
 					')'+
 				'				</td>' +
@@ -80,8 +82,8 @@ Meteor.methods({
 				'					Задача в рамках вашего проекта выполнена. Если вы не согласны, вы всегда можете отклонить её на странице задачи' +
 				'					</td>' +
 				'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">' +
-				'						<a href="https://tecweb.ru/tasks/' +
-				id +
+				'						<a href="https://tecweb.ru/projects/' +
+				pid +
 				'" class="btn-primary" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">Перейки к задаче</a>' +
 				'					</td>' +
 				'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">' +
@@ -97,7 +99,7 @@ Meteor.methods({
 			var developermail = developer.emails[0].address;
 
 
-			// отправляем сообщение исполнителю
+			// отправляем сообщение создателю проекта
 			Email.send({
 				to: developermail,
 				from: 'tecweb@yandex.ru',
@@ -177,8 +179,8 @@ Meteor.methods({
 				'					Клиент считает, что задание требует доработки, вот что необходимо доделать:' +
 				'					</td>' +
 				'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">' +
-				'						<a href="https://tecweb.ru/tasks/' +
-				id +
+				'						<a href="https://tecweb.ru/projects/' +
+				pid +
 				'" class="btn-primary" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">Перейки к задаче</a>' +
 				'					</td>' +
 				'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">' +

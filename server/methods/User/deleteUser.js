@@ -14,13 +14,21 @@ Meteor.methods({
 		if (Meteor.user().roles != 'admin') {
 			throw new Meteor.Error('error-application-not-found', 'Недостаточно полномочий для этих действий', { method: 'deleteUser' });
 		}
-
-		Meteor.users.remove(id);
-		
+		// Удаляем проект и задания
 		var projs = Projects.find({user: id}).fetch();
 		for (var i = 0; i< projs.length; i++) {
 			Meteor.call('deleteProject', projs[i]._id);
 		}
+
+		// Удаляем платежи
+		var pays = Pays.find({user: id}).fetch();
+		for (var i = 0; i< pays.length; i++) {
+			Pays.remove(pays[i]._id)
+		}
+
+
+		Meteor.users.remove(id);
+		
 		
 		return true;
 	}

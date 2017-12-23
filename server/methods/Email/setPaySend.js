@@ -1,7 +1,8 @@
 Meteor.methods({
-	addTicketEmail(task) {
-		var project = Projects.findOne(task.project);
-		var username = Meteor.users.findOne(task.user);
+	setPaySend(id, value) {
+
+		var user = Meteor.users.findOne(id);
+
 		var html =
 	'		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'+
 	'	<html xmlns="http://www.w3.org/1999/xhtml" style="font-family:     Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">'+
@@ -64,17 +65,16 @@ Meteor.methods({
 	'		<td class="container" width="600" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">'+
 	'			<div class="content" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">'+
 	'				<table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #FF9F00; margin: 0; padding: 20px;" align="center" bgcolor="#FF9F00" valign="top">'+
-	'				Появилась новая задача по проекту ['+ task.projectname + ']'+
+	'				Ваш баланс пополнен на сумму '+ value + ' руб.'+
 	'				</td>'+
 	'				</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">'+
 	'					<table width="100%" cellpadding="0" cellspacing="0" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">' +
 	'					<tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">'+
-	'					Новая задача от '+ username.name + ': <br>' + task.teh +
+	'					Ваш баланс пополнен на сумму '+ value + ' руб.'+
 	'					</td>'+
 	'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">'+
-	'						<a href="https://tecweb.ru/projects/'+
-	task.project +
-	'" class="btn-primary" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">Перейки к задаче</a>'+
+	'						<a href="https://tecweb.ru/pays/'+
+	'" class="btn-primary" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">Перейки к платежам</a>'+
 	'					</td>'+
 	'					</tr><tr style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family:    Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">'+
 	'						Спасибо за доверие к нашей компании! Дня нас нет ничего невозможного'+
@@ -84,22 +84,11 @@ Meteor.methods({
 	'				</body>'+
 	'	</html>';
 
-
-		var projectuser = Meteor.users.findOne(project.user);
-
-		// отправляем сообщение создателю задачи
+		// отправляем сообщение клиенту
 		Email.send({
 			from: 'tecweb@yandex.ru',
-			to: username.emails[0].address,
-			subject: 'Новая задача ['+ task.title +']',
-			html: html
-		});
-
-		// отправляем сообщение создателю проекта
-		Email.send({
-			from: 'tecweb@yandex.ru',
-			to: projectuser.emails[0].address,
-			subject: 'Новая задача ['+ task.title +']',
+			to: user.emails[0].address,
+			subject: 'Пополнение баланса',
 			html: html
 		});
 	}

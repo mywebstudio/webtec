@@ -186,8 +186,8 @@ Meteor.methods({
 		});
 
 		var email = Meteor.user().emails[0].address;
-		var manager = Meteor.users.findOne(Meteor.user().manager);
-		var manageremail = manager.emails[0].address;
+		// var manager = Meteor.users.findOne(Meteor.user().manager);
+		// var manageremail = manager.emails[0].address;
 
 		// отправляем сообщение клиенту
 		Email.send({
@@ -197,12 +197,12 @@ Meteor.methods({
 			html: html2
 		});
 
-		// отправляем сообщение менеджеру
-		Email.send({
-			to: manageremail,
-			from: 'tecweb@yandex.ru',
-			subject: 'Создан новый проект ['+ project.name +']',
-			html: html
-		});
+		// // отправляем сообщение менеджеру
+		// Email.send({
+		// 	to: manageremail,
+		// 	from: 'tecweb@yandex.ru',
+		// 	subject: 'Создан новый проект ['+ project.name +']',
+		// 	html: html
+		// });
 	}
 });

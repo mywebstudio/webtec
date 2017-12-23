@@ -21,6 +21,13 @@ Meteor.methods({
 			$set: {balance: balance}
 		});
 
+		var pay = {};
+		pay.count = 300;
+		pay._createdAt = new Date();
+		pay.user = user._id;
+		pay.method = 'Бонус за быстрое оформление проекта';
+		Pays.insert(pay);
+
 		return value
 	}
 });

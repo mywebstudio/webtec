@@ -10,6 +10,7 @@ Meteor.methods({
 		const currentApplication = OrdersList.findOne({user: this.userId, active: true});
 		const user = Meteor.users.findOne(this.userId);
 
+		var fitem = {};
 		var fitem = Items.findOne(items[0]);
 		
 

@@ -25,5 +25,6 @@ Meteor.publish('ProjectsSmart', function() {
 		if (Meteor.user().roles == 'manager')
 			return Projects.find({manager: this.userId});
 	}
+	else return this.ready(); 
 	
 });
