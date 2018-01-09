@@ -8,3 +8,5 @@ Projects = new Mongo.Collection('projects');
 Tasks = new Mongo.Collection('tasks');
 Tickets = new Mongo.Collection('tickets');
 Pays = new Mongo.Collection('pays');
+Settings = new Mongo.Collection('settings');
+

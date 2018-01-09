@@ -106,9 +106,9 @@ Template.manageOrders.helpers
   tableNumber: (num) ->
     return Number(num) + 1
 
-  stoimost: (price, percent, kol) ->
-    if Meteor.user() and Meteor.user().discont
-      x = price - price * Meteor.user().discont * 0.01
+  stoimost: (price, percent, discont, kol) ->
+    if discont
+      x = price - price * discont * 0.01
       if percent
         return x
       if !kol and !percent
@@ -140,14 +140,6 @@ Template.manageOrders.helpers
 
   item: (id) ->
     return Items.findOne(id)
-
-  usernamef: (id) ->
-    x = Meteor.users.findOne(id)
-    return x.name
-
-  useradressf: (id) ->
-    x = Meteor.users.findOne(id)
-    return x.adress
 
   itemsList: ->
     return Template.instance().list.get()
@@ -232,9 +224,9 @@ Template.manageOrders.events
       row = []
       row.push(i + 1)
       row.push( $($('.findname')[i]).html().toString() )
-      row.push( $($('.findprice1')[i]).html().trim() )
+      row.push( $($('.findpricegen')[i]).html().trim() )
       row.push( $($('.findkol')[i]).html().toString() )
-      row.push( $($('.findprice2')[i]).html().trim() )
+      row.push( $($('.findpricegen2')[i]).html().trim() )
       send.push( row )
       i++
     sum = $('#sum').html()
@@ -273,7 +265,7 @@ Template.manageOrders.events
           status: 'error',
           pos: 'top-right'
           
-  'click .offer': (e, t) ->
+  'click #offer': (e, t) ->
     if $('#name').val() and $('#adress').val()
       Meteor.call 'createOrderDoc', FlowRouter.getParam('id'), (err, res) ->
         if res
@@ -389,7 +381,7 @@ Template.manageOrders.events
   'change #name': (e, t) ->
     e.stopPropagation()
     e.preventDefault()
-    Meteor.call 'setName', Meteor.userId(), e.currentTarget.value, (err, res) ->
+    Meteor.call 'setOrderUserName', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
       if res
         UIkit.notification
           message: 'Изменения сохранены!'
@@ -407,7 +399,7 @@ Template.manageOrders.events
   'change #adress': (e, t) ->
     e.stopPropagation()
     e.preventDefault()
-    Meteor.call 'setAdress', Meteor.userId(), e.currentTarget.value, (err, res) ->
+    Meteor.call 'settOrderUserAdress', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
       if res
         UIkit.notification
           message: 'Изменения сохранены!'

@@ -21,9 +21,14 @@ Meteor.methods({
 		}
 
 		// Награждаем пользователя за оформление проекта сегодня
-		if (Meteor.user().balance == 300){
-			Meteor.call('userBalancePlus', this.userId, 300 )
+		var s = Settings.findOne({alias: "bonus-za-pervyj-proekt"});
+		if(s.active){
+			if (Meteor.user().balance == 300){
+				Meteor.call('userBalancePlus', this.userId, 300 )
+			}
 		}
+
+		
 
 		//Считаем сколько проектов создавать
 
@@ -38,12 +43,9 @@ Meteor.methods({
 
 		//Создаём чат проекты
 		if(items1.length) {
-			var room = {};
-			// var roomId = RoomsList.insert(room);
 
 			var project = {};
 			project.name = order.name;
-			// project.room = roomId;
 			project.status = 'Ожидаем предоплату'; 
 			project.progress = 1;
 			project.short = 'Дополнительное описание';
@@ -92,17 +94,6 @@ Meteor.methods({
 					task.labels = [thisid];
 					task.color2 = colors[cat.sort]+'24';
 					Tasks.insert(task);
-
-					// var ticket = {};
-					// ticket.user = this.userId;
-					// ticket.name = item.name;
-					// ticket.text = item.teh;
-					// ticket._createdAt = new Date;
-					// ticket.order = i;
-					// ticket.project = id;
-					// ticket.labels = [tid];
-					// Tickets.insert(ticket);
-
 			}
 			Projects.update(id, {
 				$set: {sum: sum}
@@ -114,17 +105,12 @@ Meteor.methods({
 
 		// При наличии ежемесечных услуг созздаем ещё один проект
 		if(items2.length) {
-			var room = {};
-			// var roomId = RoomsList.insert(room);
-
 			var project = {};
 			project.name = 'Регулярный проект';
-			// project.room = roomId;
 			project.status = 'Ожидаем предоплату';
 			project.progress = 1;
 			project.short = 'Дополнительное описание';
 			project.brif = order.spec;
-
 
 			var admin = Meteor.users.findOne({roles: 'admin'});
 			const colors = ['#9b59b6', '#16a085', '#2980b9', '#e67e22', '#2980b9', '#27ae60', '#e67e22', '#e74c3c', '#16a085', '#9b59b6', '#2980b9'];
@@ -165,16 +151,6 @@ Meteor.methods({
 					task.labels = [thisid];
 					task.color2 = colors[cat.sort]+'24';
 					Tasks.insert(task);
-
-					// var ticket = {};
-					// ticket.user = this.userId;
-					// ticket.name = item.name;
-					// ticket.text = item.teh;
-					// ticket._createdAt = new Date;
-					// ticket.order = i;
-					// ticket.project = id;
-					// ticket.labels = [tid];
-					// Tickets.insert(ticket);
 
 			}
 			Projects.update(id, {

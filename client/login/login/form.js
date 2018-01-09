@@ -1,5 +1,6 @@
-/*globals OnePassword, device, setLanguage */
-import toastr from 'toastr';
+import { Accounts } from 'meteor/accounts-base'
+
+
 Template.loginForm.onCreated(function() {
 
 	this.state = new ReactiveVar('login');
@@ -18,6 +19,11 @@ Template.loginForm.onRendered(function() {
 					return $('input[name=email]').select().focus();
 				});
 			case 'register':
+				return Meteor.defer(function() {
+					return $('input[name=name]').select().focus();
+				});
+
+			case 'register2':
 				return Meteor.defer(function() {
 					return $('input[name=name]').select().focus();
 				});
@@ -66,25 +72,42 @@ Template.loginForm.events({
 				});
 				return;
 			}
-			if (state === 'register' && formData.email && formData.emailOrUsername && formData.pass) {
+			if (state === 'register' && formData.email && formData.pass) {
 
-				const createUser = {
-					username: formData.emailOrUsername,
+				const createUser = {					
 					password: formData.pass,
 					email: formData.email,
 					verified: false
 				};
 
-				const _id = Accounts.createUser(createUser);
-				if(_id) {
-
-					 Meteor.loginWithPassword(formData.username, formData.password);
-					if (Session.get('partner')) {
-						Meteor.call('sendNewPartner', Session.get('partner'));
+				const _id = Accounts.createUser(createUser, function(err){
+					if(!err){
+						if(Session.get('partner')) {
+							Meteor.call('sendNewPartner', Session.get('partner'));
+						}
+						// Meteor.loginWithPassword(formData.username, formData.password);
+						FlowRouter.go('dashboard');
 					}
-					FlowRouter.go('home');
-				}
+				});
+			}
+			if (state === 'register2' && formData.email && formData.pass ) {
+				console.log( state );
+				const createUser = {					
+					password: formData.pass,
+					email: formData.email,
+					verified: false
+				};
 
+				Accounts.createUser(createUser, function(err){
+					if(!err){
+						
+						// Meteor.loginWithPassword(formData.username, formData.password);
+						if (Session.get('partner')) {
+							Meteor.call('sendNewPartner', Session.get('partner'));
+						}
+						FlowRouter.go('dashboard');
+					}
+				});
 			}
 			if (state === 'forgot-password') {
 				Meteor.call('sendForgotPasswordEmail', formData.email, (err) => {
@@ -115,7 +138,7 @@ Template.loginForm.events({
 							if (Session.get('partner')) {
 								Meteor.call('sendNewPartner', Session.get('partner'));
 							}
-							FlowRouter.go('home');
+							FlowRouter.go('dashboard');
 						}
 
 
@@ -143,7 +166,7 @@ Template.loginForm.events({
 				if (Session.get('partner')) {
 					Meteor.call('sendNewPartner', Session.get('partner'));
 				}
-				FlowRouter.go('home');
+				FlowRouter.go('dashboard');
 			}
 
 			if (err) {
@@ -163,7 +186,7 @@ Template.loginForm.events({
 				if (Session.get('partner')) {
 					Meteor.call('sendNewPartner', Session.get('partner'));
 				}
-				FlowRouter.go('home');
+				FlowRouter.go('dashboard');
 			}
 
 			if (err) {
@@ -186,7 +209,7 @@ Template.loginForm.events({
 				console.log(res)
 			}
 		});
-		FlowRouter.go('home')
+		FlowRouter.go('dashboard')
 
 	},
 	'click .back-to-login'() {
@@ -197,6 +220,9 @@ Template.loginForm.events({
 	},
 	'click .regist'() {
 		Template.instance().state.set('register');
+	},
+	'click .regist2'() {
+		Template.instance().state.set('register2');
 	}
 });
 

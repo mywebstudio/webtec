@@ -2,53 +2,9 @@
     {{> title title='Заказы' item1name='Заказы'}}
 
     <div class="uk-margin-small uk-padding-small" >
-
         <div class="uk-width-1-1  uk-card uk-card-body uk-card-default  uk-margin-auto">
-            <div uk-grid>
-                <div class="uk-width-1-1">
-                    <div class="">
-                        <table class="uk-table uk-table-align-vertical">
-                            <thead>
-                            <tr>
-
-                                <th class="uk-table-expand">Заказ</th>
-                                <th class="uk-table-expand">Название</th>
-                                <th class="uk-table-auto">Сумма</th>
-                                <th class="uk-table-auto">Статус</th>
-                                <th>Действия</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            {{#each orders}}
-                            <tr>
-
-                                <td> <a href="{{pathFor 'manageorders' id=_id}}">Заказ №000{{number}} от {{date _createdAt}}</a></td>
-                                <td>{{name}}</td>
-                                <td>
-                                    {{count}} руб.
-                                </td>
-                                <td>{{#if payed}}В работе {{else}} На подготовке {{/if}}</td>
-                                <td class="uk-text-nowrap">
-                                    <a href="{{pathFor 'manageorders' id=_id}}"  uk-icon="icon: pencil" class="uk-icon-button"></a>
-
-                                    <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash"></span>
-
-                                </td>
-                            </tr>
-                            {{/each}}
-                            </tbody>
-
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-
+            {{> ordersList}}
         </div>
     </div>
-
-
-
 
 </template>

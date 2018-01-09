@@ -1,0 +1,45 @@
+<template name="ordersList">
+
+    <div class="uk-width-1-1">
+        <div class="">
+            <table class="uk-table uk-table-align-vertical">
+                <thead>
+                <tr>
+
+                    <th class="uk-table-auto">Заказ</th>
+                    <th class="uk-table-auto">Название</th>
+                    <th class="uk-table-auto">Сумма</th>
+                    {{#unless short}}
+                    <th class="uk-table-auto">Статус</th>
+                    <th>Действия</th>
+                    {{/unless}}
+                </tr>
+                </thead>
+
+                <tbody>
+                {{#each orders}}
+                <tr>
+
+                    <td> <a href="{{pathFor 'manageorders' id=_id}}">Заказ №000{{number}} от {{date _createdAt}}</a></td>
+                    <td>{{name}}</td>
+                    <td class="uk-text-nowrap">
+                        {{count}} &#8381;
+                    </td>
+                    {{#unless short}}
+                    <td>{{#if payed}}В работе {{else}} На подготовке {{/if}}</td>
+                    <td class="uk-text-nowrap">
+                        <a href="{{pathFor 'manageorders' id=_id}}"  uk-icon="icon: pencil" class="uk-icon-button"></a>
+
+                        <span id="{{_id}}" class="delete uk-icon-button" uk-icon="icon: trash"></span>
+
+                    </td>
+                    {{/unless}}
+                </tr>
+                {{/each}}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</template>

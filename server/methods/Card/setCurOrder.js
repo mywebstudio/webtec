@@ -33,7 +33,7 @@ Meteor.methods({
 			application.items = items;
 			application.confirm = true;
 			
-			if(fitem.category == 'besplatno') application.free = true;
+			if(fitem && fitem.category == 'besplatno') application.free = true;
 
 			application._id = OrdersList.insert(application);
 

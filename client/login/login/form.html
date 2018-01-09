@@ -25,9 +25,18 @@
 								<span class="uk-form-icon" uk-icon="icon: mail"></span>
 								<input type="email" class="uk-input uk-form-width-medium" placeholder="Email"  name='email' id="email" >
 							</div><br>
+
+							<div class="uk-inline ">
+								<span class="uk-form-icon" uk-icon="icon: lock"></span>
+								<input type="password" class="uk-input uk-form-width-medium" placeholder="Пароль"  name='pass' id="pass" >
+							</div><br>
+
+						{{/if}}
+
+						{{#if state 'register2'}}
 							<div class="uk-inline uk-margin-small">
-								<span class="uk-form-icon" uk-icon="icon: user"></span>
-								<input type="email" class="uk-input uk-form-width-medium" placeholder="Логин"  name='emailOrUsername' id="emailOrUsername" >
+								<span class="uk-form-icon" uk-icon="icon: mail"></span>
+								<input type="email" class="uk-input uk-form-width-medium" placeholder="Email"  name='email' id="email" >
 							</div><br>
 
 							<div class="uk-inline ">
@@ -46,7 +55,7 @@
 					</div>
 
 					<div class="submit uk-text-center">
-						<button class='uk-button uk-button-primary uk-button-small uk-margin-top login'><span>{{#if state 'register'}}Регистрация{{/if}}{{#if state 'login'}}Вход{{/if}}{{#if state 'forgot-password'}}Напомнить{{/if}}</span></button>
+						<button class='uk-button uk-button-primary uk-button-small uk-margin-top login'><span>{{#if state 'register'}}Регистрация{{/if}}{{#if state 'register2'}}Регистрация студии{{/if}}{{#if state 'login'}}Вход{{/if}}{{#if state 'forgot-password'}}Напомнить{{/if}}</span></button>
 					</div>
 
 					<div class="uk-margin-top">
@@ -57,8 +66,9 @@
 					</div>
 					<div class="uk-margin-top">
 						{{#if state 'login'}}
-									<a  class="forgot-password">Забыли пароль?</a>
-									<a  class="regist">Регистрация</a>
+									<a  class="forgot-password">Забыли пароль?</a> <br>
+									<a  class="regist">Регистрация клиента</a>
+									<a  class="regist2">Регистрация студии</a>
 
 						{{else}}
 									<a class="back-to-login">Назад к авторизации</a>

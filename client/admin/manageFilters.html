@@ -11,6 +11,42 @@
                             <thead>
                             <tr>
                                 <th></th>
+                                <th class="uk-table-auto">Название</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {{#each Settings}}
+                            <tr>
+                                <td><input type="checkbox" id="{{_id}}"  class="actives uk-checkbox" checked="{{active}}"></td>
+                                <td>{{name}}</td>
+                            </tr>
+                            {{/each}}
+                            </tbody>
+
+
+
+                        </table>
+                        <input type="text" id="setting"  class=" uk-input uk-form-width-medium" >
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="uk-margin-small uk-padding-small" >
+
+        <div class="uk-width-1-1  uk-card uk-card-body uk-card-default  uk-margin-auto">
+            <div uk-grid>
+                <div class="uk-width-1-1">
+                    <div class="">
+                        <table class="uk-table uk-table-align-vertical">
+                            <thead>
+                            <tr>
+                                <th></th>
                                 <th class="uk-table-shrink">Название</th>
                                 <th class="uk-table-expand">Компоненты</th>
                                 <th class="uk-table-shrink">Сумма</th>

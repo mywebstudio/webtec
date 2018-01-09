@@ -73,7 +73,7 @@ Template.dashboard.onCreated ->
     this.subscribe 'ProjectsSmart'
     this.subscribe 'FiltersList'
     this.ready = new ReactiveVar false
-
+    Session.set 'edit', false
 
     this.items = ->
         Projects.find().fetch()
@@ -107,6 +107,9 @@ Template.dashboard.helpers
 
     isReady: ->
         return Template.instance().ready.get()
+
+    edit: ->
+        return Session.get('edit')
 
     applications: ->
         return Template.instance().items()
@@ -251,6 +254,7 @@ Template.dashboard.events
                     status: 'primary'
                     pos: 'top-right'
                     timeout: 5000
+                Session.set 'edit',  !Session.get('edit')
             if err
                 UIkit.notification
                     message: err
@@ -268,6 +272,7 @@ Template.dashboard.events
                     status: 'primary'
                     pos: 'top-right'
                     timeout: 5000
+                Session.set 'edit',  !Session.get('edit')
             if err
                 UIkit.notification
                     message: err
@@ -285,12 +290,14 @@ Template.dashboard.events
                     status: 'primary'
                     pos: 'top-right'
                     timeout: 5000
+                Session.set 'edit',  !Session.get('edit')
             if err
                 UIkit.notification
                     message: err
                     status: 'error'
                     pos: 'top-right'
                     timeout: 5000
+                    
     'change #description': (e, t) ->
         e.stopPropagation()
         e.preventDefault()
@@ -307,13 +314,18 @@ Template.dashboard.events
                     status: 'error'
                     pos: 'top-right'
                     timeout: 5000
+                    
+    'click #edit': (e, t) ->
+        Session.set 'edit',  !Session.get('edit')
+        
     'change #mail': (e, t) ->
         e.stopPropagation()
         e.preventDefault()
         Meteor.call 'setEmail', Meteor.userId(), e.currentTarget.value, (err, res) ->
-            if res
+            if !err
+                Session.set 'edit',  !Session.get('edit')
                 UIkit.notification
-                    message: res
+                    message:  'Изменения сохранены!'
                     status: 'primary'
                     pos: 'top-right'
                     timeout: 5000

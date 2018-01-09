@@ -4,8 +4,6 @@ import { AccountsServer } from 'meteor/accounts-base'
 
 import { Random } from 'meteor/random'
 
-import {SimpleChat} from 'meteor/cesarve:simple-chat/config'
-
 import './publications/Sections.js';
 import './publications/Items.js';
 import './publications/FiltersList.js';
@@ -88,9 +86,11 @@ Accounts.onCreateUser((options, user) => {
         user.active = true;
     }
 
-    user.roles = 'user';
+
+    
+    user.roles = 'user'; 
     user.discont = 0;
-    user.balance = 300;
+   
     user.partner = Random.hexString(5);
 
 
@@ -100,13 +100,18 @@ Accounts.onCreateUser((options, user) => {
 
     Meteor.call('sendWelcomeEmail', user);
 
-    var pay = {};
-    pay.count = 300;
-    pay._createdAt = new Date();
-    pay.user = user._id;
-    pay.method = 'Бонус за регистрацию';
-    Pays.insert(pay);
 
+    var s = Settings.findOne({alias: "bonus-za-registraciyu"});
+    if(s.active){
+        var pay = {};
+        pay.count = 300;
+        pay._createdAt = new Date();
+        pay.user = user._id;
+        pay.method = 'Бонус за регистрацию';
+        Pays.insert(pay);
+        user.balance = 300;
+    } else user.balance = 0;
+   
     return user;
 });
 

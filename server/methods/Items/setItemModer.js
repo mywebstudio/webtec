@@ -26,7 +26,11 @@ Meteor.methods({
 					}
 				});
 				Meteor.call('emailModerTrue', currentApplication);
+
 			}
+
+		//Пересчитываем суммы заказа
+		Meteor.call('updateOrderCount', currentApplication.order);
 
 
 		return '1';

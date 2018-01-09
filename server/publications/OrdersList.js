@@ -48,7 +48,7 @@ Meteor.publish('OrdersUserAllList', function() {
 });
 
 
-Meteor.publish('Orders', function(type) {
+Meteor.publish('Orders', function() {
 	if (!this.userId) {
 		return this.ready();
 	}
@@ -56,5 +56,5 @@ Meteor.publish('Orders', function(type) {
 	if(Meteor.user().roles == 'admin')
 		return OrdersList.find();
 	if(Meteor.user().roles == 'user')
-		return OrdersList.find({user: this.userId});
+		return OrdersList.find({user: this.userId}, {sort: {_createdAt: -1}});
 });

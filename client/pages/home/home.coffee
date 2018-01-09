@@ -87,6 +87,10 @@ Template.home.helpers
             return x.toFixed()
         else return price
 
+    free: ->
+        s = Settings.findOne({alias: "besplatnye-uslugi"});
+        return s.active
+            
     search: ->
         return Template.instance().items()
 

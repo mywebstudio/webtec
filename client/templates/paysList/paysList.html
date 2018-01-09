@@ -7,12 +7,10 @@
                             <tr>
 
                                 <th class="uk-table-auto">Дата</th>
-                                <th class="uk-table-auto"></th>
+                                {{#unless short}}<th class="uk-table-auto"></th>{{/unless}}
                                 <th class="uk-table-auto">Сумма</th>
                                 <th class="uk-table-auto">Назначение</th>
                                 <th class="uk-table-auto"></th>
-
-                                <th>Действия</th>
                             </tr>
                             </thead>
 
@@ -22,14 +20,16 @@
 
                                 <td>{{date _createdAt}}</td>
 
+                                {{#unless short}}
                                 <td>
                                     {{#if $eq currentUser.roles 'admin'}}<a href="{{pathFor 'manageusersedit' id=user}}">{{> managername id=user}}</a>{{else}}
                                     {{#if user}}<a href="/dashboard">{{> managername id=user}}</a>{{/if}}{{/if}}
                                 </td>
+                                {{/unless}}
 
                                 <td>
-                                    {{#if project}}<span class="uk-text-danger">- {{count}} руб.</span>{{/if}}
-                                    {{#unless project}}<span class="uk-text-success">+ {{count}} руб.</span>{{/unless}}
+                                    {{#if project}}<span class="uk-text-danger uk-text-nowrap">- {{count}} &#8381;</span>{{/if}}
+                                    {{#unless project}}<span class="uk-text-success uk-text-nowrap">+ {{count}} &#8381;</span>{{/unless}}
                                 </td>
                                 <td>
                                     {{#if project}}<a href="{{pathFor 'manageProject' id=project}}">{{proj project}}</a>{{/if}}
@@ -38,14 +38,19 @@
                                 <td>
                                     {{#if method}}<i class="uk-text-muted uk-text-break">{{method}}</i>{{/if}}
                                 </td>
-
-                                <td class="uk-text-nowrap">
-                                    <a href=""  uk-icon="icon: pencil" class="uk-icon-button"></a>
-
-                                </td>
                             </tr>
                             {{/each}}
                             </tbody>
+
+                            <tfoot class="uk-table-striped">
+                            <tr>
+                                <td><b>Итого:</b></td>
+                                <td></td>
+                                <td><span class="uk-text-success">+ {{currentUser.balance}} &#8381;</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tfoot>
 
                         </table>
                     </div>

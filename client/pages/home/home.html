@@ -75,6 +75,7 @@
 
 
     <!--Бесплатные -->
+    {{#if free}}
     {{#unless currentUser.free}}
     <div class="uk-width-1-1">
         <div class="uk-card uk-inline uk-width-1-1" style="background-color: #fff">
@@ -116,6 +117,7 @@
             </div>
         </div>
     {{/unless}}
+    {{/if}}
     <!--Бесплатные -->
 
 
@@ -376,7 +378,7 @@
 
                     <div class=" uk-card-header">
                         <span class="uk-text-muted uk-text-small uk-text-italic">Общая сумма заказа: </span>
-                        <span class="heading_b uk-text-success uk-text-large" id="sum">{{#if order.free}}Бесплатно{{else}}{{order.count}} руб{{/if}}</span>
+                        <span class="heading_b uk-text-success uk-text-large" id="sum">{{#if order.free}}Бесплатно{{else}}{{order.count}} руб{{/if}} </span> {{#if currentUser.discont}}(себестоимость: {{order.countdiscont}}  &#8381;){{/if}}
 
                         <button class="uk-button uk-button-primary goorder" id="{{order._id}}">Заказать</button>
                         <button class="uk-button uk-button-danger delorder" id="{{order._id}}">Сбросить</button>

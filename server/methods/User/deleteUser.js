@@ -26,6 +26,12 @@ Meteor.methods({
 			Pays.remove(pays[i]._id)
 		}
 
+		// Удаляем заказы
+		var orders = OrdersList.find({user: id}).fetch();
+		for (var i = 0; i< orders.length; i++) {
+			OrdersList.remove(orders[i]._id)
+		}
+
 
 		Meteor.users.remove(id);
 		

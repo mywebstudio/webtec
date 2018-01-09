@@ -13,6 +13,9 @@ Template.manageFilters.helpers
   filter: ->
     return FiltersList.find()
 
+  Settings: ->
+    return Settings.find()
+
   itemname: (id) ->
     item = Items.findOne(id)
     return item.name
@@ -34,7 +37,35 @@ Template.manageFilters.events
           status: 'error'
           pos: 'top-right'
 
+  'change .actives': (e, t) ->
+    e.stopPropagation()
+    e.preventDefault()
+    Meteor.call 'toggleSetting', e.currentTarget.id, e.currentTarget.checked, (err, res) ->
+      if res
+        UIkit.notification
+          message: 'Изменения сохранены!'
+          status: 'primary'
+          pos: 'top-right'
+      if err
+        UIkit.notification
+          message: err
+          status: 'error'
+          pos: 'top-right'
+
           
+  'change #setting': (e, tem) ->
+    Meteor.call 'addSetting', e.currentTarget.value, (err, res) ->
+      if res
+        UIkit.notification
+          message: 'Изменения сохранены!'
+          status: 'primary'
+          pos: 'top-right'
+      if err
+        UIkit.notification
+          message: err
+          status: 'error'
+          pos: 'top-right'
+    
   'click .delete': (e, tem) ->
     swal
       title: 'Вы уверены?',

@@ -7,13 +7,13 @@ Meteor.publish('PaysAll', function() {
 
 
 
-Meteor.publish('PaysSmart', function() {
+Meteor.publish('PaysSmart', function(limit) {
 	if(this.userId) {
 		if (Meteor.user().roles == 'admin')
 			return Pays.find();
 
 		if (Meteor.user().roles == 'user')
-			return Pays.find({user: this.userId});
+			return Pays.find({user: this.userId}, {sort: {_createdAt: -1}, limit: limit});
 
 		// if (Meteor.user().roles == 'developer')
 		// 	return Pays.find({developer: this.userId});
