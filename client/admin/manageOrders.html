@@ -56,21 +56,23 @@
                                                 <tbody>
                                                 <tr class="uk-table-middle">
                                                     <td>
-                                                        <label class="uk-form-label" for="name">Имя заказчика для договора</label>
+                                                        <label class="uk-form-label" for="name">Имя заказчика (для договора)</label>
                                                         <div class="uk-form-controls">
                                                             <input type="text" class="uk-input uk-form-width-1-1" id="name"
                                                                    value="{{#if order.username}}{{order.username}}{{/if}}" placeholder="ФИО или название организации">
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <label class="uk-form-label" for="name">Реквизиты и контакты Заказчика</label>
+                                                        <label class="uk-form-label" for="oemail">Email заказчика (для уведомлений)</label>
                                                         <div class="uk-form-controls">
-                                                            <textarea class="uk-textarea uk-form-width-1-1" id="adress" rows="3"
-                                                                   placeholder="Банковские реквизиты и контакты">{{#if order.useraddress}}{{order.useraddress}}{{/if}}</textarea>
+                                                            <input type="text" class="uk-input uk-form-width-1-1" id="oemail"
+                                                                   value="{{#if order.email}}{{order.email}}{{/if}}" placeholder="Email заказчика">
                                                         </div>
                                                     </td>
+
                                                 </tr>
                                                 <tr class="uk-table-middle">
+
                                                     <td>
                                                         <label class="uk-form-label" for="pname">Название проекта</label>
                                                         <div class="uk-form-controls">
@@ -78,8 +80,15 @@
                                                                    placeholder="Рабочее название для обозначения проекта" value="{{#if order.name}}{{order.name}}{{/if}}">
                                                         </div>
                                                     </td>
+
                                                     <td>
+                                                        <label class="uk-form-label" for="name">Реквизиты и контакты Заказчика</label>
+                                                        <div class="uk-form-controls">
+                                                            <textarea class="uk-textarea uk-form-width-1-1" id="adress" rows="3"
+                                                                      placeholder="Банковские реквизиты и контакты">{{#if order.useraddress}}{{order.useraddress}}{{/if}}</textarea>
+                                                        </div>
                                                     </td>
+
                                                 </tr>
                                                 </tbody>
                                             </table>

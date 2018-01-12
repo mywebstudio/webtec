@@ -35,7 +35,7 @@ Template.dashboard.onRendered ->
 
         n.length and n.ganttView(
             data: ganttData
-            endDate: '12/31/2017'
+            endDate: moment(new Date).add(3, 'M').format('DD/MM/YYYY')
             behavior:
                 onClick: (n) ->
                     console.log 'You clicked on an event: \n', n

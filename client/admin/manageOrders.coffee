@@ -297,6 +297,20 @@ Template.manageOrders.events
           pos: 'top-right'
 
 
+  'change #oemail': (e, t) ->    
+    Meteor.call 'setOrderEmail', FlowRouter.getParam('id'), e.currentTarget.value, (err, res) ->
+      if res
+        UIkit.notification
+          message: 'Email заказчика проекта сохранён',
+          status: 'primary',
+          pos: 'top-right'
+      if err
+        UIkit.notification
+          message: err,
+          status: 'error',
+          pos: 'top-right'
+
+
           
   'click .regoffer': (e, t) ->
     Meteor.call 'createOrderRegDoc', FlowRouter.getParam('id'), (err, res) ->
